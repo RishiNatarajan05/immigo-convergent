@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - MentorMatch</title>
+    <style>
+      /* Base reset and variable definitions */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --primary: #023796;
+        --secondary: #065efb;
+        --accent: #023082;
+        --light-blue: #84a4fc;
+        --bg-light: #f7f7f7;
+        --text-primary: #333;
+        --text-light: #fff;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background-color: #fff;
+      }
+
+      /* Header styling */
+      header {
+        background: var(--primary);
+        color: var(--text-light);
+        padding: 20px;
+      }
+      header .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo a {
+        color: var(--text-light);
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+      nav ul li {
+        margin-left: 20px;
+      }
+      nav ul li a {
+        color: var(--text-light);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      nav ul li a:hover {
+        color: var(--light-blue);
+      }
+
+      /* Login container */
+      .login-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        background-color: var(--bg-light);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+      .login-container h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--primary);
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+      .form-group input[type="email"],
+      .form-group input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 5px rgba(6, 94, 251, 0.3);
+      }
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .checkbox-group input[type="checkbox"] {
+        margin-right: 10px;
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: var(--secondary);
+        color: var(--text-light);
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .btn:hover {
+        background-color: var(--primary);
+      }
+      .login-footer {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .login-footer a {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+      .login-footer a:hover {
+        text-decoration: underline;
+      }
+      .or-divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+      .or-divider::before,
+      .or-divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+      }
+      .or-divider span {
+        padding: 0 10px;
+        color: #777;
+      }
+      .social-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .social-btn {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .google-btn {
+        background-color: #fff;
+        color: #333;
+      }
+      .google-btn:hover {
+        background-color: #f1f1f1;
+      }
+      .linkedin-btn {
+        background-color: #0077b5;
+        color: white;
+      }
+      .linkedin-btn:hover {
+        background-color: #006396;
+      }
+      .social-btn img {
+        width: 20px;
+        margin-right: 8px;
+      }
+      .error-message {
+        color: #d93025;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <a href="index.html">MentorMatch</a>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="index.html#immigrants">For Immigrants</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="login-container">
+      <h1>Welcome Back</h1>
+
+      <div id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+          <div class="error-message" id="email-error">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+          />
+          <div class="error-message" id="password-error">
+            Password must be at least 6 characters long.
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="remember-me" />
+          <label for="remember-me">Remember me</label>
+        </div>
+
+        <button id="login-button" class="btn">Sign In</button>
+
+        <div class="login-footer">
+          <a href="#forgot-password">Forgot your password?</a>
+          <p>
+            Don't have an account?
+            <a href="role-select.html">Sign up now</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const emailError = document.getElementById("email-error");
+        const passwordError = document.getElementById("password-error");
+        const loginButton = document.getElementById("login-button");
+
+        // Form validation
+        function validateEmail(email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(email.toLowerCase());
+        }
+
+        function validatePassword(password) {
+          return password.length >= 6;
+        }
+
+        // Email validation
+        emailInput.addEventListener("blur", function () {
+          if (this.value && !validateEmail(this.value)) {
+            emailError.style.display = "block";
+            this.style.borderColor = "#d93025";
+          } else {
+            emailError.style.display = "none";
+            this.style.borderColor = "#ddd";
+          }
+        });
+
+        // Password validation
+        passwordInput.addEventListener("blur", function () {
+          if (this.value && !validatePassword(this.value)) {
+            passwordError.style.display = "block";
+            this.style.borderColor = "#d93025";
+          } else {
+            passwordError.style.display = "none";
+            this.style.borderColor = "#ddd";
+          }
+        });
+
+        // Form submission
+        loginButton.addEventListener("click", function () {
+          const email = emailInput.value;
+          const password = passwordInput.value;
+          let isValid = true;
+
+          // Validate email
+          if (!email || !validateEmail(email)) {
+            emailError.style.display = "block";
+            emailInput.style.borderColor = "#d93025";
+            isValid = false;
+          }
+
+          // Validate password
+          if (!password || !validatePassword(password)) {
+            passwordError.style.display = "block";
+            passwordInput.style.borderColor = "#d93025";
+            isValid = false;
+          }
+
+          // If form is valid, proceed with login
+          if (isValid) {
+            simulateLogin(email, password);
+          }
+        });
+
+        // Simulate login (this would be replaced with actual authentication)
+        function simulateLogin(email, password) {
+          console.log("Login attempt:", email);
+
+          // In a real application, you would make an API call here
+          // In this demo version, we're using Supabase authentication which we'll simulate
+          document.getElementById("login-button").textContent = "Signing in...";
+
+          // Simulate authentication and API call
+          setTimeout(function () {
+            // Simply store the user info in localStorage
+            const userData = {
+              email: email,
+              isLoggedIn: true,
+              loginTime: new Date().toISOString(),
+            };
+
+            localStorage.setItem("mentorMatchUser", JSON.stringify(userData));
+
+            // Check if user has a mentee or mentor profile
+            checkUserProfile(email);
+          }, 1000);
+        }
+        
+        // Check if user has a profile
+        async function checkUserProfile(email) {
+          try {
+            // The real implementation would use Supabase to check if user has a profile
+            // For now we'll simulate by checking localStorage
+            const menteeId = localStorage.getItem('currentMenteeId');
+            const mentorId = localStorage.getItem('currentMentorId');
+            
+            if (menteeId) {
+              localStorage.setItem('mentorMatchUserType', 'mentee');
+              window.location.href = "matches.html";
+            } else if (mentorId) {
+              localStorage.setItem('mentorMatchUserType', 'mentor');
+              window.location.href = "matches.html";
+            } else {
+              // No profile found, redirect to role selection
+              window.location.href = "role-select.html";
+            }
+          } catch (error) {
+            console.error("Error checking user profile:", error);
+            // If there's an error, just go to the homepage
+            window.location.href = "index.html";
+          }
+        }
+
+        // Auto-fill email if user has logged in before (for demo purposes)
+        const savedUser = JSON.parse(localStorage.getItem("mentorMatchUser"));
+        if (savedUser && savedUser.email) {
+          emailInput.value = savedUser.email;
+          document.getElementById("remember-me").checked = true;
+        }
+      });
+    </script>
+  </body>
+</html>

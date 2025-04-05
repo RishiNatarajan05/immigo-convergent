@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentee Dashboard - MentorMatch</title>
+  <style>
+    /* Base reset and variable definitions */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --primary: #023796;
+      --secondary: #065efb;
+      --accent: #023082;
+      --light-blue: #84a4fc;
+      --bg-light: #f7f7f7;
+      --text-primary: #333;
+      --text-light: #fff;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --gray: #6c757d;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-light);
+    }
+    /* Header styling */
+    header {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 20px;
+    }
+    header .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo a {
+      color: var(--text-light);
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+    nav ul li {
+      margin-left: 20px;
+    }
+    nav ul li a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: var(--light-blue);
+    }
+    
+    /* Dashboard container */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .dashboard-title {
+      color: var(--primary);
+    }
+    
+    .dashboard-meta {
+      text-align: right;
+    }
+    
+    .mentor-info {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .mentor-name {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    
+    /* Progress section */
+    .progress-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .progress-title {
+      margin-bottom: 15px;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+    
+    .progress-container {
+      width: 100%;
+      height: 25px;
+      background-color: #e0e0e0;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background-color: var(--success);
+      border-radius: 15px;
+      width: 0%;
+      transition: width 0.5s;
+    }
+    
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    /* Goals section */
+    .dashboard-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .section-title {
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .add-btn {
+      background: var(--secondary);
+      color: var(--text-light);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .goal-card, .task-card, .certificate-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .goal-card:hover, .task-card:hover, .certificate-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .goal-header, .task-header, .certificate-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .goal-title, .task-title, .certificate-title {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .goal-status, .task-status, .certificate-status {
+      font-size: 0.9rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+    
+    .status-active {
+      background: var(--light-blue);
+      color: var(--primary);
+    }
+    
+    .status-completed {
+      background: var(--success);
+      color: white;
+    }
+    
+    .status-pending {
+      background: var(--warning);
+      color: var(--text-primary);
+    }
+    
+    .goal-description, .task-description, .certificate-description {
+      margin-bottom: 10px;
+      color: var(--gray);
+    }
+    
+    .goal-actions, .task-actions, .certificate-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    .action-btn {
+      background: var(--bg-light);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .edit-btn {
+      color: var(--secondary);
+    }
+    
+    .complete-btn {
+      color: var(--success);
+    }
+    
+    .delete-btn {
+      color: var(--danger);
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: var(--gray);
+    }
+    
+    .empty-state p {
+      margin-bottom: 15px;
+    }
+    
+    /* Forms */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow: auto;
+    }
+    
+    .modal-content {
+      position: relative;
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      color: var(--gray);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .form-btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .form-submit {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .form-cancel {
+      background: var(--gray);
+      color: white;
+    }
+    
+    /* Footer styling */
+    footer {
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 20px;
+      margin-top: 60px;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: 15px;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 5px;
+    }
+    
+    .footer-section ul li a {
+      color: var(--text-light);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      header .container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav ul li {
+        margin: 5px 10px;
+      }
+      
+      .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+      
+      .dashboard-meta {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">MentorMatch</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="index.html#immigrants">For Immigrants</a></li>
+          <div id="auth-nav">
+            <!-- Auth links will be populated by script.js -->
+            <a href="mentee-dashboard.html" class="active">My Dashboard</a>
+            <a href="#" id="logout-btn">Logout</a>
+          </div>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Dashboard Content -->
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">My Mentor Journey</h1>
+      <div class="dashboard-meta">
+        <p>Joined: <span id="join-date">April 2025</span></p>
+      </div>
+    </div>
+    
+    <!-- Mentor Info and Messaging -->
+    <div class="mentor-info">
+      <h3 class="mentor-name">Your Mentor: <span id="mentor-name">Not yet assigned</span></h3>
+      <p>Status: <span id="mentor-status">Pending</span></p>
+      <div class="mentor-actions" style="margin-top: 10px;">
+        <a href="mentor-chat.html" class="btn primary-btn" style="display: inline-block; background: var(--primary); color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-size: 14px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill: currentColor; vertical-align: middle; margin-right: 5px;">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+            <path d="M7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/>
+          </svg>
+          Chat with Mentor
+        </a>
+      </div>
+    </div>
+    
+    <!-- Progress Section -->
+    <div class="progress-section">
+      <h2 class="progress-title">Your Progress</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="overall-progress" style="width: 0%;"></div>
+      </div>
+      <div class="progress-stats">
+        <span>Tasks Completed: <span id="tasks-completed">0</span>/<span id="total-tasks">3</span></span>
+        <span><span id="progress-percentage">0%</span> Complete</span>
+      </div>
+    </div>
+    
+    <!-- Goals Section -->
+    <div class="dashboard-section">
+      <div class="section-title">
+        <h2>Career Goals</h2>
+        <button class="add-btn" id="add-goal-btn">+ Add Goal</button>
+      </div>
+      <div id="goals-container">
+        <!-- Sample goal -->
+        <div class="goal-card">
+          <div class="goal-header">
+            <h3 class="goal-title">Get an internship at a tech company</h3>
+            <span class="goal-status status-active">In Progress</span>
+          </div>
+          <p class="goal-description">Secure a summer internship at a technology company to gain industry experience.</p>
+          <div class="goal-actions">
+            <button class="action-btn edit-btn">Edit</button>
+            <button class="action-btn complete-btn">Mark Complete</button>
+            <button class="action-btn delete-btn">Delete</button>
+          </div>
+        </div>
+        
+        <!-- Empty state for goals will show when there are no goals -->
+        <div class="empty-state" id="empty-goals" style="display: none;">
+          <p>You haven't set any career goals yet.</p>
+          <button class="add-btn" id="add-goal-empty-btn">+ Add Your First Goal</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tasks Section -->
+    <div class="dashboard-section">
+      <div class="section-title">
+        <h2>Current Tasks</h2>
+        <button class="add-btn" id="add-task-btn">+ Add Task</button>
+      </div>
+      <div id="tasks-container">
+        <!-- Sample tasks -->
+        <div class="task-card">
+          <div class="task-header">
+            <h3 class="task-title">Update resume</h3>
+            <span class="task-status status-pending">Not Started</span>
+          </div>
+          <p class="task-description">Revise my resume to highlight skills relevant to tech companies.</p>
+          <div class="task-actions">
+            <button class="action-btn edit-btn">Edit</button>
+            <button class="action-btn complete-btn">Mark Complete</button>
+            <button class="action-btn delete-btn">Delete</button>
+          </div>
+        </div>
+        
+        <div class="task-card">
+          <div class="task-header">
+            <h3 class="task-title">Complete LinkedIn profile</h3>
+            <span class="task-status status-active">In Progress</span>
+          </div>
+          <p class="task-description">Update LinkedIn profile with education, skills, and experiences.</p>
+          <div class="task-actions">
+            <button class="action-btn edit-btn">Edit</button>
+            <button class="action-btn complete-btn">Mark Complete</button>
+            <button class="action-btn delete-btn">Delete</button>
+          </div>
+        </div>
+        
+        <div class="task-card">
+          <div class="task-header">
+            <h3 class="task-title">Conduct informational interview</h3>
+            <span class="task-status status-pending">Not Started</span>
+          </div>
+          <p class="task-description">Schedule and conduct an informational interview with a professional in the field.</p>
+          <div class="task-actions">
+            <button class="action-btn edit-btn">Edit</button>
+            <button class="action-btn complete-btn">Mark Complete</button>
+            <button class="action-btn delete-btn">Delete</button>
+          </div>
+        </div>
+        
+        <!-- Empty state for tasks -->
+        <div class="empty-state" id="empty-tasks" style="display: none;">
+          <p>You don't have any tasks yet.</p>
+          <button class="add-btn" id="add-task-empty-btn">+ Add Your First Task</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Certificates Section -->
+    <div class="dashboard-section">
+      <div class="section-title">
+        <h2>Certificates & Credentials</h2>
+        <button class="add-btn" id="add-cert-btn">+ Add Certificate</button>
+      </div>
+      <div id="certs-container">
+        <!-- Sample certificate -->
+        <div class="certificate-card">
+          <div class="certificate-header">
+            <h3 class="certificate-title">AWS Cloud Practitioner</h3>
+            <span class="certificate-status status-completed">Completed</span>
+          </div>
+          <p class="certificate-description">Amazon Web Services Cloud Practitioner certification.</p>
+          <p>Date: January 2025</p>
+          <div class="certificate-actions">
+            <button class="action-btn edit-btn">Edit</button>
+            <button class="action-btn delete-btn">Delete</button>
+          </div>
+        </div>
+        
+        <!-- Empty state for certificates -->
+        <div class="empty-state" id="empty-certs" style="display: none;">
+          <p>You haven't added any certificates yet.</p>
+          <button class="add-btn" id="add-cert-empty-btn">+ Add Your First Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modals for adding/editing items -->
+  <div id="goal-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-goal-modal">&times;</span>
+      <h2>Add New Goal</h2>
+      <form id="goal-form">
+        <div class="form-group">
+          <label for="goal-title-input">Goal Title</label>
+          <input type="text" id="goal-title-input" placeholder="e.g., Get a full-time job" required>
+        </div>
+        <div class="form-group">
+          <label for="goal-description-input">Description</label>
+          <textarea id="goal-description-input" placeholder="Describe your goal in detail..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="goal-status-input">Status</label>
+          <select id="goal-status-input" required>
+            <option value="active">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Not Started</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="form-btn form-cancel" id="cancel-goal-btn">Cancel</button>
+          <button type="submit" class="form-btn form-submit">Save Goal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div id="task-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-task-modal">&times;</span>
+      <h2>Add New Task</h2>
+      <form id="task-form">
+        <div class="form-group">
+          <label for="task-title-input">Task Title</label>
+          <input type="text" id="task-title-input" placeholder="e.g., Complete Python course" required>
+        </div>
+        <div class="form-group">
+          <label for="task-description-input">Description</label>
+          <textarea id="task-description-input" placeholder="Describe this task..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="task-status-input">Status</label>
+          <select id="task-status-input" required>
+            <option value="active">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Not Started</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="related-goal-input">Related Goal (Optional)</label>
+          <select id="related-goal-input">
+            <option value="">None</option>
+            <option value="1">Get an internship at a tech company</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="form-btn form-cancel" id="cancel-task-btn">Cancel</button>
+          <button type="submit" class="form-btn form-submit">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div id="cert-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-cert-modal">&times;</span>
+      <h2>Add New Certificate</h2>
+      <form id="cert-form">
+        <div class="form-group">
+          <label for="cert-title-input">Certificate Name</label>
+          <input type="text" id="cert-title-input" placeholder="e.g., Microsoft Azure Fundamentals" required>
+        </div>
+        <div class="form-group">
+          <label for="cert-description-input">Description</label>
+          <textarea id="cert-description-input" placeholder="Describe this certificate..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="cert-date-input">Date Earned</label>
+          <input type="date" id="cert-date-input" required>
+        </div>
+        <div class="form-group">
+          <label for="cert-status-input">Status</label>
+          <select id="cert-status-input" required>
+            <option value="completed">Completed</option>
+            <option value="active">In Progress</option>
+            <option value="pending">Planned</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="form-btn form-cancel" id="cancel-cert-btn">Cancel</button>
+          <button type="submit" class="form-btn form-submit">Save Certificate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About MentorMatch</h3>
+        <p>MentorMatch connects immigrants with mentors in their field to help them navigate the professional landscape and achieve their career goals.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="mentee.html">Become a Mentee</a></li>
+          <li><a href="mentor.html">Become a Mentor</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul>
+          <li>Email: info@mentormatch.com</li>
+          <li>Phone: +1 (555) 123-4567</li>
+          <li>Address: 123 Main Street, Austin, TX</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 MentorMatch. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script type="module" src="script.js"></script>
+  <script>
+    // Dashboard-specific JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      // Modal functionality
+      const modals = {
+        goal: document.getElementById('goal-modal'),
+        task: document.getElementById('task-modal'),
+        cert: document.getElementById('cert-modal')
+      };
+      
+      // Open modal buttons
+      document.getElementById('add-goal-btn').addEventListener('click', () => modals.goal.style.display = 'block');
+      document.getElementById('add-task-btn').addEventListener('click', () => modals.task.style.display = 'block');
+      document.getElementById('add-cert-btn').addEventListener('click', () => modals.cert.style.display = 'block');
+      
+      // Close modal buttons
+      document.getElementById('close-goal-modal').addEventListener('click', () => modals.goal.style.display = 'none');
+      document.getElementById('close-task-modal').addEventListener('click', () => modals.task.style.display = 'none');
+      document.getElementById('close-cert-modal').addEventListener('click', () => modals.cert.style.display = 'none');
+      document.getElementById('cancel-goal-btn').addEventListener('click', () => modals.goal.style.display = 'none');
+      document.getElementById('cancel-task-btn').addEventListener('click', () => modals.task.style.display = 'none');
+      document.getElementById('cancel-cert-btn').addEventListener('click', () => modals.cert.style.display = 'none');
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (event) => {
+        if (event.target === modals.goal) modals.goal.style.display = 'none';
+        if (event.target === modals.task) modals.task.style.display = 'none';
+        if (event.target === modals.cert) modals.cert.style.display = 'none';
+      });
+      
+      // Form submissions
+      document.getElementById('goal-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // In a real app, you would save the data to a database
+        alert('Goal saved successfully!');
+        modals.goal.style.display = 'none';
+      });
+      
+      document.getElementById('task-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // In a real app, you would save the data to a database
+        alert('Task saved successfully!');
+        modals.task.style.display = 'none';
+        
+        // Update progress
+        updateProgress();
+      });
+      
+      document.getElementById('cert-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // In a real app, you would save the data to a database
+        alert('Certificate saved successfully!');
+        modals.cert.style.display = 'none';
+      });
+      
+      // Empty state buttons
+      document.getElementById('add-goal-empty-btn')?.addEventListener('click', () => modals.goal.style.display = 'block');
+      document.getElementById('add-task-empty-btn')?.addEventListener('click', () => modals.task.style.display = 'block');
+      document.getElementById('add-cert-empty-btn')?.addEventListener('click', () => modals.cert.style.display = 'block');
+      
+      // Task action buttons
+      const completeButtons = document.querySelectorAll('.complete-btn');
+      completeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const taskCard = this.closest('.task-card');
+          const statusElement = taskCard.querySelector('.task-status');
+          
+          // Toggle status
+          if (statusElement.classList.contains('status-active') || statusElement.classList.contains('status-pending')) {
+            statusElement.textContent = 'Completed';
+            statusElement.className = 'task-status status-completed';
+            this.style.display = 'none';
+            
+            // Update progress
+            updateProgress();
+          }
+        });
+      });
+      
+      // Function to update progress
+      function updateProgress() {
+        const totalTasks = document.querySelectorAll('.task-card').length;
+        const completedTasks = document.querySelectorAll('.task-status.status-completed').length;
+        const percentage = Math.round((completedTasks / totalTasks) * 100);
+        
+        document.getElementById('total-tasks').textContent = totalTasks;
+        document.getElementById('tasks-completed').textContent = completedTasks;
+        document.getElementById('progress-percentage').textContent = percentage + '%';
+        document.getElementById('overall-progress').style.width = percentage + '%';
+      }
+      
+      // Initialize progress
+      updateProgress();
+      
+      // Load mentor data from localStorage if available
+      const userData = JSON.parse(localStorage.getItem("mentorMatchUser"));
+      if (userData) {
+        const mentorRequestId = localStorage.getItem("requestedMentorId");
+        if (mentorRequestId) {
+          document.getElementById('mentor-name').textContent = localStorage.getItem("requestedMentorName") || "Pending Assignment";
+          document.getElementById('mentor-status').textContent = "Request Sent";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

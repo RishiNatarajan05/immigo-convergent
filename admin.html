@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MentorMatch Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1, h2 {
+      color: #023796;
+    }
+    
+    .container {
+      background-color: #f7f7f7;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    button {
+      background-color: #023796;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    
+    button:hover {
+      background-color: #065efb;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      white-space: pre-wrap;
+    }
+    
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+    
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 8px;
+      font-family: monospace;
+    }
+    
+    .mapping-container {
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>MentorMatch Admin Tools</h1>
+  
+  <div class="container">
+    <h2>CSV Data Upload</h2>
+    <p>Upload the CSV data files to your Supabase database tables</p>
+    
+    <div class="mapping-container">
+      <h3>Column Mapping</h3>
+      <p>Adjust how CSV columns map to database columns:</p>
+      
+      <h4>Mentees Table Columns:</h4>
+      <textarea id="mentee-mapping">{
+  "Name": "name",
+  "Country": "country",
+  "Speaking Language": "speaking_language",
+  "Desired Field": "field",
+  "Degree": "degree",
+  "College": "college", 
+  "STEM Skills": "stem_skills",
+  "Interests": "interests",
+  "Prior Work Experience": "work_experience",
+  "Age": "age"
+}</textarea>
+      
+      <h4>Mentors Table Columns:</h4>
+      <textarea id="mentor-mapping">{
+  "Name": "name",
+  "Country": "country",
+  "Speaking Language": "speaking_language",
+  "Field": "field",
+  "Degree": "degree",
+  "College": "college",
+  "STEM Skills": "stem_skills",
+  "Interests": "interests",
+  "Work Experience": "work_experience",
+  "Age": "age"
+}</textarea>
+    </div>
+    
+    <button id="upload-mentees">Upload Mentee CSV</button>
+    <button id="upload-mentors">Upload Mentor CSV</button>
+    <button id="upload-all">Upload All CSVs</button>
+    
+    <div id="csv-result" class="result">Results will appear here...</div>
+  </div>
+  
+  <div class="container">
+    <h2>Database Information</h2>
+    <p>View information about your database tables</p>
+    
+    <button id="view-mentees">View Mentees</button>
+    <button id="view-mentors">View Mentors</button>
+    
+    <div id="db-result" class="result">Results will appear here...</div>
+  </div>
+  
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.33.2/+esm';
+    
+    // Supabase setup (same as your main app)
+    const supabaseUrl = 'https://thcfscypmqopiomlsdab.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoY2ZzY3lwbXFvcGlvbWxzZGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1NDU3ODQsImV4cCI6MjA1OTEyMTc4NH0.fzM4bMjwGfO-9r72T8R6j1I7MaivyOZy2lhSd9r5HPk';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Function to upload CSV data to Supabase
+    async function uploadCSVToSupabase(csvFile, tableName, columnMapping) {
+      try {
+        showResult('csv-result', `Loading ${csvFile}...`, 'normal');
+        
+        const response = await fetch(csvFile);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${csvFile}: ${response.statusText}`);
+        }
+        
+        const csvText = await response.text();
+        showResult('csv-result', `Parsing ${csvFile}...`, 'normal');
+        
+        // Parse the CSV
+        const rows = csvText.split('\n');
+        const csvHeaders = rows[0].split(',');
+        
+        // Create the mapping from CSV headers to DB columns
+        const headerMapping = {};
+        for (let i = 0; i < csvHeaders.length; i++) {
+          const header = csvHeaders[i].trim();
+          if (columnMapping[header]) {
+            headerMapping[i] = columnMapping[header];
+          }
+        }
+        
+        console.log("CSV to DB mapping:", headerMapping);
+        
+        const dataToInsert = [];
+        
+        for (let i = 1; i < rows.length; i++) {
+          if (!rows[i].trim()) continue; // Skip empty rows
+          
+          const values = parseCSVLine(rows[i]);
+          if (values.length < csvHeaders.length) continue; // Skip invalid rows
+          
+          const rowData = {};
+          
+          // Use the mapping to create the record
+          for (let colIndex in headerMapping) {
+            const dbColumnName = headerMapping[colIndex];
+            let value = values[colIndex] ? values[colIndex].trim() : null;
+            
+            // Special handling for different fields
+            if (dbColumnName === 'stem_skills' || dbColumnName === 'interests') {
+              try {
+                // Try to parse as JSON if it's in JSON format
+                if (value && (value.startsWith('[') || value.startsWith('{'))) {
+                  value = JSON.parse(value);
+                  // If it's nested like ["['item1'", "'item2'"]"]
+                  if (Array.isArray(value) && value.length === 1 && typeof value[0] === 'string' && value[0].includes("['")) {
+                    const cleanedStr = value[0].replace(/\["|"\]/g, '').replace(/'/g, '"');
+                    try {
+                      value = JSON.parse(cleanedStr);
+                    } catch (e) {
+                      // If parsing fails, split by commas
+                      value = cleanedStr.split(',').map(item => item.trim().replace(/"/g, ''));
+                    }
+                  }
+                } else if (value) {
+                  // If it's a simple string, split by semicolons
+                  value = value.split(';').map(item => item.trim());
+                } else {
+                  value = [];
+                }
+              } catch (e) {
+                console.warn(`Error parsing ${dbColumnName} value:`, value, e);
+                // If parsing fails, treat as an array with one item or empty array
+                value = value ? [value] : [];
+              }
+            } else if (dbColumnName === 'age') {
+              // Convert age to number
+              value = parseInt(value) || null;
+            }
+            
+            rowData[dbColumnName] = value;
+          }
+          
+          dataToInsert.push(rowData);
+        }
+        
+        showResult('csv-result', `Uploading ${dataToInsert.length} rows to ${tableName}...`, 'normal');
+        console.log("Sample data to insert:", dataToInsert[0]);
+        
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from(tableName)
+          .insert(dataToInsert)
+          .select();
+        
+        if (error) throw error;
+        
+        showResult('csv-result', `✅ ${tableName} data uploaded successfully: ${data.length} records inserted`, 'success');
+        return data;
+        
+      } catch (error) {
+        showResult('csv-result', `❌ Error uploading ${csvFile} to ${tableName}: ${error.message}`, 'error');
+        console.error(`Error uploading ${csvFile} to ${tableName}:`, error);
+        throw error;
+      }
+    }
+    
+    // Helper function to properly parse CSV lines with quoted fields
+    function parseCSVLine(line) {
+      const result = [];
+      let currentValue = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(currentValue);
+          currentValue = '';
+        } else {
+          currentValue += char;
+        }
+      }
+      
+      // Add the last value
+      result.push(currentValue);
+      
+      return result;
+    }
+    
+    // Function to view table data
+    async function viewTableData(tableName) {
+      try {
+        showResult('db-result', `Loading ${tableName} data...`, 'normal');
+        
+        const { data, error, count } = await supabase
+          .from(tableName)
+          .select('*', { count: 'exact' })
+          .limit(10);
+        
+        if (error) throw error;
+        
+        showResult('db-result', `${tableName} data (showing ${data.length} of ${count} records):\n\n${JSON.stringify(data, null, 2)}`, 'normal');
+        
+      } catch (error) {
+        showResult('db-result', `Error fetching ${tableName} data: ${error.message}`, 'error');
+        console.error(`Error fetching ${tableName} data:`, error);
+      }
+    }
+    
+    // Helper to show results
+    function showResult(elementId, message, type) {
+      const element = document.getElementById(elementId);
+      element.textContent = message;
+      
+      // Reset classes
+      element.classList.remove('success', 'error');
+      
+      if (type === 'success') {
+        element.classList.add('success');
+      } else if (type === 'error') {
+        element.classList.add('error');
+      }
+    }
+    
+    // Add event listeners
+    document.getElementById('upload-mentees').addEventListener('click', async () => {
+      try {
+        const mappingText = document.getElementById('mentee-mapping').value;
+        const columnMapping = JSON.parse(mappingText);
+        await uploadCSVToSupabase('menteedataconvergent.csv', 'mentees', columnMapping);
+      } catch (error) {
+        console.error('Failed to upload mentees:', error);
+      }
+    });
+    
+    document.getElementById('upload-mentors').addEventListener('click', async () => {
+      try {
+        const mappingText = document.getElementById('mentor-mapping').value;
+        const columnMapping = JSON.parse(mappingText);
+        await uploadCSVToSupabase('mentordataconvergent.csv', 'mentors', columnMapping);
+      } catch (error) {
+        console.error('Failed to upload mentors:', error);
+      }
+    });
+    
+    document.getElementById('upload-all').addEventListener('click', async () => {
+      try {
+        const menteeMapping = JSON.parse(document.getElementById('mentee-mapping').value);
+        const mentorMapping = JSON.parse(document.getElementById('mentor-mapping').value);
+        
+        await uploadCSVToSupabase('menteedataconvergent.csv', 'mentees', menteeMapping);
+        await uploadCSVToSupabase('mentordataconvergent.csv', 'mentors', mentorMapping);
+      } catch (error) {
+        console.error('Failed to upload all CSV data:', error);
+      }
+    });
+    
+    document.getElementById('view-mentees').addEventListener('click', () => {
+      viewTableData('mentees');
+    });
+    
+    document.getElementById('view-mentors').addEventListener('click', () => {
+      viewTableData('mentors');
+    });
+  </script>
+</body>
+</html>
