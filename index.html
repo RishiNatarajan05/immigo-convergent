@@ -3,475 +3,1007 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MentorMatch: Empowering Immigrant Success</title>
+    <title>ImmiGo – Guided Steps to Success</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      /* Base reset and variable definitions */
+      /* CSS Variables */
+      :root {
+        --color-primary: #415978; /* Dark Blue */
+        --color-accent: #ff7043; /* Orange */
+        --color-accent-hover: #e8603a; /* Darker Orange */
+        --color-secondary: #edede5; /* Light Gray */
+        --color-offwhite: #f7f9f8; /* Off White */
+        --color-white: #ffffff;
+        --color-dark: #333333; /* Dark Gray Text */
+        --color-light-gray-text: #555555;
+        --color-teal: #1dac8a; /* Teal for border */
+        --font-heading: "Poppins", sans-serif;
+        --font-body: "Poppins", sans-serif;
+        --transition-speed: 0.3s ease;
+        --container-width: 1140px;
+        --container-padding: 5%; /* Use percentage for better fluidity */
+        --border-radius: 8px;
+        --section-padding-large: 6rem 0 4rem;
+        --section-padding-medium: 4rem 0;
+      }
+
+      /* Reset and Base Styles */
       * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
       }
-      :root {
-        --primary: #023796;
-        --secondary: #065efb;
-        --accent: #023082;
-        --light-blue: #84a4fc;
-        --bg-light: #f7f7f7;
-        --text-primary: #333;
-        --text-light: #fff;
+
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px; /* Base font size */
       }
+
       body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: var(--text-primary);
-        background-color: #fff;
+        font-family: var(--font-body);
+        color: var(--color-dark);
+        background: var(--color-white);
+        line-height: 1.6; /* Improve readability */
+        overflow-x: hidden; /* Prevent horizontal scroll */
       }
-      /* Header styling */
-      header {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
+
+      img,
+      svg {
+        display: block;
+        max-width: 100%; /* Ensure images are responsive */
+        height: auto;
       }
-      header .container {
-        max-width: 1200px;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
+
+      a {
+        text-decoration: none;
+        color: inherit; /* Inherit color by default */
+        transition: color var(--transition-speed);
       }
-      .logo {
-        font-size: 1.8em;
-        font-weight: bold;
+      a:hover {
+        color: var(--color-accent);
       }
-      nav ul {
+
+      button {
+        font-family: var(--font-body);
+        cursor: pointer;
+        border: none;
+        background: none;
+        transition: background-color var(--transition-speed),
+          color var(--transition-speed), border-color var(--transition-speed);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-heading);
+        line-height: 1.3;
+        margin-bottom: 1rem;
+      }
+      h1 {
+        font-size: 3rem;
+      }
+      h2 {
+        font-size: 2rem;
+      }
+      h3 {
+        font-size: 1.1rem;
+      }
+      h4 {
+        font-size: 0.9rem;
+        color: var(--color-light-gray-text);
+      }
+
+      ul {
         list-style: none;
+      }
+
+      /* Utility Classes */
+      .container {
+        width: calc(100% - (2 * var(--container-padding))); /* Fluid width */
+        max-width: var(--container-width);
+        margin: 0 auto;
+      }
+
+      .flex {
         display: flex;
-        gap: 20px;
-        margin: 10px 0;
       }
-      nav ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-        font-size: 1em;
-      }
-      .cta-buttons {
-        display: flex;
-        gap: 10px;
-        margin: 10px 0;
-      }
-      .cta-buttons a {
-        padding: 8px 16px;
-        background-color: var(--secondary);
-        color: var(--text-light);
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        cursor: pointer;
-      }
-      .cta-buttons a:hover {
-        background-color: var(--accent);
-      }
-      .cta-buttons a.active {
-        background-color: var(--accent);
-      }
-      /* Hero Section */
-      .hero {
-        background: var(--light-blue);
-        padding: 60px 20px;
-        text-align: center;
-      }
-      .hero h1 {
-        font-size: 2.5em;
-        margin-bottom: 20px;
-      }
-      .hero p {
-        font-size: 1.2em;
-        margin-bottom: 30px;
-      }
-      .hero .hero-btn {
-        padding: 10px 20px;
-        background: var(--primary);
-        color: var(--text-light);
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 1em;
-        transition: background 0.3s;
-        cursor: pointer;
-      }
-      .hero .hero-btn:hover {
-        background: var(--accent);
-      }
-      /* Section styling */
-      section {
-        padding: 60px 20px;
-      }
-      .section-title {
-        text-align: center;
-        font-size: 2em;
-        margin-bottom: 40px;
-      }
-      /* Features/Our Values section */
-      .features {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 20px;
-        max-width: 1200px;
-        margin: auto;
-      }
-      .feature {
-        background: var(--bg-light);
-        padding: 20px;
-        border-radius: 6px;
-        flex: 1 1 250px;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      .feature h3 {
-        margin-bottom: 10px;
-      }
-      .feature p {
-        font-size: 0.95em;
-      }
-      /* Testimonials */
-      .testimonials {
-        background: var(--bg-light);
-        padding: 40px 20px;
-      }
-      .testimonial-container {
-        max-width: 1000px;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .testimonial {
-        background: #fff;
-        padding: 20px;
-        border-radius: 6px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      .testimonial h4 {
-        margin-bottom: 10px;
-        font-size: 1.1em;
-        color: var(--primary);
-      }
-      .testimonial p {
-        font-size: 0.95em;
-      }
-      /* How It Works section */
-      .steps {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 20px;
-        max-width: 1200px;
-        margin: auto;
-      }
-      .step {
-        text-align: center;
-        flex: 1 1 200px;
-      }
-      .step-icon {
-        width: 80px;
-        height: 80px;
-        background: var(--bg-light);
-        border-radius: 50%;
-        display: flex;
+      .center {
         justify-content: center;
         align-items: center;
-        margin: 0 auto 15px auto;
       }
-      .step p {
-        font-size: 1em;
-      }
-      /* Immigrant Support Section */
-      .immigrant-info {
-        max-width: 800px;
-        margin: auto;
+      .text-center {
         text-align: center;
-        line-height: 1.6;
       }
-      .immigrant-info h2 {
-        margin-bottom: 20px;
+
+      /* Buttons */
+      .btn {
+        display: inline-block; /* Allows padding and margin */
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-align: center;
+        border: 1px solid transparent; /* Base border */
       }
-      .immigrant-info p {
-        font-size: 1.1em;
+      .btn-primary {
+        background: var(--color-accent);
+        color: var(--color-white);
+        border-color: var(--color-accent);
       }
-      /* Footer styling */
-      footer {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
+      .btn-primary:hover {
+        background: var(--color-accent-hover);
+        border-color: var(--color-accent-hover);
+        color: var(--color-white); /* Ensure text color remains */
       }
-      footer .footer-container {
-        max-width: 1200px;
-        margin: auto;
+      .btn-secondary {
+        background: var(--color-white);
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+      }
+      .btn-secondary:hover {
+        background: var(--color-accent);
+        color: var(--color-white);
+      }
+      /* New Button Style for Sign-in */
+      .btn-outline-primary {
+        background: var(--color-white);
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+      .btn-outline-primary:hover {
+        background: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      /* --- Header/Nav --- */
+      .main-header {
+        background: var(--color-white);
+        padding: 1rem 0;
+        position: sticky; /* Sticky header */
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .nav-inner {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
+        align-items: center;
       }
-      footer .footer-section {
-        flex: 1 1 250px;
-        margin: 10px 0;
+      .logo svg {
+        height: 32px;
+        width: auto;
+        display: block; /* Ensure SVG behaves like a block */
       }
-      footer h3 {
-        margin-bottom: 10px;
+
+      /* Wrapper for Nav buttons and Hamburger */
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem; /* Gap between nav items and hamburger */
       }
-      footer ul {
-        list-style: none;
+
+      /* Navigation Links Container */
+      .main-nav {
+        display: none; /* Hidden by default on mobile */
       }
-      footer ul li {
-        margin-bottom: 8px;
+      .main-nav ul {
+        display: flex; /* Will be overridden for mobile */
+        gap: 0.75rem; /* Gap between buttons */
+        align-items: center;
       }
-      footer ul li a {
-        color: var(--text-light);
-        text-decoration: none;
+      .main-nav .nav-btn {
+        /* Style buttons specifically in nav */
+        padding: 0.5rem 1rem; /* Slightly smaller padding for nav buttons */
       }
-      /* Responsive styles */
-      @media (max-width: 768px) {
-        header .container {
-          flex-direction: column;
+
+      /* Hamburger Button */
+      .hamburger {
+        padding: 0.5rem;
+        display: flex; /* Use flex to center icon easily */
+        align-items: center;
+        justify-content: center;
+      }
+      .hamburger svg {
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+
+      /* Mobile Nav - Activated by JS */
+      /* This style applies when body has 'nav-open' class */
+      body.nav-open .main-nav {
+        display: flex; /* Show the nav */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Position below header */
+        left: 0;
+        right: 0;
+        background: var(--color-white);
+        padding: 1rem var(--container-padding);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid var(--color-secondary);
+        z-index: 99; /* Below header */
+      }
+      body.nav-open .main-nav ul {
+        flex-direction: column;
+        align-items: stretch; /* Make items full width */
+        width: 100%;
+        gap: 0.5rem; /* Gap between buttons in mobile view */
+      }
+      body.nav-open .main-nav ul li {
+        width: 100%;
+      }
+      body.nav-open .main-nav ul li .nav-btn {
+        display: block; /* Make buttons take full width */
+        width: 100%;
+        text-align: center;
+      }
+      /* --- End Header/Nav --- */
+
+      /* Hero Section */
+      .hero {
+        background: var(--color-primary);
+        color: var(--color-white);
+        text-align: left;
+        padding: var(--section-padding-large);
+        position: relative;
+        overflow: hidden; /* Contain absolutely positioned images */
+      }
+      .hero-content {
+        display: flex;
+        flex-direction: column; /* Stack text and images on small screens */
+        gap: 2rem;
+      }
+      .hero-text {
+        max-width: 600px;
+        z-index: 1; /* Ensure text is above images */
+      }
+      .hero h1 {
+        margin-bottom: 1rem;
+      }
+      .hero ul {
+        list-style-type: none; /* Explicitly none */
+        padding-left: 0; /* Remove default padding */
+        margin-left: 1rem; /* Indent list */
+      }
+      .hero ul li {
+        margin-bottom: 0.75rem; /* Increased spacing */
+        font-size: 1rem;
+        position: relative;
+        padding-left: 1.5rem; /* Space for pseudo-element */
+      }
+      /* Custom bullet point */
+      .hero ul li::before {
+        content: "✓"; /* Checkmark */
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+        font-weight: bold;
+      }
+      .hero .buttons {
+        margin-top: 2rem; /* Use margin-top instead of margin */
+        display: flex;
+        flex-wrap: wrap; /* Allow buttons to wrap */
+        gap: 1rem;
+      }
+      .hero-images {
+        position: relative; /* Needed for absolute positioning context */
+        display: none; /* Hide images on smallest screens initially */
+      }
+      .hero-image-top {
+        position: absolute;
+        top: -30px; /* Adjust positioning */
+        right: 45%; /* Adjust positioning */
+        max-width: 40%;
+        border: 4px solid var(--color-teal);
+        border-radius: var(--border-radius);
+        z-index: 0;
+      }
+      .hero-image-bottom {
+        position: absolute;
+        bottom: -40px; /* Adjust positioning */
+        right: 5%; /* Adjust positioning */
+        max-width: 45%;
+        border-radius: var(--border-radius);
+        z-index: 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+      }
+
+      /* Testimonials Section */
+      .testimonials {
+        background: var(--color-white);
+        padding: var(--section-padding-large);
+        text-align: center;
+        position: relative;
+      }
+      .testimonials h2 {
+        margin-bottom: 3rem; /* More space below heading */
+      }
+      .cards-container {
+        position: relative; /* For absolute positioning of buttons */
+      }
+      .cards {
+        display: flex;
+        gap: 1.5rem; /* Slightly reduced gap */
+        justify-content: center;
+        flex-wrap: wrap; /* Allow cards to wrap */
+        margin-bottom: 3rem; /* Space before button */
+      }
+      .card {
+        background: var(--color-offwhite);
+        border: 1px solid var(--color-secondary);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        width: 100%; /* Full width on mobile */
+        max-width: 280px; /* Max width per card */
+        text-align: left;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        transition: transform var(--transition-speed),
+          box-shadow var(--transition-speed);
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+      .card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+      }
+      .card h4 {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+      .card p {
+        font-size: 0.9rem;
+        color: var(--color-light-gray-text);
+      }
+      .testimonial-btn {
+        position: absolute;
+        top: 45%; /* Adjust vertical position */
+        transform: translateY(-50%);
+        background: var(--color-white);
+        border: 1px solid var(--color-secondary);
+        border-radius: 50%;
+        width: 40px; /* Slightly larger */
+        height: 40px;
+        display: flex; /* Center icon */
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .testimonial-btn:hover {
+        background-color: var(--color-offwhite);
+      }
+      .testimonial-btn.left {
+        left: -5px;
+      } /* Adjust position */
+      .testimonial-btn.right {
+        right: -5px;
+      } /* Adjust position */
+      .testimonial-btn svg {
+        width: 18px; /* Slightly larger icon */
+        height: 18px;
+        stroke: var(--color-light-gray-text);
+      }
+      .stories-link {
+        margin-top: 0; /* Removed top margin as cards have bottom margin */
+      }
+      .stories-link .btn {
+        /* Target .btn for consistency */
+        padding: 0.8rem 2rem;
+      }
+
+      /* Features Section */
+      .features {
+        background: var(--color-primary);
+        color: var(--color-white);
+        padding: var(--section-padding-large);
+        text-align: center;
+      }
+      .features h2 {
+        margin-bottom: 3rem;
+      }
+      .features .items {
+        display: flex;
+        gap: 2rem; /* Default gap */
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .feature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1 1 200px; /* Allow flex-grow, basis 200px */
+        max-width: 250px; /* Max width for features */
+        padding: 1rem;
+      }
+      .feature .icon-wrapper {
+        /* Wrapper for icon styling */
+        background: var(--color-offwhite);
+        border-radius: 50%;
+        padding: 1.2rem; /* More padding */
+        margin-bottom: 1.5rem; /* More space */
+        display: inline-flex; /* Fit content */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .feature svg {
+        width: 48px; /* Smaller icon size */
+        height: 48px;
+        color: var(--color-primary); /* Use primary color for icon */
+      }
+      .feature p {
+        font-size: 1rem;
+        font-weight: 600; /* Make text bolder */
+      }
+
+      /* Key Points Section */
+      .key-points {
+        background: var(--color-primary); /* Match features background */
+        color: var(--color-white);
+        padding: var(--section-padding-medium); /* Medium padding */
+        text-align: center;
+      }
+      .key-points h2 {
+        margin-bottom: 3rem;
+      }
+      .points {
+        display: flex;
+        gap: 2rem; /* Default gap */
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .point {
+        /* Similar styling to feature */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1 1 200px; /* Allow flex-grow, basis 200px */
+        max-width: 250px; /* Max width for points */
+        padding: 1rem;
+      }
+      .point .icon-wrapper {
+        /* Consistent icon styling */
+        background: var(--color-offwhite);
+        border-radius: 50%;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        display: inline-flex;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .point svg {
+        width: 48px;
+        height: 48px;
+        color: var(--color-primary);
+        fill: var(--color-primary); /* Ensure fill for briefcase */
+      }
+      .point p {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      /* Footer */
+      .footer-top-border {
+        /* Renamed class for clarity */
+        border-top: 4px solid var(--color-accent);
+        margin-top: var(--section-padding-medium); /* Use variable */
+      }
+      .main-footer {
+        /* Renamed class for clarity */
+        background: var(--color-white);
+        padding: 3rem 0;
+        color: var(--color-light-gray-text); /* Default text color */
+      }
+      .footer-cols {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .footer-about {
+        flex: 2 1 300px; /* Grow twice as fast, basis 300px */
+        margin-bottom: 2rem; /* Add space below on mobile */
+      }
+      .footer-about svg {
+        height: 28px;
+        margin-bottom: 1rem;
+      }
+      .footer-about p {
+        font-size: 0.9rem; /* Slightly smaller */
+        line-height: 1.7; /* More line height */
+        max-width: 450px; /* Limit width */
+      }
+      .footer-nav {
+        flex: 1 1 150px; /* Grow, basis 150px */
+        margin-bottom: 1.5rem; /* Space below on mobile */
+      }
+      .footer-nav h4 {
+        background: var(--color-accent);
+        color: var(--color-white);
+        padding: 0.5rem 0.75rem; /* Adjust padding */
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        display: inline-block; /* Fit content */
+      }
+      .footer-nav ul li a {
+        display: block;
+        padding: 0.4rem 0; /* Increase clickable area */
+        font-size: 0.9rem;
+        color: var(--color-light-gray-text);
+      }
+      .footer-nav ul li a:hover {
+        color: var(--color-accent);
+        padding-left: 5px; /* Indent on hover */
+      }
+
+      /* --- Media Queries for Responsiveness --- */
+
+      /* Medium screens (tablets) and up */
+      @media (min-width: 768px) {
+        html {
+          font-size: 17px;
+        } /* Slightly larger base font */
+
+        /* --- Desktop Header Adjustments --- */
+        .main-nav {
+          display: block; /* Show nav buttons container */
+          position: static; /* Override mobile absolute positioning */
+          background: none;
+          padding: 0;
+          box-shadow: none;
+          border-top: none;
         }
-        nav ul {
-          flex-direction: column;
+        .main-nav ul {
+          flex-direction: row; /* Align buttons horizontally */
+          align-items: center;
+          width: auto; /* Allow content to determine width */
+        }
+        .main-nav ul li {
+          width: auto; /* Reset mobile full width */
+        }
+        .main-nav ul li .nav-btn {
+          display: inline-block; /* Reset mobile block */
+          width: auto;
+          margin-bottom: 0; /* Reset mobile margin */
+        }
+        .hamburger {
+          display: flex; /* Ensure hamburger is visible on desktop */
+        }
+        /* --- End Desktop Header Adjustments --- */
+
+        .hero-content {
+          flex-direction: row; /* Side-by-side layout */
           align-items: center;
         }
-        .cta-buttons {
-          margin-top: 10px;
+        .hero-text {
+          flex: 1 1 60%; /* Take more space */
         }
-        .features,
-        .steps {
-          flex-direction: column;
-          align-items: center;
+        .hero-images {
+          display: block; /* Show images */
+          flex: 1 1 40%;
+          position: relative; /* Reset for flex context */
+          height: 400px; /* Give height to container */
         }
-        footer .footer-container {
-          flex-direction: column;
-          text-align: center;
+        .hero-image-top {
+          right: 50%;
+          top: 0;
+        } /* Adjust positioning */
+        .hero-image-bottom {
+          right: 10%;
+          bottom: 0;
+        } /* Adjust positioning */
+
+        .cards {
+          flex-wrap: nowrap;
+        } /* Prevent wrapping on medium screens */
+        .card {
+          width: auto;
+        } /* Allow cards to shrink/grow */
+
+        .testimonial-btn.left {
+          left: -20px;
+        } /* Adjust button position */
+        .testimonial-btn.right {
+          right: -20px;
+        } /* Adjust button position */
+
+        .features .items,
+        .points {
+          gap: 3rem;
+        } /* Increase gap */
+        .footer-about {
+          margin-bottom: 0;
+        } /* Remove bottom margin */
+        .footer-nav {
+          margin-bottom: 0;
         }
+      }
+
+      /* Large screens (desktops) */
+      @media (min-width: 1024px) {
+        html {
+          font-size: 18px;
+        } /* Larger base font */
+
+        .hero h1 {
+          font-size: 3.5rem;
+        } /* Larger hero heading */
+        .hero ul li {
+          font-size: 1.1rem;
+        }
+
+        .features .items,
+        .points {
+          gap: 4rem;
+        } /* Wider gap */
       }
     </style>
   </head>
   <body>
-    <!-- Header with Navigation and Call-to-Action buttons -->
-    <header>
-      <div class="container">
-        <div class="logo">MentorMatch</div>
-        <nav>
-          <ul>
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#features">Our Values</a></li>
-            <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#immigrants">For Immigrants</a></li>
-            <li><a href="resources.html">Resources</a></li>
-          </ul>
-        </nav>
-        <div class="cta-buttons">
-          <a href="mentee.html" id="get-mentored-btn">Get Mentored</a>
-          <a href="mentor.html" id="become-mentor-btn">Become a Mentor</a>
-          <a href="login.html" id="signin-btn">Sign In</a>
+    <header class="main-header">
+      <div class="container nav-inner">
+        <a href="#" class="logo" aria-label="ImmiGo Home">
+          <svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
+            <rect
+              x="0"
+              y="5"
+              width="10"
+              height="15"
+              fill="var(--color-accent)"
+            />
+            <rect
+              x="12"
+              y="0"
+              width="10"
+              height="20"
+              fill="var(--color-accent)"
+            />
+            <text
+              x="26"
+              y="15"
+              font-family="var(--font-heading)"
+              font-size="16"
+              fill="var(--color-primary)"
+            >
+              ImmiGo
+            </text>
+          </svg>
+        </a>
+
+        <div class="nav-actions">
+          <nav class="main-nav" aria-label="Main Navigation">
+            <ul>
+              <li>
+                <button class="btn btn-primary nav-btn">
+                  Get free mentoring
+                </button>
+              </li>
+              <li>
+                <button class="btn btn-secondary nav-btn">
+                  Become a mentor
+                </button>
+              </li>
+              <li>
+                <button class="btn btn-outline-primary nav-btn">Sign-in</button>
+              </li>
+            </ul>
+          </nav>
+
+          <button
+            class="hamburger"
+            aria-label="Toggle Menu"
+            aria-expanded="false"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M3 6h18M3 12h18M3 18h18"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-      <h1>Empowering Immigrants Through Mentorship</h1>
-      <p>
-        Connecting passionate mentors with driven mentees to bridge cultural
-        gaps and unlock professional opportunities.
-      </p>
-      <a href="role-select.html" class="hero-btn">Join Us Today</a>
-    </section>
-
-    <!-- Our Values & Services -->
-    <section id="features">
-      <h2 class="section-title">Our Values & Services</h2>
-      <div class="features">
-        <div class="feature">
-          <h3>Inclusive Community</h3>
-          <p>
-            Cultivating a diverse space where every voice is heard and valued.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Personalized Matching</h3>
-          <p>
-            Leveraging advanced algorithms and personal insights to pair mentors
-            and mentees.
-          </p>
-        </div>
-        <div class="feature">
-          <h3>Career Advancement</h3>
-          <p>
-            Guiding professionals to reach their full potential through
-            structured mentorship.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section id="testimonials" class="testimonials">
-      <h2 class="section-title">What Our Members Say</h2>
-      <div class="testimonial-container">
-        <div class="testimonial">
-          <h4>Maria, Mentee</h4>
-          <p>
-            "MentorMatch has transformed my career path. The mentorship I
-            received helped me overcome cultural barriers and excel in my
-            field."
-          </p>
-        </div>
-        <div class="testimonial">
-          <h4>James, Mentor</h4>
-          <p>
-            "Being a mentor here has been a rewarding journey. I've shared my
-            experiences while guiding talented professionals toward success."
-          </p>
-        </div>
-        <div class="testimonial">
-          <h4>Aisha, Mentee</h4>
-          <p>
-            "The personalized matching system ensured I was paired with a mentor
-            who truly understood my challenges as an immigrant."
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- How It Works -->
-    <section id="how-it-works">
-      <h2 class="section-title">How It Works</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-icon">
-            <!-- SVG Icon for Register -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              fill="none"
-              stroke="var(--primary)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+    <main>
+      <section class="hero">
+        <div class="container hero-content">
+          <div class="hero-text">
+            <h1>Guided Steps to Success</h1>
+            <ul>
+              <li>
+                We help immigrants who come into the US enter the workplace.
+              </li>
+              <li>Mentor–Mentee program.</li>
+              <li>Get matched with your ideal mentor through our quiz.</li>
+              <li>Make goals with your mentor to reach together.</li>
+              <li>Premium model available for more mentors & features.</li>
+            </ul>
+            <div class="buttons">
+              <button class="btn btn-primary">Get free mentoring</button>
+              <button class="btn btn-secondary">Become a mentor</button>
+            </div>
           </div>
-          <p>Register</p>
-        </div>
-        <div class="step">
-          <div class="step-icon">
-            <!-- SVG Icon for Match -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              fill="none"
-              stroke="var(--primary)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
-              ></path>
-              <path
-                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
-              ></path>
-            </svg>
+          <div class="hero-images">
+            <img
+              src="https://placehold.co/400x250/EDEDE5/415978?text=Mentorship"
+              alt="Illustration showing mentorship connection"
+              class="hero-image-top"
+              onerror="this.src='https://placehold.co/400x250/EDEDE5/415978?text=Image+Not+Found'; this.onerror=null;"
+            />
+            <img
+              src="https://placehold.co/450x300/cccccc/333333?text=Collaboration"
+              alt="Photo showing people collaborating"
+              class="hero-image-bottom"
+              onerror="this.src='https://placehold.co/450x300/cccccc/333333?text=Image+Not+Found'; this.onerror=null;"
+            />
           </div>
-          <p>Get Paired</p>
         </div>
-        <div class="step">
-          <div class="step-icon">
-            <!-- SVG Icon for Grow Together -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
-              fill="none"
-              stroke="var(--primary)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
+      </section>
+
+      <section class="testimonials">
+        <div class="container">
+          <h2>What our members have to say</h2>
+          <div class="cards-container">
+            <button
+              class="testimonial-btn left"
+              aria-label="Previous Testimonial"
             >
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M15 18l-6-6 6-6"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+
+            <div class="cards">
+              <div class="card">
+                <h3>Sofia, Mentor (Colombia)</h3>
+                <h4>Software Engineer in Austin, TX</h4>
+                <p>
+                  “I came here with no idea how to job hunt. Now, I mentor
+                  others so they don’t have to go through it alone. Two of my
+                  mentees have landed jobs — it’s the most fulfilling thing I
+                  do.”
+                </p>
+              </div>
+              <div class="card">
+                <h3>Ahmed, Mentee (Egypt)</h3>
+                <h4>Civil Engineer in New York, NY</h4>
+                <p>
+                  “I had experience but no interviews. My mentor helped me
+                  adjust my resume and prepare for U.S. interviews. I landed a
+                  job two months later!”
+                </p>
+              </div>
+              <div class="card">
+                <h3>Raj, Mentee (India)</h3>
+                <h4>Data Analyst in Chicago, IL</h4>
+                <p>
+                  “I struggled with applications until my mentor helped me
+                  tailor my resume and improve my LinkedIn. Now I’m working
+                  full-time doing what I love.”
+                </p>
+              </div>
+            </div>
+
+            <button class="testimonial-btn right" aria-label="Next Testimonial">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M9 18l6-6-6-6"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
           </div>
-          <p>Grow Together</p>
+          <div class="stories-link center">
+            <button class="btn btn-primary">Read our success stories</button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Immigrant Support Section -->
-    <section id="immigrants">
-      <div class="immigrant-info">
-        <h2>Supporting Immigrant Success</h2>
-        <p>
-          At MentorMatch, we understand the unique challenges immigrants face.
-          Our platform offers personalized mentorship, career guidance, and
-          cultural insights to help you navigate your professional journey with
-          confidence.
-        </p>
-        <p style="margin-top: 20px">
-          <a href="role-select.html" class="hero-btn">Start Your Journey</a>
-        </p>
-      </div>
-    </section>
+      <section class="features">
+        <div class="container">
+          <h2>Mentors & mentees work together to scale up!</h2>
+          <div class="items">
+            <div class="feature">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p>Register</p>
+            </div>
+            <div class="feature">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M10.59 13.41c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a4.984 4.984 0 0 1 0-7.07c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41-.97.98-1.01 2.49-.01 3.84zm1.41-1.41c-.39-.39-1.02-.39-1.41 0a.996.996 0 0 0 0 1.41c.39.39 1.02.39 1.41 0 .98-.97 1.01-2.49.01-3.84-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0 a4.984 4.984 0 0 1 0 7.07c-.39.39-1.02.39-1.41 0a.996.996 0 0 0 0-1.41c.97-.98.97-2.56 0-3.84zM19 12c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7 7-3.13 7-7zm-2 0c0 2.76-2.24 5-5 5s-5-2.24-5-5 2.24-5 5-5 5 2.24 5 5z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p>Get matched</p>
+            </div>
+            <div class="feature">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zm0 4h14v-2H7v2zm0-8h14V7H7v2zM3 7h2V5H3v2zm0 12h2v-2H3v2z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p>Get to work</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- Footer -->
-    <footer>
-      <div class="footer-container">
-        <div class="footer-section">
-          <h3>About MentorMatch</h3>
+      <section class="key-points">
+        <div class="container">
+          <h2>3 key points</h2>
+          <div class="points">
+            <div class="point">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 2 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p>1–1 mentoring</p>
+            </div>
+            <div class="point">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M23 12c0-6.07-4.93-11-11-11S1 5.93 1 12s4.93 11 11 11 11-4.93 11-11zm-11 9c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9zm-4.3-5.7L12 12l4.3-3.3M12 12v9"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <p>Online connection</p>
+            </div>
+            <div class="point">
+              <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p>Free</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-top-border"></div>
+    <footer class="main-footer">
+      <div class="container footer-cols">
+        <div class="footer-about">
+          <a href="#" class="logo" aria-label="ImmiGo Home">
+            <svg
+              viewBox="0 0 100 20"
+              xmlns="http://www.w3.org/2000/svg"
+              style="height: 28px; margin-bottom: 1rem"
+            >
+              <rect
+                x="0"
+                y="5"
+                width="10"
+                height="15"
+                fill="var(--color-accent)"
+              />
+              <rect
+                x="12"
+                y="0"
+                width="10"
+                height="20"
+                fill="var(--color-accent)"
+              />
+              <text
+                x="26"
+                y="15"
+                font-family="var(--font-heading)"
+                font-size="16"
+                fill="var(--color-primary)"
+              >
+                ImmiGo
+              </text>
+            </svg>
+          </a>
           <p>
-            MentorMatch is dedicated to connecting mentors and mentees,
-            empowering immigrants to achieve professional excellence through
-            guidance and community support.
+            Starting a career in a new country can feel overwhelming — but you
+            don’t have to do it alone. ImmiGo connects immigrants with
+            professionals who have successfully built their careers in the U.S.
+            and are ready to share their knowledge, support, and connections to
+            help you succeed.
           </p>
         </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
+        <nav class="footer-nav" aria-label="Mentors Links">
+          <h4>Mentors</h4>
           <ul>
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#features">Our Values</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#immigrants">For Immigrants</a></li>
-            <li><a href="role-select.html">Join Us</a></li>
+            <li><a href="#">Register</a></li>
+            <li><a href="#">Matching</a></li>
+            <li><a href="#">Guidance</a></li>
           </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Get Started</h3>
+        </nav>
+        <nav class="footer-nav" aria-label="Mentees Links">
+          <h4>Mentees</h4>
           <ul>
-            <li><a href="mentee.html">Become a Mentee</a></li>
-            <li><a href="mentor.html">Become a Mentor</a></li>
+            <li><a href="#">Sign Up</a></li>
+            <li><a href="#">Quiz</a></li>
+            <li><a href="#">Resources</a></li>
           </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Contact Us</h3>
+        </nav>
+        <nav class="footer-nav" aria-label="Company Links">
+          <h4>About</h4>
           <ul>
-            <li>Email: info@mentormatch.com</li>
-            <li>Phone: +1 (123) 456-7890</li>
-            <li>Location: Austin, TX, USA</li>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Team</a></li>
+            <li><a href="#">Careers</a></li>
           </ul>
-        </div>
+        </nav>
+        <nav class="footer-nav" aria-label="Support Links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </nav>
       </div>
-      <p style="text-align: center; margin-top: 20px">
-        &copy; 2025 MentorMatch. All Rights Reserved.
-      </p>
     </footer>
 
-    <!-- Load external script for minimal functionality -->
-    <script src="script.js" type="module"></script>
+    <script>
+      const hamburgerBtn = document.querySelector(".hamburger");
+      const bodyEl = document.body;
+
+      hamburgerBtn.addEventListener("click", () => {
+        // Toggle class on body to show/hide mobile nav dropdown
+        bodyEl.classList.toggle("nav-open");
+
+        // Toggle aria-expanded attribute for accessibility
+        const isExpanded =
+          hamburgerBtn.getAttribute("aria-expanded") === "true";
+        hamburgerBtn.setAttribute("aria-expanded", !isExpanded);
+      });
+
+      // Optional: Close nav when a link/button inside is clicked (if needed)
+      // const navButtons = document.querySelectorAll('.main-nav button');
+      // navButtons.forEach(button => {
+      //   button.addEventListener('click', () => {
+      //     if (bodyEl.classList.contains('nav-open')) {
+      //        bodyEl.classList.remove('nav-open');
+      //        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      //     }
+      //   });
+      // });
+    </script>
   </body>
 </html>
