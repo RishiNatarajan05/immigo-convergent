@@ -667,8 +667,8 @@ function calculateMatches(userData, potentialMatches, userRole) {
   // Sort by match score (highest first)
   matches.sort((a, b) => b.match_score - a.match_score);
   
-  // Return top matches (limiting to 3 instead of 10)
-  return matches.slice(0, 3);
+  // Return top match (limiting to 1)
+  return matches.slice(0, 1);
 }
 
 // Helper function to process PostgreSQL array strings
@@ -725,58 +725,49 @@ function displayMatches(matches) {
   // Clear container
   matchesContainer.innerHTML = '';
   
-  // Add each match as a card
-  matches.forEach(match => {
-    const matchCard = document.createElement('div');
-    matchCard.className = 'match-card';
-    
-    // Create card content based on user role
-    if (userRole === 'mentee') {
-      // Mentee viewing potential mentors
-      matchCard.innerHTML = `
-        <div class="match-header">
-          <h3>${match.name}</h3>
-          <span class="match-score">${match.match_score}% Match</span>
-        </div>
-        <div class="match-details">
-          <p><strong>Field:</strong> ${match.field || 'Not specified'}</p>
-          <p><strong>Experience:</strong> ${match.work_experience || 'Not specified'}</p>
-          <p><strong>Skills:</strong> ${formatArrayForDisplay(match.stem_skills)}</p>
-          <p><strong>Interests:</strong> ${formatArrayForDisplay(match.interests)}</p>
-          <p><strong>Country:</strong> ${match.country || 'Not specified'}</p>
-        </div>
-        <div class="match-actions">
-          <button class="request-btn" data-match-id="${match.id}">Request Mentorship</button>
-        </div>
-      `;
-    } else {
-      // Mentor viewing potential mentees
-      matchCard.innerHTML = `
-        <div class="match-header">
-          <h3>${match.name}</h3>
-          <span class="match-score">${match.match_score}% Match</span>
-        </div>
-        <div class="match-details">
-          <p><strong>Desired Field:</strong> ${match.desired_field || 'Not specified'}</p>
-          <p><strong>Experience:</strong> ${match.prior_work_experience || 'Not specified'}</p>
-          <p><strong>Skills:</strong> ${formatArrayForDisplay(match.stem_skills)}</p>
-          <p><strong>Interests:</strong> ${formatArrayForDisplay(match.interests)}</p>
-          <p><strong>Country:</strong> ${match.country || 'Not specified'}</p>
-        </div>
-        <div class="match-actions">
-          <button class="contact-btn" data-match-id="${match.id}">Contact Mentee</button>
-        </div>
-      `;
-    }
-    
-    // Add card to container
-    matchesContainer.appendChild(matchCard);
-  });
+  // Get the top match (should only be one)
+  const match = matches[0];
   
-  // Add event listeners for action buttons
-  document.querySelectorAll('.request-btn, .contact-btn').forEach(button => {
-    button.addEventListener('click', handleMatchAction);
-  });
+  // Format match percentage for display (convert to actual percentage)
+  const matchPercentage = Math.min(100, Math.round(match.match_score));
+  
+  // Determine role text based on user & match roles
+  let roleText = '';
+  if (userRole === 'mentee') {
+    // For mentees viewing mentors
+    roleText = `${match.field || 'Mentor'} • ${matchPercentage}% Match`;
+  } else {
+    // For mentors viewing mentees
+    roleText = `${match.desired_field || 'Mentee'} • ${matchPercentage}% Match`;
+  }
+  
+  // Get appropriate flag emoji for country
+  // This is a simple placeholder - in a real app you'd map countries to flag emojis
+  const countryFlag = '🌎'; // Default globe
+  
+  // Create the new single match card with the updated design
+  const matchCard = document.createElement('div');
+  matchCard.className = 'match-card';
+  matchCard.innerHTML = `
+    <div class="match-image-placeholder">
+      Profile
+    </div>
+    <h3 class="match-name">${match.name}</h3>
+    <p class="match-role">${roleText}</p>
+    <p class="match-country">
+      <span>${countryFlag}</span>
+      <span>${match.country || 'Not specified'}</span>
+    </p>
+    <button class="btn btn-primary match-action-button" data-match-id="${match.id}">
+      ${userRole === 'mentee' ? 'Learn More' : 'Contact Mentee'}
+    </button>
+  `;
+  
+  // Add card to container
+  matchesContainer.appendChild(matchCard);
+  
+  // Add event listener for action button
+  matchCard.querySelector('.match-action-button').addEventListener('click', handleMatchAction);
 }
 
 // Format arrays for display
@@ -795,40 +786,21 @@ function handleMatchAction(event) {
   const button = event.target;
   const matchId = button.getAttribute('data-match-id');
   const userData = JSON.parse(localStorage.getItem("mentorMatchUser"));
-  
+
   if (!userData || !userData.isLoggedIn) {
     alert('You need to be logged in to perform this action.');
     return;
   }
-  
-  const isRequest = button.classList.contains('request-btn');
-  
-  if (isRequest) {
-    // Get mentor name for the dashboard
-    const matchCard = button.closest('.match-card');
-    const mentorName = matchCard.querySelector('.match-header h3').textContent;
-    
-    // Save the mentor request info to localStorage
+
+  // Always redirect to the dashboard, no alert or popup
+  if (userData.role === 'mentee') {
+    // Save the mentor request info to localStorage (optional, as before)
     localStorage.setItem("requestedMentorId", matchId);
-    localStorage.setItem("requestedMentorName", mentorName);
-    
-    // Change button appearance
-    button.textContent = 'Request Sent';
-    button.classList.remove('request-btn');
-    button.classList.add('pending-btn');
-    button.disabled = true;
-    
     // Redirect to mentee dashboard
     window.location.href = "mentee-dashboard.html";
   } else {
-    // For mentors contacting mentees, keep the existing alert behavior
-    alert(`Contact request sent to mentee ${matchId}! They will receive your contact information.`);
-    button.textContent = 'Contact Request Sent';
-    button.classList.remove('contact-btn');
-    button.classList.add('pending-btn');
-    button.disabled = true;
+    // For mentors, redirect to mentor dashboard (if exists)
+    localStorage.setItem("requestedMenteeId", matchId);
+    window.location.href = "mentor-dashboard.html";
   }
-  
-  // In a real application, you would save this request to the database
-  // and implement a notification system
 }

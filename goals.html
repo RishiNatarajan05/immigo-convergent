@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Tasks - ImmiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #415978;
+      --color-accent: #FF7043;
+      --color-accent-hover: #E8603A;
+      --color-secondary: #EDEDE5;
+      --color-offwhite: #F7F9F8;
+      --color-white: #FFFFFF;
+      --color-dark: #333333;
+      --color-light-gray-text: #555555;
+      --color-sidebar: #3B5372;
+      --color-sidebar-active: #2C3E50;
+      --kanban-bg: #b7cbe2;
+      --kanban-task: #2C3E50;
+      --border-radius: 12px;
+      --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 80px;
+      background: var(--color-sidebar);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+    .sidebar .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 32px;
+      object-fit: cover;
+      border: 2px solid var(--color-accent);
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: auto;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-nav a.active, .sidebar-nav a:hover {
+      background: var(--color-sidebar-active);
+      color: var(--color-accent);
+    }
+    .sidebar-bottom {
+      margin-bottom: 24px;
+    }
+    .sidebar-bottom a {
+      color: #fff;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-bottom a:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .main-content {
+      margin-left: 80px;
+      width: calc(100vw - 80px);
+      min-height: 100vh;
+      background: var(--color-offwhite);
+      padding: 0 0 0 0;
+    }
+    .kanban-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 32px 40px 0 40px;
+      font-size: 2.1em;
+      font-weight: 700;
+      color: var(--color-primary);
+      font-family: var(--font-heading);
+    }
+    .kanban-progress-bar {
+      margin: 18px 40px 0 40px;
+      width: calc(100% - 80px);
+      max-width: 900px;
+      height: 22px;
+      background: #b7cbe2;
+      border-radius: 11px;
+      position: relative;
+    }
+    .kanban-progress-fill {
+      height: 100%;
+      background: var(--color-primary);
+      border-radius: 11px;
+      width: 26%;
+      transition: width 0.4s;
+    }
+    .kanban-progress-label {
+      position: absolute;
+      right: 18px;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 1.1em;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+    .kanban-board {
+      display: flex;
+      gap: 32px;
+      padding: 40px 40px 0 40px;
+      min-height: 500px;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .kanban-column {
+      background: var(--kanban-bg);
+      border-radius: 18px;
+      padding: 18px 12px 24px 12px;
+      min-width: 220px;
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 400px;
+      box-shadow: 0 2px 8px rgba(65,89,120,0.07);
+    }
+    .kanban-column h3 {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kanban-task {
+      background: var(--kanban-task);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 1em;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(65,89,120,0.07);
+    }
+    .kanban-task .edit-icon {
+      margin-left: 10px;
+      font-size: 1.1em;
+      color: #fff;
+      opacity: 0.7;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .kanban-task .edit-icon:hover {
+      opacity: 1;
+    }
+    .add-task-btn {
+      background: #fff;
+      color: var(--color-dark);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      font-weight: 700;
+      margin-top: 8px;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(65,89,120,0.07);
+      transition: background 0.2s;
+    }
+    .add-task-btn:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .add-task-label {
+      font-size: 1em;
+      color: var(--color-dark);
+      margin-left: 8px;
+      font-weight: 500;
+    }
+    @media (max-width: 900px) {
+      .kanban-header, .kanban-board, .kanban-progress-bar { padding-left: 12px; padding-right: 12px; }
+      .kanban-board { gap: 12px; }
+    }
+    @media (max-width: 600px) {
+      .sidebar { width: 56px; }
+      .main-content { margin-left: 56px; }
+      .kanban-header { font-size: 1.1em; padding: 18px 6px 0 6px; }
+      .kanban-board { flex-direction: column; gap: 18px; padding: 18px 6px 0 6px; }
+      .kanban-column { min-width: 90vw; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="avatar"/>
+    <div class="sidebar-nav">
+      <a href="mentee-dashboard.html" title="Dashboard">
+        <span>🏠</span>
+      </a>
+      <a href="mentor-chat.html" title="Messages">
+        <span>💬</span>
+      </a>
+      <a href="matches.html" title="Mentors">
+        <span>👥</span>
+      </a>
+      <a href="resources.html" title="Resources">
+        <span>🔀</span>
+      </a>
+      <a href="profile.html" title="Profile">
+        <span>⚙️</span>
+      </a>
+    </div>
+    <div class="sidebar-bottom">
+      <a href="login.html" title="Logout">
+        <span>⎋</span>
+      </a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <div class="kanban-header">
+      <img src="/public/vite.svg" alt="ImmiGo Logo" style="height:36px;vertical-align:middle;"> Job Search
+    </div>
+    <div class="kanban-progress-bar">
+      <div class="kanban-progress-fill"></div>
+      <span class="kanban-progress-label">26% complete</span>
+    </div>
+    <div class="kanban-board">
+      <div class="kanban-column">
+        <h3><span>🚀</span> Start</h3>
+        <div class="kanban-task">Write U.S.-style cover letter <span class="edit-icon">&#9998;</span></div>
+        <button class="add-task-btn" title="Add task">+</button><span class="add-task-label">Add task</span>
+      </div>
+      <div class="kanban-column">
+        <h3><span style="color:#FF7043;">⏳</span> In Progress</h3>
+        <div class="kanban-task">Create a LinkedIn profile <span class="edit-icon">&#9998;</span></div>
+        <div class="kanban-task">Attend networking event <span class="edit-icon">&#9998;</span></div>
+        <div class="kanban-task">Email Mr. Johnson <span class="edit-icon">&#9998;</span></div>
+      </div>
+      <div class="kanban-column">
+        <h3><span style="color:#FF7043;">📋</span> Needs Mentor Review</h3>
+        <div class="kanban-task">Interview prep <span class="edit-icon">&#9998;</span></div>
+      </div>
+      <div class="kanban-column">
+        <h3><span style="color:#FF7043;">✔️</span> Completed</h3>
+        <div class="kanban-task">Create a U.S.-style resume <span class="edit-icon">&#9998;</span></div>
+        <div class="kanban-task">Make a job list <span class="edit-icon">&#9998;</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,1230 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resources Library - MentorMatch</title>
-    <style>
-      /* Base reset and variable definitions */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      :root {
-        --primary: #023796;
-        --secondary: #065efb;
-        --accent: #023082;
-        --light-blue: #84a4fc;
-        --bg-light: #f7f7f7;
-        --text-primary: #333;
-        --text-light: #fff;
-        --success: #28a745;
-        --warning: #ffc107;
-        --danger: #dc3545;
-        --gray: #6c757d;
-      }
-      body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: var(--text-primary);
-        background-color: var(--bg-light);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Resource Library - ImmiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #415978;
+      --color-accent: #FF7043;
+      --color-accent-hover: #E8603A;
+      --color-secondary: #EDEDE5;
+      --color-offwhite: #F7F9F8;
+      --color-white: #FFFFFF;
+      --color-dark: #333333;
+      --color-light-gray-text: #555555;
+      --color-sidebar: #3B5372;
+      --color-sidebar-active: #2C3E50;
+      --color-resource-bg: #b7cbe2;
+      --border-radius: 12px;
+      --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+    }
 
-      /* Header styling */
-      header {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
-      }
-      header .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .logo a {
-        color: var(--text-light);
-        font-size: 24px;
-        font-weight: bold;
-        text-decoration: none;
-      }
-      nav ul {
-        display: flex;
-        list-style: none;
-      }
-      nav ul li {
-        margin-left: 20px;
-      }
-      nav ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-      nav ul li a:hover {
-        color: var(--light-blue);
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Main content */
-      .resources-container {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-      }
+    body {
+      font-family: var(--font-body);
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+      min-height: 100vh;
+      display: flex;
+    }
 
-      .page-title {
-        color: var(--primary);
-        margin-bottom: 20px;
-        text-align: center;
-      }
+    /* Sidebar styles */
+    .sidebar {
+      width: 80px;
+      background: var(--color-sidebar);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
 
-      .page-description {
-        text-align: center;
-        max-width: 800px;
-        margin: 0 auto 40px;
-        color: var(--gray);
-      }
+    .sidebar .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 32px;
+      object-fit: cover;
+      border: 2px solid var(--color-accent);
+    }
 
-      /* Category Tabs */
-      .resource-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        border-bottom: 1px solid #ddd;
-        margin-bottom: 30px;
-      }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: auto;
+    }
 
-      .tab-button {
-        padding: 12px 24px;
-        background: none;
-        border: none;
-        border-bottom: 3px solid transparent;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        color: var(--gray);
-        transition: all 0.3s;
-      }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+    }
 
-      .tab-button:hover {
-        color: var(--primary);
-      }
+    .sidebar-nav a.active, .sidebar-nav a:hover {
+      background: var(--color-sidebar-active);
+      color: var(--color-accent);
+    }
 
-      .tab-button.active {
-        color: var(--primary);
-        border-bottom-color: var(--primary);
-      }
+    .sidebar-bottom {
+      margin-bottom: 24px;
+    }
 
-      /* Resource Cards */
+    .sidebar-bottom a {
+      color: #fff;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar-bottom a:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* Main content area */
+    .main-content {
+      margin-left: 80px;
+      width: calc(100vw - 80px);
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: var(--color-primary);
+      text-align: center;
+    }
+
+    /* Resource Grid */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .resource-card {
+      background: var(--color-resource-bg);
+      border-radius: var(--border-radius);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-light);
+      height: 100%;
+    }
+
+    .resource-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+
+    .resource-description {
+      font-size: 1rem;
+      color: var(--color-dark);
+      margin-bottom: 16px;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .resource-link {
+      display: inline-block;
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .resource-link:hover {
+      background-color: var(--color-sidebar-active);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px 15px;
+      }
+      
       .resources-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 25px;
-        margin-bottom: 40px;
+        grid-template-columns: 1fr;
       }
+    }
 
-      .resource-card {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
+    @media (max-width: 600px) {
+      .sidebar {
+        width: 60px;
       }
-
-      .resource-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      
+      .main-content {
+        margin-left: 60px;
+        width: calc(100vw - 60px);
       }
-
-      .resource-header {
-        padding: 16px;
-        background: var(--primary);
-        color: white;
+      
+      .page-title {
+        font-size: 1.8rem;
       }
+    }
+  </style>
+</head>
+<body>
+  <!-- Left sidebar -->
+  <nav class="sidebar">
+    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="avatar"/>
+    <div class="sidebar-nav">
+      <a href="mentee-dashboard.html" title="Dashboard">
+        <span>🏠</span>
+      </a>
+      <a href="mentor-chat.html" title="Messages">
+        <span>💬</span>
+      </a>
+      <a href="matches.html" title="Mentors">
+        <span>👥</span>
+      </a>
+      <a href="resources.html" class="active" title="Resources">
+        <span>📚</span>
+      </a>
+      <a href="profile.html" title="Profile">
+        <span>⚙️</span>
+      </a>
+    </div>
+    <div class="sidebar-bottom">
+      <a href="login.html" title="Logout">
+        <span>⎋</span>
+      </a>
+    </div>
+  </nav>
 
-      .resource-header h3 {
-        margin: 0;
-        font-size: 18px;
-      }
+  <!-- Main content -->
+  <div class="main-content">
+    <h1 class="page-title">Premium Resource Library</h1>
 
-      .resource-content {
-        padding: 20px;
-      }
-
-      .resource-description {
-        margin-bottom: 15px;
-        color: var(--text-primary);
-      }
-
-      .resource-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 15px;
-        font-size: 14px;
-        color: var(--gray);
-      }
-
-      .resource-meta span {
-        display: flex;
-        align-items: center;
-      }
-
-      .resource-meta i {
-        margin-right: 5px;
-      }
-
-      .resource-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 15px;
-      }
-
-      .resource-tag {
-        background: var(--light-blue);
-        color: var(--primary);
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-      .resource-link {
-        display: inline-block;
-        padding: 8px 16px;
-        background: var(--secondary);
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        transition: background 0.3s;
-      }
-
-      .resource-link:hover {
-        background: var(--primary);
-      }
-
-      /* Featured Section */
-      .featured-resource {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        margin-bottom: 40px;
-        border-left: 5px solid var(--primary);
-      }
-
-      .featured-resource h3 {
-        margin-bottom: 15px;
-        color: var(--primary);
-      }
-
-      .featured-resource p {
-        margin-bottom: 15px;
-      }
-
-      /* Search Form */
-      .search-section {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        padding: 25px;
-        margin-bottom: 30px;
-      }
-
-      .search-form {
-        display: flex;
-        gap: 10px;
-      }
-
-      .search-input {
-        flex: 1;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
-      }
-
-      .search-button {
-        padding: 12px 20px;
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background 0.3s;
-      }
-
-      .search-button:hover {
-        background: var(--accent);
-      }
-
-      /* Filters */
-      .filter-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-top: 15px;
-      }
-
-      .filter-group {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .filter-label {
-        font-weight: bold;
-        color: var(--gray);
-      }
-
-      .filter-select {
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background: white;
-        color: var(--text-primary);
-      }
-
-      /* Resource submission section */
-      .submit-section {
-        background: var(--light-blue);
-        border-radius: 8px;
-        padding: 25px;
-        margin-top: 40px;
-        text-align: center;
-      }
-
-      .submit-section h3 {
-        margin-bottom: 15px;
-        color: var(--primary);
-      }
-
-      .submit-section p {
-        margin-bottom: 20px;
-      }
-
-      .submit-btn {
-        display: inline-block;
-        padding: 10px 25px;
-        background: var(--primary);
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        transition: background 0.3s;
-      }
-
-      .submit-btn:hover {
-        background: var(--accent);
-      }
-
-      /* Tab Content */
-      .tab-content {
-        display: none;
-      }
-
-      .tab-content.active {
-        display: block;
-      }
-
-      /* Footer styling */
-      footer {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
-        margin-top: 60px;
-      }
-
-      .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-
-      .footer-section {
-        flex: 1;
-        min-width: 250px;
-        margin-bottom: 20px;
-      }
-
-      .footer-section h3 {
-        margin-bottom: 15px;
-      }
-
-      .footer-section ul {
-        list-style: none;
-      }
-
-      .footer-section ul li {
-        margin-bottom: 5px;
-      }
-
-      .footer-section ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-      }
-
-      .copyright {
-        text-align: center;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      /* Responsive design */
-      @media (max-width: 768px) {
-        header .container {
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        nav ul {
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-
-        nav ul li {
-          margin: 5px 10px;
-        }
-
-        .resources-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .search-form {
-          flex-direction: column;
-        }
-      }
-    </style>
-    <!-- Add Font Awesome for icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <div class="logo">
-          <a href="index.html">MentorMatch</a>
+    <div class="resources-grid">
+      <!-- Citizenship Resource -->
+      <div class="resource-card">
+        <div class="resource-title">Citizenship</div>
+        <div class="resource-description">
+          How do you get your citizenship? Learn about the application process, requirements, and preparation tips for the U.S. citizenship test.
         </div>
-        <nav>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="mentee-dashboard.html">Dashboard</a></li>
-            <li><a href="matches.html">Matches</a></li>
-            <li><a href="resources.html">Resources</a></li>
-            <li><a href="index.html#immigrants">For Immigrants</a></li>
-            <div id="auth-nav">
-              <!-- Auth links will be populated by script.js -->
-              <a href="#" id="logout-btn">Logout</a>
-            </div>
-          </ul>
-        </nav>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
-    </header>
 
-    <div class="resources-container">
-      <h1 class="page-title">Resources Library</h1>
-      <p class="page-description">
-        Explore curated resources to help you advance your career, develop new
-        skills, and navigate life in a new country. We regularly update this
-        collection to bring you the most relevant information.
-      </p>
-
-      <!-- Search Form -->
-      <div class="search-section">
-        <form class="search-form">
-          <input
-            type="text"
-            class="search-input"
-            placeholder="Search for resources..."
-          />
-          <button type="submit" class="search-button">Search</button>
-        </form>
-        <div class="filter-section">
-          <div class="filter-group">
-            <span class="filter-label">Category:</span>
-            <select class="filter-select">
-              <option value="all">All Categories</option>
-              <option value="certification">Certifications</option>
-              <option value="skill-development">Skill Development</option>
-              <option value="immigration">Immigration</option>
-              <option value="career">Career Development</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <span class="filter-label">Field:</span>
-            <select class="filter-select">
-              <option value="all">All Fields</option>
-              <option value="tech">Tech & IT</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="engineering">Engineering</option>
-              <option value="finance">Finance</option>
-              <option value="business">Business</option>
-            </select>
-          </div>
+      <!-- Skill Certificates Resource -->
+      <div class="resource-card">
+        <div class="resource-title">Skill Certificates</div>
+        <div class="resource-description">
+          How do you transfer over skills from other countries? Discover how to have your foreign credentials evaluated and recognized in the United States.
         </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
 
-      <!-- Featured Resource -->
-      <div class="featured-resource">
-        <h3>Featured: LinkedIn Learning Free Month Trial</h3>
-        <p>
-          Enhance your professional skills with LinkedIn Learning's extensive
-          library of courses. As a MentorMatch member, you can access a special
-          extended free trial for one month.
-        </p>
-        <a href="#" class="resource-link">Get Access</a>
-      </div>
-
-      <!-- Category Tabs -->
-      <div class="resource-tabs">
-        <button class="tab-button active" data-tab="certifications">
-          Certifications
-        </button>
-        <button class="tab-button" data-tab="skills">Skill Development</button>
-        <button class="tab-button" data-tab="immigration">
-          Immigration Resources
-        </button>
-        <button class="tab-button" data-tab="career">Career Development</button>
-      </div>
-
-      <!-- Certifications Tab Content -->
-      <div class="tab-content active" id="certifications-tab">
-        <div class="resources-grid">
-          <!-- Certification Resource 1 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>AWS Certified Solutions Architect</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-clock"></i>
-                  Duration: 3-6 months
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: $150 (exam fee)
-                </span>
-              </div>
-              <p class="resource-description">
-                One of the most sought-after cloud certifications, validating
-                expertise in designing distributed systems on AWS. Perfect for
-                cloud architects and engineers.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Cloud</span>
-                <span class="resource-tag">Tech</span>
-                <span class="resource-tag">IT</span>
-              </div>
-              <a
-                href="https://aws.amazon.com/certification/certified-solutions-architect-associate/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Certification Resource 2 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>PMP (Project Management Professional)</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-clock"></i>
-                  Duration: 2-4 months
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: $405-$555
-                </span>
-              </div>
-              <p class="resource-description">
-                Globally recognized project management certification that
-                demonstrates your ability to lead and direct projects. Valuable
-                across industries for career advancement.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Project Management</span>
-                <span class="resource-tag">Business</span>
-              </div>
-              <a
-                href="https://www.pmi.org/certifications/project-management-pmp"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Certification Resource 3 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Google Data Analytics Certificate</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-clock"></i>
-                  Duration: 6 months
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: $39/month (Coursera)
-                </span>
-              </div>
-              <p class="resource-description">
-                Designed to prepare you for entry-level data analyst roles.
-                Learn key analytics tools and techniques including SQL, R, and
-                data visualization.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Data Analytics</span>
-                <span class="resource-tag">Tech</span>
-                <span class="resource-tag">Entry-Level</span>
-              </div>
-              <a
-                href="https://www.coursera.org/professional-certificates/google-data-analytics"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Certification Resource 4 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>SHRM-CP (HR Certification)</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-clock"></i>
-                  Duration: 3-4 months
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: $300-$400
-                </span>
-              </div>
-              <p class="resource-description">
-                Human resources certification that validates your HR knowledge
-                and skills. Excellent for those looking to advance in HR careers
-                or transition into the field.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Human Resources</span>
-                <span class="resource-tag">Business</span>
-              </div>
-              <a
-                href="https://www.shrm.org/certification/about/Pages/default.aspx"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
+      <!-- U.S. Healthcare Resource -->
+      <div class="resource-card">
+        <div class="resource-title">U.S. Healthcare</div>
+        <div class="resource-description">
+          How do you navigate the American healthcare system? Find information about insurance options, finding providers, and understanding medical bills.
         </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
 
-      <!-- Skills Development Tab Content -->
-      <div class="tab-content" id="skills-tab">
-        <div class="resources-grid">
-          <!-- Skill Resource 1 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Codecademy</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-laptop-code"></i>
-                  Format: Interactive online courses
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: Free basic, $19.99/month Pro
-                </span>
-              </div>
-              <p class="resource-description">
-                Interactive learning platform for programming skills including
-                web development, data science, and machine learning with
-                hands-on exercises and projects.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Programming</span>
-                <span class="resource-tag">Web Development</span>
-                <span class="resource-tag">Interactive</span>
-              </div>
-              <a
-                href="https://www.codecademy.com/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Skill Resource 2 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Toastmasters International</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-users"></i>
-                  Format: In-person and online meetings
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: ~$100 joining + $45 biannual dues
-                </span>
-              </div>
-              <p class="resource-description">
-                Organization dedicated to improving public speaking and
-                leadership skills. Perfect for professionals looking to boost
-                confidence in presentations and interpersonal communication.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Public Speaking</span>
-                <span class="resource-tag">Leadership</span>
-                <span class="resource-tag">Communication</span>
-              </div>
-              <a
-                href="https://www.toastmasters.org/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Skill Resource 3 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>DataCamp</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-laptop-code"></i>
-                  Format: Self-paced online courses
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: $25/month (annual plan)
-                </span>
-              </div>
-              <p class="resource-description">
-                Leading platform for learning data science and analytics skills
-                with interactive coding exercises in Python, R, SQL, and more.
-                Includes career tracks and skill assessments.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Data Science</span>
-                <span class="resource-tag">Analytics</span>
-                <span class="resource-tag">Programming</span>
-              </div>
-              <a
-                href="https://www.datacamp.com/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Skill Resource 4 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Duolingo</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-mobile-alt"></i>
-                  Format: Mobile app and website
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: Free (Premium: $6.99/month)
-                </span>
-              </div>
-              <p class="resource-description">
-                Popular language learning platform with gamified lessons for
-                over 40 languages. Excellent for immigrants looking to improve
-                English or learn additional languages for career advancement.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Languages</span>
-                <span class="resource-tag">English</span>
-                <span class="resource-tag">Communication</span>
-              </div>
-              <a
-                href="https://www.duolingo.com/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
+      <!-- Local NGOs Resource -->
+      <div class="resource-card">
+        <div class="resource-title">Local NGOs</div>
+        <div class="resource-description">
+          How do you seek help from local immigrant rights NGOs? Connect with organizations in your area that provide legal assistance and community support.
         </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
 
-      <!-- Immigration Resources Tab Content -->
-      <div class="tab-content" id="immigration-tab">
-        <div class="resources-grid">
-          <!-- Immigration Resource 1 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>USCIS Official Website</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-building"></i>
-                  Type: Government resource
-                </span>
-                <span>
-                  <i class="fas fa-globe"></i>
-                  Languages: Multiple
-                </span>
-              </div>
-              <p class="resource-description">
-                Official U.S. Citizenship and Immigration Services website with
-                comprehensive information on visa applications, green cards,
-                citizenship, and other immigration processes.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Legal</span>
-                <span class="resource-tag">Visa</span>
-                <span class="resource-tag">Citizenship</span>
-              </div>
-              <a
-                href="https://www.uscis.gov/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Immigration Resource 2 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Immigrant Legal Resource Center</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-hands-helping"></i>
-                  Type: Non-profit organization
-                </span>
-                <span>
-                  <i class="fas fa-balance-scale"></i>
-                  Services: Free resources, paid legal consultations
-                </span>
-              </div>
-              <p class="resource-description">
-                Non-profit providing legal resources, education, and training to
-                support immigrants, their communities, and the legal
-                professionals who serve them.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Legal Aid</span>
-                <span class="resource-tag">Immigration Law</span>
-                <span class="resource-tag">Community Support</span>
-              </div>
-              <a
-                href="https://www.ilrc.org/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Immigration Resource 3 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Boundless Immigration</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-laptop"></i>
-                  Type: Technology company
-                </span>
-                <span>
-                  <i class="fas fa-dollar-sign"></i>
-                  Cost: Free guides, paid services ($395+)
-                </span>
-              </div>
-              <p class="resource-description">
-                Technology company that simplifies the immigration process with
-                step-by-step guidance, attorney support, and comprehensive
-                guides for green cards, citizenship, and visa applications.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Green Card</span>
-                <span class="resource-tag">Visa Applications</span>
-                <span class="resource-tag">Legal Support</span>
-              </div>
-              <a
-                href="https://www.boundless.com/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Immigration Resource 4 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>National Immigration Forum</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-bullhorn"></i>
-                  Type: Advocacy organization
-                </span>
-                <span>
-                  <i class="fas fa-book"></i>
-                  Services: Resources, education, advocacy
-                </span>
-              </div>
-              <p class="resource-description">
-                Advocacy organization that provides research, policy analysis,
-                and resources on immigration policies. Offers information on
-                work permits, citizenship pathways, and integration into U.S.
-                society.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Policy</span>
-                <span class="resource-tag">Research</span>
-                <span class="resource-tag">Integration</span>
-              </div>
-              <a
-                href="https://immigrationforum.org/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
+      <!-- Housing Options -->
+      <div class="resource-card">
+        <div class="resource-title">Housing Options</div>
+        <div class="resource-description">
+          Find affordable housing solutions, understand rental agreements, and learn about neighborhoods that welcome new immigrants in various U.S. cities.
         </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
 
-      <!-- Career Development Tab Content -->
-      <div class="tab-content" id="career-tab">
-        <div class="resources-grid">
-          <!-- Career Resource 1 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Upward Global</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-hands-helping"></i>
-                  Type: Non-profit organization
-                </span>
-                <span>
-                  <i class="fas fa-briefcase"></i>
-                  Services: Free career programs
-                </span>
-              </div>
-              <p class="resource-description">
-                Organization dedicated to helping work-authorized immigrants and
-                refugees rebuild their professional careers in the U.S. Offers
-                job coaching, networking, and training for skilled workers.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Career Coaching</span>
-                <span class="resource-tag">Job Search</span>
-                <span class="resource-tag">Professional Development</span>
-              </div>
-              <a
-                href="https://www.upwardlyglobal.org/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Career Resource 2 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Welcoming Center for New Pennsylvanians</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-map-marker-alt"></i>
-                  Type: Regional non-profit
-                </span>
-                <span>
-                  <i class="fas fa-map"></i>
-                  Location: Pennsylvania (model for other states)
-                </span>
-              </div>
-              <p class="resource-description">
-                Example of local resources available in many states. Provides
-                job readiness training, credential evaluation assistance, and
-                employer connections for immigrants and refugees.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Local Resources</span>
-                <span class="resource-tag">Job Training</span>
-                <span class="resource-tag">Credential Evaluation</span>
-              </div>
-              <a
-                href="https://welcomingcenter.org/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Career Resource 3 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>WES Global Talent Bridge</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-hands-helping"></i>
-                  Type: Non-profit initiative
-                </span>
-                <span>
-                  <i class="fas fa-file-alt"></i>
-                  Services: Free resources, paid credential evaluation
-                </span>
-              </div>
-              <p class="resource-description">
-                Initiative that helps skilled immigrants utilize their education
-                and experience in the U.S. job market. Provides credential
-                evaluation services, career resources, and training programs.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Credential Evaluation</span>
-                <span class="resource-tag">Professional Integration</span>
-                <span class="resource-tag">Career Resources</span>
-              </div>
-              <a
-                href="https://www.wes.org/global-talent-bridge/"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
-
-          <!-- Career Resource 4 -->
-          <div class="resource-card">
-            <div class="resource-header">
-              <h3>Immigrant Professionals Program</h3>
-            </div>
-            <div class="resource-content">
-              <div class="resource-meta">
-                <span>
-                  <i class="fas fa-building"></i>
-                  Type: Municipal program (New York)
-                </span>
-                <span>
-                  <i class="fas fa-briefcase"></i>
-                  Services: Free career services
-                </span>
-              </div>
-              <p class="resource-description">
-                Program by New York Public Library that provides career services
-                for immigrant professionals, including resume help,
-                industry-specific job search support, and interview preparation.
-              </p>
-              <div class="resource-tags">
-                <span class="resource-tag">Resume Help</span>
-                <span class="resource-tag">Interview Preparation</span>
-                <span class="resource-tag">Job Search</span>
-              </div>
-              <a
-                href="https://www.nypl.org/immigrant-professionals"
-                target="_blank"
-                class="resource-link"
-                >Learn More</a
-              >
-            </div>
-          </div>
+      <!-- Education System -->
+      <div class="resource-card">
+        <div class="resource-title">Education System</div>
+        <div class="resource-description">
+          Navigate the American education system from K-12 to higher education. Learn about enrollment, financial aid, and educational opportunities.
         </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
 
-      <!-- Resource Submission Section -->
-      <div class="submit-section">
-        <h3>Have a Resource to Share?</h3>
-        <p>
-          Know of a valuable resource that could help other immigrants in their
-          professional journey? Submit it for consideration to be added to our
-          library.
-        </p>
-        <a href="#submit-resource" class="submit-btn">Submit a Resource</a>
+      <!-- Financial Literacy -->
+      <div class="resource-card">
+        <div class="resource-title">Financial Literacy</div>
+        <div class="resource-description">
+          Understand U.S. banking, build credit history, manage taxes, and learn budgeting tips specifically designed for newcomers to America.
+        </div>
+        <a href="#" class="resource-link">Learn More</a>
+      </div>
+
+      <!-- Employment Rights -->
+      <div class="resource-card">
+        <div class="resource-title">Employment Rights</div>
+        <div class="resource-description">
+          Know your rights as an immigrant worker in the United States, including minimum wage laws, workplace discrimination, and labor protections.
+        </div>
+        <a href="#" class="resource-link">Learn More</a>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="footer-container">
-        <div class="footer-section">
-          <h3>About MentorMatch</h3>
-          <p>
-            MentorMatch connects immigrants with mentors in their field to help
-            them navigate the professional landscape and achieve their career
-            goals.
-          </p>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="mentee-dashboard.html">Dashboard</a></li>
-            <li><a href="matches.html">Matches</a></li>
-            <li><a href="resources.html">Resources</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Contact</h3>
-          <ul>
-            <li>Email: info@mentormatch.com</li>
-            <li>Phone: +1 (555) 123-4567</li>
-            <li>Address: 123 Main Street, Austin, TX</li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright">
-        <p>&copy; 2025 MentorMatch. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <!-- JavaScript for tab functionality -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Tab functionality
-        const tabButtons = document.querySelectorAll(".tab-button");
-        const tabContents = document.querySelectorAll(".tab-content");
-
-        tabButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            // Remove active class from all buttons and contents
-            tabButtons.forEach((btn) => btn.classList.remove("active"));
-            tabContents.forEach((content) =>
-              content.classList.remove("active")
-            );
-
-            // Add active class to clicked button
-            button.classList.add("active");
-
-            // Show corresponding content
-            const tabId = button.getAttribute("data-tab");
-            document.getElementById(`${tabId}-tab`).classList.add("active");
-          });
-        });
-
-        // Search functionality
-        const searchForm = document.querySelector(".search-form");
-        searchForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-          const searchQuery = document
-            .querySelector(".search-input")
-            .value.toLowerCase();
-
-          // Simple search implementation - highlight matching cards
-          const resourceCards = document.querySelectorAll(".resource-card");
-          let resultsFound = false;
-
-          resourceCards.forEach((card) => {
-            const cardText = card.textContent.toLowerCase();
-            if (cardText.includes(searchQuery)) {
-              card.style.borderColor = "#023796";
-              card.style.boxShadow = "0 0 10px rgba(2, 55, 150, 0.3)";
-              resultsFound = true;
-
-              // Make sure the tab containing this card is visible
-              const parentTab = card.closest(".tab-content");
-              if (parentTab) {
-                tabContents.forEach((content) =>
-                  content.classList.remove("active")
-                );
-                parentTab.classList.add("active");
-
-                const tabId = parentTab.id.replace("-tab", "");
-                tabButtons.forEach((btn) => {
-                  if (btn.getAttribute("data-tab") === tabId) {
-                    btn.classList.add("active");
-                  } else {
-                    btn.classList.remove("active");
-                  }
-                });
-              }
-            } else {
-              card.style.borderColor = "";
-              card.style.boxShadow = "";
-            }
-          });
-
-          if (!resultsFound && searchQuery.trim() !== "") {
-            alert(
-              "No resources found matching your search. Try different keywords or browse by category."
-            );
-          }
-        });
-
-        // Check for authentication status and update UI accordingly
-        const userData = JSON.parse(
-          localStorage.getItem("mentorMatchUser") || "{}"
-        );
-        const authNav = document.getElementById("auth-nav");
-
-        if (authNav) {
-          if (userData.isLoggedIn) {
-            // User is logged in, show logout button
-            authNav.innerHTML = `
-            <a href="mentee-dashboard.html">Dashboard</a>
-            <a href="#" id="logout-btn">Logout</a>
-          `;
-
-            // Add logout event listener
-            document
-              .getElementById("logout-btn")
-              .addEventListener("click", function (e) {
-                e.preventDefault();
-                localStorage.removeItem("mentorMatchUser");
-                window.location.href = "index.html";
-              });
-          } else {
-            // User is not logged in, show login/signup
-            authNav.innerHTML = `
-            <a href="login.html">Login</a>
-            <a href="role-select.html">Sign Up</a>
-          `;
-          }
-        }
-      });
-    </script>
-  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check for authentication status
+      const userData = JSON.parse(localStorage.getItem("mentorMatchUser") || "{}");
+      if (!userData.isLoggedIn) {
+        // Redirect to login if not authenticated
+        // window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
 </html>

@@ -1,515 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Become a Mentee - MentorMatch</title>
+    <title>Become a Mentee - ImmiGo</title> <!-- Updated Title -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
-      /* Base reset and variable definitions */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      :root {
-        --primary: #023796;
-        --secondary: #065efb;
-        --accent: #023082;
-        --light-blue: #84a4fc;
-        --bg-light: #f7f7f7;
-        --text-primary: #333;
-        --text-light: #fff;
-      }
-      body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: var(--text-primary);
-        background-color: #fff;
-      }
-      
-      /* Header styling */
-      header {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
-      }
-      header .container {
-        max-width: 1200px;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .logo {
-        font-size: 1.8em;
-        font-weight: bold;
-      }
-      nav ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-        margin: 10px 0;
-      }
-      nav ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-        font-size: 1em;
-      }
-      .cta-buttons {
-        display: flex;
-        gap: 10px;
-        margin: 10px 0;
-      }
-      .cta-buttons a {
-        padding: 8px 16px;
-        background-color: var(--secondary);
-        color: var(--text-light);
-        text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        cursor: pointer;
-      }
-      .cta-buttons a:hover {
-        background-color: var(--accent);
-      }
-      .cta-buttons a.active {
-        background-color: var(--accent);
-      }
-      
-      /* Quiz form styling */
-      .quiz-container {
-        max-width: 800px;
-        margin: 40px auto;
-        background-color: white;
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      }
-      
-      .quiz-form {
-        display: block; /* Instead of none to show by default */
-      }
-      
-      .quiz-progress {
-        margin-bottom: 25px;
-      }
-      
-      .progress-step {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-      
-      .progress-bar {
-        height: 8px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      
-      .progress-fill {
-        height: 100%;
-        background-color: var(--primary);
-        transition: width 0.3s ease;
-      }
-      
-      .quiz-step {
-        display: none;
-      }
-      
-      .quiz-step.active {
-        display: block;
-      }
-      
-      .quiz-step h3 {
-        margin-bottom: 20px;
-        color: var(--primary);
-      }
-      
-      .form-group {
-        margin-bottom: 20px;
-      }
-      
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        color: var(--text-primary);
-      }
-      
-      .form-group input,
-      .form-group select,
-      .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1em;
-      }
-      
-      .form-group textarea {
-        height: 100px;
-        resize: vertical;
-      }
-      
-      .form-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-      }
-      
-      .quiz-btn {
-        padding: 10px 20px;
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1em;
-        transition: background-color 0.3s;
-      }
-      
-      .quiz-btn:hover {
-        background-color: var(--accent);
-      }
-      
-      .quiz-btn.secondary {
-        background-color: #e0e0e0;
-        color: var(--text-primary);
-      }
-      
-      .quiz-btn.secondary:hover {
-        background-color: #d0d0d0;
-      }
-      
-      .success-message {
-        text-align: center;
-        padding: 20px;
-      }
-      
-      .success-message h3 {
-        color: var(--primary);
-        margin-bottom: 15px;
-      }
-      
-      .success-message p {
-        margin-bottom: 20px;
-      }
-      
-      /* Tag inputs */
-      .tag-input-container {
-        width: 100%;
-      }
-      
-      .tag-input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1em;
-        margin-bottom: 10px;
-      }
-      
-      .tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 10px;
-      }
-      
-      .tag {
-        background-color: var(--light-blue);
-        color: var(--primary);
-        padding: 5px 10px;
-        border-radius: 30px;
-        font-size: 0.9em;
-        display: flex;
-        align-items: center;
-      }
-      
-      .tag-remove {
-        margin-left: 5px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-      
-      .field-info {
-        font-size: 0.8em;
-        color: #666;
-        margin-top: 5px;
-      }
-      
-      /* Back button style */
-      .back-link {
-        display: inline-block;
-        margin-bottom: 20px;
-        color: var(--primary);
-        text-decoration: none;
-        font-weight: bold;
-      }
-      
-      .back-link:hover {
-        text-decoration: underline;
-      }
-      
-      /* Page title */
-      .page-title {
-        text-align: center;
-        margin-bottom: 30px;
-        color: var(--primary);
-      }
-      
-      /* Footer styling */
-      footer {
-        background: var(--primary);
-        color: var(--text-light);
-        padding: 20px;
-      }
-      
-      footer .footer-container {
-        max-width: 1200px;
-        margin: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
-      
-      footer .footer-section {
-        flex: 1 1 250px;
-        margin: 10px 0;
-      }
-      
-      footer h3 {
-        margin-bottom: 10px;
-      }
-      
-      footer ul {
-        list-style: none;
-      }
-      
-      footer ul li {
-        margin-bottom: 8px;
-      }
-      
-      footer ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-      }
-      
-      /* Responsive styles */
-      @media (max-width: 768px) {
-        header .container {
-          flex-direction: column;
+        /* --- ImmiGo Style Variables --- */
+        :root {
+            --color-primary: #415978; /* Dark Blue */
+            --color-accent: #FF7043;  /* Orange */
+            --color-accent-hover: #E8603A; /* Darker Orange */
+            --color-secondary: #EDEDE5; /* Light Gray */
+            --color-offwhite: #F7F9F8; /* Off White / Page Background */
+            --color-white: #FFFFFF;
+            --color-dark: #333333; /* Dark Gray Text */
+            --color-light-gray-text: #555555;
+            --color-border-light: #ddd; /* Light border for inputs */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --transition-speed: 0.3s ease;
+            --container-width: 1140px;
+            --container-padding: 5%;
+            --border-radius: 8px; /* Standard border radius */
+            --border-radius-large: 12px; /* Larger radius for container */
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow */
         }
-        
-        nav ul {
-          flex-direction: column;
-          align-items: center;
+
+        /* --- Base Reset & Body --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .cta-buttons {
-          margin-top: 10px;
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
-        
-        footer .footer-container {
-          flex-direction: column;
-          text-align: center;
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--color-dark);
+            background-color: var(--color-offwhite); /* Use off-white for page background */
+            overflow-x: hidden;
         }
-      }
+        img, svg {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        a {
+            text-decoration: none;
+            color: var(--color-primary); /* Default link color */
+            transition: color var(--transition-speed);
+        }
+        a:hover {
+            color: var(--color-accent);
+        }
+        button {
+            font-family: var(--font-body);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+        }
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--color-primary); /* Default heading color */
+        }
+        ul { list-style: none; }
+
+        /* --- Utility & Container --- */
+        .container {
+            width: calc(100% - (2 * var(--container-padding)));
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        /* --- ImmiGo Header (adapted from landing page) --- */
+        .main-header {
+            background: var(--color-white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo svg {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .main-nav { display: none; } /* Initially hidden on mobile */
+        .main-nav ul { display: flex; gap: 0.75rem; align-items: center; }
+        /* Use anchor tags for navigation */
+        .main-nav a.nav-btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none; /* Ensure links look like buttons */
+        }
+        .hamburger { padding: 0.5rem; display: flex; align-items: center; justify-content: center; }
+        .hamburger svg { width: 24px; height: 24px; display: block; }
+
+        /* Mobile Nav Toggle */
+        body.nav-open .main-nav {
+            display: flex; flex-direction: column; position: absolute;
+            top: 100%; left: 0; right: 0; background: var(--color-white);
+            padding: 1rem var(--container-padding); box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--color-secondary); z-index: 99;
+        }
+        body.nav-open .main-nav ul { flex-direction: column; align-items: stretch; width: 100%; gap: 0.5rem; }
+        body.nav-open .main-nav ul li { width: 100%; }
+        body.nav-open .main-nav ul li a.nav-btn { display: block; width: 100%; text-align: center; }
+
+        /* ImmiGo Buttons (reusable) */
+        .btn {
+            display: inline-block; padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius); font-size: 0.9rem;
+            font-weight: 600; text-align: center;
+            border: 1px solid transparent;
+            text-decoration: none; /* Ensure buttons styled as links look right */
+        }
+        .btn-primary { /* Orange button */
+            background: var(--color-accent); color: var(--color-white);
+            border-color: var(--color-accent);
+        }
+        .btn-primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: var(--color-white); }
+        .btn-secondary { /* White button with orange border */
+            background: var(--color-white); color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        .btn-secondary:hover { background: var(--color-accent); color: var(--color-white); }
+        .btn-outline-primary { /* White button with blue border */
+            background: var(--color-white); color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .btn-outline-primary:hover { background: var(--color-primary); color: var(--color-white); }
+        .btn-light-gray { /* Light gray button like 'Previous' */
+             background: var(--color-secondary);
+             color: var(--color-dark);
+             border-color: var(--color-secondary);
+        }
+        .btn-light-gray:hover {
+            background: #d8d8d0; /* Slightly darker gray */
+            border-color: #d8d8d0;
+        }
+
+        /* --- Quiz Container Styling --- */
+        .quiz-container {
+            max-width: 800px; /* Maintain max-width */
+            margin: 40px auto; /* Center with margin */
+            background-color: var(--color-white); /* White background */
+            border-radius: var(--border-radius-large); /* More rounded corners */
+            padding: 30px 40px; /* Adjust padding */
+            box-shadow: var(--shadow-light); /* Apply subtle shadow */
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-flex; /* Use flex for icon alignment */
+            align-items: center;
+            gap: 5px; /* Space between icon and text */
+            margin-bottom: 25px;
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600; /* Make it bolder */
+            font-size: 0.95em;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+            color: var(--color-accent);
+        }
+        .back-link svg { /* Style for the arrow icon */
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--color-primary);
+            font-weight: 700; /* Bolder title */
+            font-size: 1.8em; /* Larger title */
+        }
+
+        /* --- Quiz Form Elements Styling --- */
+        .quiz-form {
+            display: block;
+        }
+
+        /* Progress Bar */
+        .quiz-progress {
+            margin-bottom: 30px; /* More space below progress */
+        }
+        .progress-step {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600; /* Bolder step text */
+            font-size: 0.9em;
+            color: var(--color-light-gray-text); /* Lighter text color */
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: var(--color-secondary); /* Light gray track */
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--color-primary); /* Dark blue fill */
+            transition: width var(--transition-speed);
+            border-radius: 4px; /* Match parent radius */
+        }
+
+        /* Quiz Steps */
+        .quiz-step { display: none; }
+        .quiz-step.active { display: block; animation: fadeIn 0.5s ease; } /* Add fade-in */
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .quiz-step h3 { /* Step Titles */
+            margin-bottom: 25px;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.4em;
+            border-bottom: 1px solid var(--color-secondary); /* Add subtle separator */
+            padding-bottom: 10px;
+        }
+
+        /* Form Groups and Labels */
+        .form-group {
+            margin-bottom: 25px; /* Consistent spacing */
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px; /* More space below label */
+            font-weight: 600;
+            color: var(--color-dark); /* Darker label text */
+            font-size: 1em;
+        }
+
+        /* Inputs, Select, Textarea */
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px; /* Adjust padding */
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--border-radius); /* Apply standard radius */
+            font-size: 1em;
+            font-family: var(--font-body);
+            color: var(--color-dark);
+            background-color: var(--color-white);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary); /* Highlight border on focus */
+            box-shadow: 0 0 0 2px rgba(65, 89, 120, 0.2); /* Subtle focus ring */
+        }
+        .form-group textarea {
+            height: 120px; /* Slightly taller */
+            resize: vertical;
+        }
+        .form-group select {
+             appearance: none; /* Custom dropdown arrow */
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23415978'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+             background-repeat: no-repeat;
+             background-position: right 15px center;
+             background-size: 20px;
+             padding-right: 40px; /* Space for arrow */
+        }
+        /* Placeholder styling */
+        ::placeholder {
+             color: #999;
+             opacity: 1;
+        }
+
+        /* Field Info Text */
+        .field-info {
+            font-size: 0.85em; /* Slightly larger */
+            color: var(--color-light-gray-text);
+            margin-top: 8px; /* More space */
+        }
+
+        /* Tag Input Styling */
+        .tag-input-container { width: 100%; }
+        .tag-input { /* Uses general input styling */ margin-bottom: 10px; }
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding-top: 5px; /* Add some space above tags */
+        }
+        .tag {
+            background-color: var(--color-secondary); /* Light gray background */
+            color: var(--color-primary); /* Dark blue text */
+            padding: 6px 12px; /* Adjust padding */
+            border-radius: 15px; /* Pill shape */
+            font-size: 0.9em;
+            display: inline-flex; /* Align items inline */
+            align-items: center;
+            font-weight: 500;
+        }
+        .tag-remove {
+            margin-left: 8px; /* More space for remove icon */
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--color-primary);
+            opacity: 0.7;
+            transition: opacity var(--transition-speed);
+        }
+        .tag-remove:hover { opacity: 1; }
+
+        /* Form Buttons (Next/Previous/Submit) */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 35px; /* More space above buttons */
+            padding-top: 20px; /* Add padding above */
+            border-top: 1px solid var(--color-secondary); /* Separator line */
+        }
+        /* Apply .btn styles and specific overrides */
+        .quiz-btn {
+             /* Inherits from .btn */
+             padding: 10px 25px; /* Adjust padding */
+             font-size: 1em;
+             font-weight: 600;
+        }
+        /* Specific button styles based on image */
+        #mentee-submit,
+        [id^="mentee-next-"] { /* Target all next buttons and submit */
+            /* Uses .btn-primary (orange) styles by default */
+            background: var(--color-accent); color: var(--color-white);
+            border-color: var(--color-accent);
+        }
+         #mentee-submit:hover,
+        [id^="mentee-next-"]:hover {
+             background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: var(--color-white);
+        }
+
+        [id^="mentee-prev-"], /* Target all previous buttons */
+        #mentee-close,
+        #mentee-done,
+        #mentee-see-matches.secondary /* Style secondary success button */
+         {
+            /* Uses .btn-light-gray styles */
+             background: var(--color-secondary);
+             color: var(--color-dark);
+             border-color: var(--color-secondary);
+        }
+         [id^="mentee-prev-"]:hover,
+         #mentee-close:hover,
+         #mentee-done:hover,
+         #mentee-see-matches.secondary:hover {
+            background: #d8d8d0; /* Slightly darker gray */
+            border-color: #d8d8d0;
+        }
+        /* Style primary success button */
+        #mentee-see-matches {
+             background: var(--color-accent); color: var(--color-white);
+             border-color: var(--color-accent);
+        }
+         #mentee-see-matches:hover {
+             background: var(--color-accent-hover); border-color: var(--color-accent-hover); color: var(--color-white);
+        }
+
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 30px 20px; /* More padding */
+            animation: fadeIn 0.5s ease;
+        }
+        .success-message h3 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+        .success-message p {
+            margin-bottom: 25px; /* More space */
+            color: var(--color-dark);
+            font-size: 1.1em;
+        }
+        .success-message .quiz-btn { /* Style the buttons within success message */
+             /* Inherits base .quiz-btn styles */
+             margin-top: 10px; /* Add space between buttons if stacked */
+        }
+
+        /* --- ImmiGo Footer (adapted from landing page) --- */
+        .footer-top-border {
+            border-top: 4px solid var(--color-accent);
+            margin-top: 4rem; /* Use rem */
+        }
+        .main-footer {
+            background: var(--color-white);
+            padding: 3rem 0;
+            color: var(--color-light-gray-text);
+        }
+        .footer-cols {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .footer-about { flex: 2 1 300px; margin-bottom: 2rem; }
+        .footer-about svg { height: 28px; margin-bottom: 1rem; }
+        .footer-about p { font-size: 0.9rem; line-height: 1.7; max-width: 450px; }
+        .footer-nav { flex: 1 1 150px; margin-bottom: 1.5rem; }
+        .footer-nav h4 {
+            background: var(--color-accent); color: var(--color-white);
+            padding: 0.5rem 0.75rem; border-radius: 4px;
+            margin-bottom: 1rem; font-size: 1rem; display: inline-block;
+        }
+        .footer-nav ul li a {
+            display: block; padding: 0.4rem 0; font-size: 0.9rem;
+            color: var(--color-light-gray-text);
+        }
+        .footer-nav ul li a:hover { color: var(--color-accent); padding-left: 5px; }
+        .footer-copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-secondary);
+            font-size: 0.9em;
+            color: var(--color-light-gray-text);
+        }
+
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            /* Adjust header for mobile */
+            .main-header .container { flex-direction: row; } /* Keep logo and actions on same line */
+            .main-nav { /* Mobile nav is handled by JS toggle */ }
+
+            .quiz-container {
+                margin: 20px auto;
+                padding: 20px; /* Less padding on mobile */
+            }
+            .page-title { font-size: 1.5em; }
+            .quiz-step h3 { font-size: 1.2em; }
+            .form-buttons { flex-direction: column; gap: 10px; } /* Stack buttons */
+            .form-buttons .quiz-btn { width: 100%; } /* Full width buttons */
+
+             /* Adjust footer for mobile */
+            .footer-cols { flex-direction: column; text-align: center; }
+            .footer-nav { margin-bottom: 2rem; }
+        }
+        @media (min-width: 768px) {
+            /* Show desktop nav */
+             .main-nav { display: block; }
+             .main-nav ul { flex-direction: row; }
+             .main-nav ul li { width: auto; }
+             .main-nav ul li a.nav-btn { display: inline-block; width: auto; margin-bottom: 0; }
+             .hamburger { display: flex; } /* Keep hamburger visible per previous request */
+        }
+
     </style>
-  </head>
-  <body>
-    <!-- Header with Navigation -->
-    <header>
-      <div class="container">
-        <div class="logo">MentorMatch</div>
-        <nav>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#features">Our Values</a></li>
-            <li><a href="index.html#testimonials">Testimonials</a></li>
-            <li><a href="index.html#how-it-works">How It Works</a></li>
-            <li><a href="index.html#immigrants">For Immigrants</a></li>
-          </ul>
-        </nav>
-        <div class="cta-buttons">
-          <a href="mentee.html" id="get-mentored-btn" class="active">Get Mentored</a>
-          <a href="mentor.html" id="become-mentor-btn">Become a Mentor</a>
-          <a href="login.html">Sign In</a>
-          <a href="role-select.html">Sign Up</a>
+</head>
+<body>
+    <!-- ImmiGo Header -->
+    <header class="main-header">
+        <div class="container nav-inner">
+            <!-- Link the logo to index.html -->
+            <a href="index.html" class="logo" aria-label="ImmiGo Home">
+                <svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="5" width="10" height="15" fill="var(--color-accent)"/>
+                    <rect x="12" y="0" width="10" height="20" fill="var(--color-accent)"/>
+                    <text x="26" y="15" font-family="var(--font-heading)" font-size="16" fill="var(--color-primary)">ImmiGo</text>
+                </svg>
+            </a>
+            <div class="nav-actions">
+                <nav class="main-nav" aria-label="Main Navigation">
+                    <ul>
+                         <!-- Update links to actual pages -->
+                         <li><a href="mentee.html" class="btn btn-primary nav-btn">Get free mentoring</a></li>
+                         <li><a href="mentor.html" class="btn btn-secondary nav-btn">Become a mentor</a></li>
+                         <li><a href="login.html" class="btn btn-outline-primary nav-btn">Sign-in</a></li>
+                     </ul>
+                </nav>
+                <button class="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
         </div>
-      </div>
     </header>
+
     <!-- Main content -->
-    <div class="quiz-container">
-      <a href="index.html" class="back-link">← Back to Home</a>
-      <h2 class="page-title">Find Your Mentor</h2>
-      
-      <!-- Mentee Quiz Form - directly visible, not in a modal -->
-      <div class="quiz-form" id="mentee-quiz">
-        <div class="quiz-progress">
-          <span class="progress-step">Step <span id="mentee-current-step">1</span> of <span id="mentee-total-steps">6</span></span>
-          <div class="progress-bar">
-            <div class="progress-fill" id="mentee-progress" style="width: 16.67%"></div>
-          </div>
+    <main class="container"> <!-- Added container class for consistent padding -->
+        <div class="quiz-container">
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Back to Home
+            </a>
+            <h2 class="page-title">Find Your Mentor</h2>
+
+            <!-- Mentee Quiz Form -->
+            <form class="quiz-form" id="mentee-quiz"> <!-- Use form tag -->
+                <div class="quiz-progress">
+                    <span class="progress-step">Step <span id="mentee-current-step">1</span> of <span id="mentee-total-steps">6</span></span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="mentee-progress" style="width: 16.67%"></div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Basic Information -->
+                <div class="quiz-step active" data-step="1">
+                    <h3>Basic Information</h3>
+                    <div class="form-group">
+                        <label for="mentee-name">Full Name</label>
+                        <input type="text" id="mentee-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-email">Email Address</label>
+                        <input type="email" id="mentee-email" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-age">Age</label>
+                        <input type="number" id="mentee-age" min="18" max="100" placeholder="Enter your age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-country">Country of Origin</label>
+                        <input type="text" id="mentee-country" placeholder="Enter your country of origin" required>
+                    </div>
+                    <div class="form-buttons">
+                        <!-- Apply ImmiGo button classes -->
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-close">Cancel</button>
+                        <button type="button" class="quiz-btn btn btn-primary" id="mentee-next-1">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Languages & Fields -->
+                <div class="quiz-step" data-step="2">
+                    <h3>Languages & Field of Interest</h3>
+                    <div class="form-group">
+                        <label for="mentee-speaking-language">Speaking Languages</label>
+                        <input type="text" id="mentee-speaking-language" placeholder="e.g., English, Spanish, Mandarin" required>
+                        <p class="field-info">Separate languages with commas</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-desired-field">Desired Field</label>
+                        <input type="text" id="mentee-desired-field" placeholder="e.g., Software Engineering, Data Science" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-prev-2">Previous</button>
+                        <button type="button" class="quiz-btn btn btn-primary" id="mentee-next-2">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Education -->
+                <div class="quiz-step" data-step="3">
+                    <h3>Education</h3>
+                    <div class="form-group">
+                        <label for="mentee-degree">Highest Level of Education</label>
+                        <select id="mentee-degree" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="High School Diploma">High School Diploma</option>
+                            <option value="Associate's">Associate's Degree</option>
+                            <option value="Bachelor's">Bachelor's Degree</option>
+                            <option value="Master's">Master's Degree</option>
+                            <option value="PhD">PhD or Doctorate</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-college">College/University</label>
+                        <input type="text" id="mentee-college" placeholder="Enter your college or university name" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-prev-3">Previous</button>
+                        <button type="button" class="quiz-btn btn btn-primary" id="mentee-next-3">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Skills and Interests -->
+                <div class="quiz-step" data-step="4">
+                    <h3>Skills & Interests</h3>
+                    <div class="form-group">
+                        <label for="mentee-skills-input">STEM Skills (up to 5)</label>
+                        <div class="tag-input-container">
+                            <input type="text" id="mentee-skills-input" class="tag-input" placeholder="Enter a skill and press Enter">
+                            <div class="tags-container" id="mentee-skills-tags"></div>
+                            <input type="hidden" name="mentee_skills" id="mentee-skills-hidden">
+                            <p class="field-info">Press Enter after each skill (maximum 5)</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-interests-input">Personal Interests (up to 5)</label>
+                        <div class="tag-input-container">
+                            <input type="text" id="mentee-interests-input" class="tag-input" placeholder="Enter an interest and press Enter">
+                            <div class="tags-container" id="mentee-interests-tags"></div>
+                            <input type="hidden" name="mentee_interests" id="mentee-interests-hidden">
+                            <p class="field-info">Press Enter after each interest (maximum 5)</p>
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-prev-4">Previous</button>
+                        <button type="button" class="quiz-btn btn btn-primary" id="mentee-next-4">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Work Experience -->
+                <div class="quiz-step" data-step="5">
+                    <h3>Work Experience & Goals</h3>
+                    <div class="form-group">
+                        <label for="mentee-experience">Prior Work Experience</label>
+                        <textarea id="mentee-experience" placeholder="Describe your prior work experience (e.g., 2 years as Data Analyst at TechCorp)" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentee-goals">What are your professional goals?</label>
+                        <textarea id="mentee-goals" placeholder="Describe your career aspirations and what you hope to gain from mentorship" required></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-prev-5">Previous</button>
+                        <button type="button" class="quiz-btn btn btn-primary" id="mentee-submit">Submit</button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Success Message (Content updated by script.js) -->
+                <div class="quiz-step" data-step="6">
+                    <div class="success-message">
+                        <!-- Content will be dynamically inserted by script.js -->
+                        <h3>Thank You for Signing Up!</h3>
+                        <p>We've received your information and are excited to help you find the perfect mentor.</p>
+                        <p>Keep an eye on your email for next steps.</p>
+                        <!-- Buttons will be added here by script.js -->
+                        <button type="button" class="quiz-btn btn btn-light-gray" id="mentee-done">Done</button> <!-- Default Done button -->
+                    </div>
+                </div>
+            </form> <!-- Close form tag -->
         </div>
-        
-        <!-- Step 1: Basic Information -->
-        <div class="quiz-step active" data-step="1">
-          <h3>Basic Information</h3>
-          <div class="form-group">
-            <label for="mentee-name">Full Name</label>
-            <input type="text" id="mentee-name" placeholder="Enter your full name" required>
-          </div>
-          <div class="form-group">
-            <label for="mentee-email">Email Address</label>
-            <input type="email" id="mentee-email" placeholder="Enter your email address" required>
-          </div>
-          <div class="form-group">
-            <label for="mentee-age">Age</label>
-            <input type="number" id="mentee-age" min="18" max="100" placeholder="Enter your age" required>
-          </div>
-          <div class="form-group">
-            <label for="mentee-country">Country of Origin</label>
-            <input type="text" id="mentee-country" placeholder="Enter your country of origin" required>
-          </div>
-          <div class="form-buttons">
-            <button class="quiz-btn secondary" id="mentee-close">Cancel</button>
-            <button class="quiz-btn" id="mentee-next-1">Next</button>
-          </div>
-        </div>
-        
-        <!-- Step 2: Languages & Fields -->
-        <div class="quiz-step" data-step="2">
-          <h3>Languages & Field of Interest</h3>
-          <div class="form-group">
-            <label for="mentee-speaking-language">Speaking Languages</label>
-            <input type="text" id="mentee-speaking-language" placeholder="e.g., English, Spanish, Mandarin" required>
-            <p class="field-info">Separate languages with commas</p>
-          </div>
-          <div class="form-group">
-            <label for="mentee-desired-field">Desired Field</label>
-            <input type="text" id="mentee-desired-field" placeholder="e.g., Computer Science, Mechanical Engineering" required>
-          </div>
-          <div class="form-buttons">
-            <button class="quiz-btn secondary" id="mentee-prev-2">Previous</button>
-            <button class="quiz-btn" id="mentee-next-2">Next</button>
-          </div>
-        </div>
-        
-        <!-- Step 3: Education -->
-        <div class="quiz-step" data-step="3">
-          <h3>Education</h3>
-          <div class="form-group">
-            <label for="mentee-degree">Highest Level of Education</label>
-            <select id="mentee-degree" required>
-              <option value="" disabled selected>Select an option</option>
-              <option value="High School Diploma">High School Diploma</option>
-              <option value="Associate's">Associate's Degree</option>
-              <option value="Bachelor's">Bachelor's Degree</option>
-              <option value="Master's">Master's Degree</option>
-              <option value="PhD">PhD or Doctorate</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="mentee-college">College/University</label>
-            <input type="text" id="mentee-college" placeholder="Enter your college or university name" required>
-          </div>
-          <div class="form-buttons">
-            <button class="quiz-btn secondary" id="mentee-prev-3">Previous</button>
-            <button class="quiz-btn" id="mentee-next-3">Next</button>
-          </div>
-        </div>
-        
-        <!-- Step 4: Skills and Interests -->
-        <div class="quiz-step" data-step="4">
-          <h3>Skills & Interests</h3>
-          <div class="form-group">
-            <label for="mentee-skills-input">STEM Skills (up to 5)</label>
-            <div class="tag-input-container">
-              <input type="text" id="mentee-skills-input" class="tag-input" placeholder="Enter a skill and press Enter">
-              <div class="tags-container" id="mentee-skills-tags"></div>
-              <p class="field-info">Press Enter after each skill (maximum 5)</p>
+    </main>
+
+    <!-- ImmiGo Footer -->
+    <div class="footer-top-border"></div>
+    <footer class="main-footer">
+        <div class="container footer-cols">
+            <div class="footer-about">
+                <!-- Link the logo to index.html -->
+                <a href="index.html" class="logo" aria-label="ImmiGo Home">
+                    <svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg" style="height:28px; margin-bottom:1rem;">
+                        <rect x="0" y="5" width="10" height="15" fill="var(--color-accent)"/>
+                        <rect x="12" y="0" width="10" height="20" fill="var(--color-accent)"/>
+                        <text x="26" y="15" font-family="var(--font-heading)" font-size="16" fill="var(--color-primary)">ImmiGo</text>
+                    </svg>
+                </a>
+                <p>Starting a career in a new country can feel overwhelming — but you don’t have to do it alone. ImmiGo connects immigrants with professionals...</p>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="mentee-interests-input">Personal Interests (up to 5)</label>
-            <div class="tag-input-container">
-              <input type="text" id="mentee-interests-input" class="tag-input" placeholder="Enter an interest and press Enter">
-              <div class="tags-container" id="mentee-interests-tags"></div>
-              <p class="field-info">Press Enter after each interest (maximum 5)</p>
-            </div>
-          </div>
-          <div class="form-buttons">
-            <button class="quiz-btn secondary" id="mentee-prev-4">Previous</button>
-            <button class="quiz-btn" id="mentee-next-4">Next</button>
-          </div>
+            <nav class="footer-nav" aria-label="Mentors Links">
+                <h4>Mentors</h4>
+                <!-- Update links if needed -->
+                <ul><li><a href="mentor.html">Register</a></li><li><a href="#">Matching</a></li><li><a href="#">Guidance</a></li></ul>
+            </nav>
+            <nav class="footer-nav" aria-label="Mentees Links">
+                <h4>Mentees</h4>
+                <ul><li><a href="mentee.html">Sign Up</a></li><li><a href="#">Quiz</a></li><li><a href="#">Resources</a></li></ul>
+            </nav>
+            <nav class="footer-nav" aria-label="Company Links">
+                <h4>About</h4>
+                <ul><li><a href="#">Our Story</a></li><li><a href="#">Team</a></li><li><a href="#">Careers</a></li></ul>
+            </nav>
+            <nav class="footer-nav" aria-label="Support Links">
+                <h4>Resources</h4>
+                <ul><li><a href="#">Help Center</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact Us</a></li></ul>
+            </nav>
         </div>
-        
-        <!-- Step 5: Work Experience -->
-        <div class="quiz-step" data-step="5">
-          <h3>Work Experience & Goals</h3>
-          <div class="form-group">
-            <label for="mentee-experience">Prior Work Experience</label>
-            <textarea id="mentee-experience" placeholder="Describe your prior work experience (e.g., 2 years as Data Analyst at TechCorp)" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="mentee-goals">What are your professional goals?</label>
-            <textarea id="mentee-goals" placeholder="Describe your career aspirations and what you hope to gain from mentorship" required></textarea>
-          </div>
-          <div class="form-buttons">
-            <button class="quiz-btn secondary" id="mentee-prev-5">Previous</button>
-            <button class="quiz-btn" id="mentee-submit">Submit</button>
-          </div>
-        </div>
-        
-        <!-- Success Message -->
-        <div class="quiz-step" data-step="6">
-          <div class="success-message">
-            <h3>Thank You for Signing Up!</h3>
-            <p>We've received your information and are excited to help you find the perfect mentor.</p>
-            <p>Keep an eye on your email for next steps.</p>
-            <button class="quiz-btn" id="mentee-done">Done</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Footer -->
-    <footer>
-      <div class="footer-container">
-        <div class="footer-section">
-          <h3>About MentorMatch</h3>
-          <p>
-            MentorMatch is dedicated to connecting mentors and mentees,
-            empowering immigrants to achieve professional excellence through
-            guidance and community support.
-          </p>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html#features">Our Values</a></li>
-            <li><a href="index.html#how-it-works">How It Works</a></li>
-            <li><a href="index.html#immigrants">For Immigrants</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Contact Us</h3>
-          <ul>
-            <li>Email: info@mentormatch.com</li>
-            <li>Phone: +1 (123) 456-7890</li>
-            <li>Location: Austin, TX, USA</li>
-          </ul>
-        </div>
-      </div>
-      <p style="text-align: center; margin-top: 20px">
-        &copy; 2025 MentorMatch. All Rights Reserved.
-      </p>
+         <div class="footer-copyright">
+             &copy; 2025 ImmiGo. All Rights Reserved.
+         </div>
     </footer>
+
     <!-- Load external script for functionality -->
     <script src="script.js" type="module"></script>
-  </body>
+</body>
 </html>

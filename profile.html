@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mentor Profile - ImmiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #415978;
+      --color-accent: #FF7043;
+      --color-accent-hover: #E8603A;
+      --color-secondary: #EDEDE5;
+      --color-offwhite: #F7F9F8;
+      --color-white: #FFFFFF;
+      --color-dark: #333333;
+      --color-light-gray-text: #555555;
+      --color-sidebar: #3B5372;
+      --color-sidebar-active: #2C3E50;
+      --border-radius: 12px;
+      --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 80px;
+      background: var(--color-sidebar);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+    .sidebar .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 32px;
+      object-fit: cover;
+      border: 2px solid var(--color-accent);
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: auto;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-nav a.active, .sidebar-nav a:hover {
+      background: var(--color-sidebar-active);
+      color: var(--color-accent);
+    }
+    .sidebar-bottom {
+      margin-bottom: 24px;
+    }
+    .sidebar-bottom a {
+      color: #fff;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-bottom a:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .main-content {
+      margin-left: 80px;
+      width: calc(100vw - 80px);
+      padding: 0;
+      min-height: 100vh;
+      background: var(--color-offwhite);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .profile-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-light);
+      padding: 40px 32px 32px 32px;
+      margin-top: 48px;
+      max-width: 420px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5em;
+      color: var(--color-primary);
+      margin-bottom: 18px;
+      border: 3px solid var(--color-accent);
+    }
+    .profile-name {
+      font-size: 1.7em;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .profile-role {
+      font-size: 1.1em;
+      color: var(--color-light-gray-text);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .profile-country {
+      font-size: 1em;
+      color: var(--color-light-gray-text);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .profile-fields {
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    .profile-fields label {
+      display: block;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+      font-size: 1em;
+    }
+    .profile-fields input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--color-secondary);
+      border-radius: 7px;
+      font-size: 1em;
+      margin-bottom: 12px;
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+    }
+    .profile-fields input:focus {
+      border-color: var(--color-accent);
+      outline: none;
+    }
+    .profile-bio {
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    .profile-bio label {
+      display: block;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+      font-size: 1em;
+    }
+    .profile-bio textarea {
+      width: 100%;
+      min-height: 70px;
+      border: 1px solid var(--color-secondary);
+      border-radius: 7px;
+      font-size: 1em;
+      padding: 10px 12px;
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+      resize: vertical;
+    }
+    .profile-bio textarea:focus {
+      border-color: var(--color-accent);
+      outline: none;
+    }
+    .profile-save-btn {
+      background: var(--color-accent);
+      color: var(--color-white);
+      border: none;
+      border-radius: 7px;
+      padding: 12px 32px;
+      font-size: 1.1em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .profile-save-btn:hover {
+      background: var(--color-accent-hover);
+    }
+    @media (max-width: 600px) {
+      .sidebar { width: 56px; }
+      .main-content { margin-left: 56px; }
+      .profile-card { padding: 18px 6px; margin-top: 16px; }
+      .profile-avatar { width: 80px; height: 80px; font-size: 1.5em; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="avatar"/>
+    <div class="sidebar-nav">
+      <a href="mentee-dashboard.html" title="Dashboard">
+        <span>🏠</span>
+      </a>
+      <a href="mentor-chat.html" title="Messages">
+        <span>💬</span>
+      </a>
+      <a href="matches.html" title="Mentors">
+        <span>👥</span>
+      </a>
+      <a href="resources.html" title="Resources">
+        <span>🔀</span>
+      </a>
+      <a href="profile.html" class="active" title="Profile">
+        <span>⚙️</span>
+      </a>
+    </div>
+    <div class="sidebar-bottom">
+      <a href="login.html" title="Logout">
+        <span>⎋</span>
+      </a>
+    </div>
+  </nav>
+  <div class="main-content">
+    <div class="profile-card">
+      <div class="profile-avatar">MP</div>
+      <div class="profile-name">Maria Popova</div>
+      <div class="profile-role">Software Engineer</div>
+      <div class="profile-country">🇷🇺 Russia</div>
+      <form class="profile-fields">
+        <label for="website">Website</label>
+        <input type="url" id="website" placeholder="https://yourwebsite.com" value="https://mariapopova.dev" />
+        <label for="github">GitHub</label>
+        <input type="url" id="github" placeholder="https://github.com/username" value="https://github.com/mariapopova" />
+        <label for="linkedin">LinkedIn</label>
+        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/mariapopova" />
+      </form>
+      <div class="profile-bio">
+        <label for="bio">Bio</label>
+        <textarea id="bio">Passionate about helping immigrants break into tech. 5+ years in software engineering, mentor at ImmiGo.</textarea>
+      </div>
+      <button class="profile-save-btn">Save Changes</button>
+    </div>
+  </div>
+</body>
+</html>
