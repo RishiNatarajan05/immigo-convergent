@@ -127,50 +127,28 @@
       height: 32px;
       margin-right: 8px;
     }
-    .dashboard-header .welcome {
-      font-size: 2.2em;
-      font-weight: 600;
-      color: #222;
-      margin-left: 24px;
+    .progress-section {
+      display: none; /* Hide the old section */
+    }
+    .staircase-image-container {
+      text-align: center; /* Center the image */
+      margin-bottom: 32px; /* Add space below the image, similar to old progress section */
+      background: var(--color-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-light);
+      padding: 32px;
+    }
+    .staircase-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
     .dashboard-body {
       padding: 32px 40px;
       display: flex;
       flex-direction: column;
       gap: 32px;
-    }
-    .progress-section {
-      background: var(--color-white);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow-light);
-      padding: 32px;
-      margin-bottom: 16px;
-    }
-    .progress-title {
-      font-size: 2em;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 12px;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 18px;
-      background: #b7cbe2;
-      border-radius: 9px;
-      margin-bottom: 8px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--color-primary);
-      border-radius: 9px;
-      transition: width 0.4s;
-    }
-    .progress-label {
-      font-size: 1.1em;
-      color: var(--color-dark);
-      font-weight: 600;
-      margin-bottom: 0;
     }
     .goals-section {
       background: var(--color-white);
@@ -235,15 +213,15 @@
       .progress-section, .goals-section { padding: 10px; }
       .goals-list { flex-direction: column; gap: 12px; }
       .progress-title { font-size: 1.5em; }
+      .staircase-image-container { padding: 10px; } /* Adjust padding for small screens */
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
     <div class="avatar-container">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-      </svg>
+      <!-- Replace SVG with actual image -->
+      <img src="maria.png" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">
     </div>
     <div class="sidebar-nav">
       <a href="mentee-dashboard.html" class="active" title="Dashboard">
@@ -293,16 +271,11 @@
       <a href="index.html" class="logo" aria-label="ImmiGo Home">
         <img src="63c343e19f0ecff12194b04fafc2e2a5a45d8502.png" alt="ImmiGo Logo" style="height:32px; width:auto; display:block;" />
       </a>
-      <span class="welcome">Welcome back, Maria!</span>
     </div>
     <div class="dashboard-body">
-      <section class="progress-section">
-        <div class="progress-title">Your Journey Progress</div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" style="width: 35%;"></div>
-        </div>
-        <p class="progress-label">Overall Progress: 35%</p>
-      </section>
+      <div class="staircase-image-container">
+         <img src="staircase.png" alt="Journey Progress" class="staircase-image">
+      </div>
       <section class="goals-section">
         <div class="goals-title" style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:1.2em; color:#FF7043;">&#128640;</span> Your Goals
