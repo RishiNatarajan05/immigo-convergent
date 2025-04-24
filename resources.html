@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Premium Resource Library - ImmiGo</title>
+  <title>Resource Library - ImmiGo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -131,56 +131,77 @@
       margin-bottom: 40px;
       color: var(--color-primary);
       text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(65,89,120,0.07);
     }
-
-    /* Resource Grid */
     .resources-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      margin-top: 24px;
     }
-
     .resource-card {
-      background: var(--color-resource-bg);
-      border-radius: var(--border-radius);
-      padding: 24px 20px;
+      background: linear-gradient(135deg, #f7f9f8 60%, #ede9e5 100%);
+      border-radius: 18px;
+      padding: 32px 28px 28px 28px;
       display: flex;
       flex-direction: column;
-      box-shadow: var(--shadow-light);
+      box-shadow: 0 6px 24px rgba(65,89,120,0.10);
       height: 100%;
+      position: relative;
+      transition: transform 0.18s, box-shadow 0.18s;
+      border: 2px solid #e0e0e0;
+      overflow: hidden;
     }
-
+    .resource-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 32px rgba(65,89,120,0.16);
+      border-color: var(--color-accent);
+    }
+    .resource-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 18px;
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2em;
+      background: #fff3ed;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(255,112,67,0.08);
+    }
     .resource-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--color-primary);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
     }
-
     .resource-description {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--color-dark);
-      margin-bottom: 16px;
-      line-height: 1.5;
+      margin-bottom: 18px;
+      line-height: 1.6;
       flex-grow: 1;
     }
-
     .resource-link {
       display: inline-block;
-      background-color: var(--color-primary);
+      background: var(--color-accent);
       color: var(--color-white);
-      padding: 8px 16px;
-      border-radius: 6px;
+      padding: 10px 22px;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.9rem;
-      transition: background-color 0.2s;
-      margin-top: auto;
-      text-align: center;
+      font-size: 1em;
+      transition: background 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 8px rgba(255,112,67,0.08);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
     }
-
     .resource-link:hover {
-      background-color: var(--color-sidebar-active);
+      background: var(--color-accent-hover);
+      box-shadow: 0 4px 16px rgba(255,112,67,0.16);
     }
 
     /* Responsive design */
@@ -264,74 +285,67 @@
 
   <!-- Main content -->
   <div class="main-content">
-    <h1 class="page-title">Premium Resource Library</h1>
+    <h1 class="page-title">Resource Library</h1>
 
     <div class="resources-grid">
-      <!-- Citizenship Resource -->
       <div class="resource-card">
+        <div class="resource-icon">🛂</div>
         <div class="resource-title">Citizenship</div>
         <div class="resource-description">
           How do you get your citizenship? Learn about the application process, requirements, and preparation tips for the U.S. citizenship test.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Skill Certificates Resource -->
       <div class="resource-card">
+        <div class="resource-icon">🎓</div>
         <div class="resource-title">Skill Certificates</div>
         <div class="resource-description">
           How do you transfer over skills from other countries? Discover how to have your foreign credentials evaluated and recognized in the United States.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- U.S. Healthcare Resource -->
       <div class="resource-card">
+        <div class="resource-icon">🏥</div>
         <div class="resource-title">U.S. Healthcare</div>
         <div class="resource-description">
           How do you navigate the American healthcare system? Find information about insurance options, finding providers, and understanding medical bills.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Local NGOs Resource -->
       <div class="resource-card">
+        <div class="resource-icon">🤝</div>
         <div class="resource-title">Local NGOs</div>
         <div class="resource-description">
           How do you seek help from local immigrant rights NGOs? Connect with organizations in your area that provide legal assistance and community support.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Housing Options -->
       <div class="resource-card">
+        <div class="resource-icon">🏠</div>
         <div class="resource-title">Housing Options</div>
         <div class="resource-description">
           Find affordable housing solutions, understand rental agreements, and learn about neighborhoods that welcome new immigrants in various U.S. cities.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Education System -->
       <div class="resource-card">
+        <div class="resource-icon">📚</div>
         <div class="resource-title">Education System</div>
         <div class="resource-description">
           Navigate the American education system from K-12 to higher education. Learn about enrollment, financial aid, and educational opportunities.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Financial Literacy -->
       <div class="resource-card">
+        <div class="resource-icon">💵</div>
         <div class="resource-title">Financial Literacy</div>
         <div class="resource-description">
           Understand U.S. banking, build credit history, manage taxes, and learn budgeting tips specifically designed for newcomers to America.
         </div>
         <a href="#" class="resource-link">Learn More</a>
       </div>
-
-      <!-- Employment Rights -->
       <div class="resource-card">
+        <div class="resource-icon">⚖️</div>
         <div class="resource-title">Employment Rights</div>
         <div class="resource-description">
           Know your rights as an immigrant worker in the United States, including minimum wage laws, workplace discrimination, and labor protections.
