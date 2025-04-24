@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mentor Profile - ImmiGo</title>
+  <title>Mentee Profile - ImmiGo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -43,13 +43,22 @@
       top: 0;
       z-index: 10;
     }
-    .sidebar .avatar {
+    .sidebar .avatar-container {
       width: 48px;
       height: 48px;
       border-radius: 50%;
       margin-bottom: 32px;
-      object-fit: cover;
+      background-color: var(--color-white);
       border: 2px solid var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .sidebar .avatar-container svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--color-primary);
     }
     .sidebar-nav {
       display: flex;
@@ -106,7 +115,7 @@
       box-shadow: var(--shadow-light);
       padding: 40px 32px 32px 32px;
       margin-top: 48px;
-      max-width: 420px;
+      max-width: 600px; /* Increased width */
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -143,57 +152,69 @@
       color: var(--color-light-gray-text);
       margin-bottom: 18px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .profile-fields {
+    .profile-country img {
+      width: 1.5em;
+      height: 1em;
+      vertical-align: middle;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .profile-details {
       width: 100%;
       margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
-    .profile-fields label {
+    .profile-field {
+      margin-bottom: 12px;
+    }
+    .profile-field label {
       display: block;
       font-weight: 600;
       color: var(--color-primary);
       margin-bottom: 4px;
       font-size: 1em;
     }
-    .profile-fields input {
+    .profile-field input,
+    .profile-field textarea {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid var(--color-secondary);
       border-radius: 7px;
       font-size: 1em;
-      margin-bottom: 12px;
       background: var(--color-offwhite);
       color: var(--color-dark);
+      box-sizing: border-box;
     }
-    .profile-fields input:focus {
+    .profile-field input:focus,
+    .profile-field textarea:focus {
       border-color: var(--color-accent);
       outline: none;
     }
-    .profile-bio {
-      width: 100%;
-      margin-bottom: 18px;
-    }
-    .profile-bio label {
-      display: block;
-      font-weight: 600;
-      color: var(--color-primary);
-      margin-bottom: 4px;
-      font-size: 1em;
-    }
-    .profile-bio textarea {
-      width: 100%;
+    .profile-field textarea {
       min-height: 70px;
-      border: 1px solid var(--color-secondary);
-      border-radius: 7px;
-      font-size: 1em;
-      padding: 10px 12px;
-      background: var(--color-offwhite);
-      color: var(--color-dark);
       resize: vertical;
     }
-    .profile-bio textarea:focus {
-      border-color: var(--color-accent);
-      outline: none;
+    .full-width {
+      grid-column: 1 / -1;
+    }
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .profile-tag {
+      background-color: var(--color-secondary);
+      color: var(--color-primary);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.9em;
     }
     .profile-save-btn {
       background: var(--color-accent);
@@ -210,10 +231,15 @@
     .profile-save-btn:hover {
       background: var(--color-accent-hover);
     }
+    @media (max-width: 768px) {
+      .profile-details {
+        grid-template-columns: 1fr;
+      }
+    }
     @media (max-width: 600px) {
       .sidebar { width: 56px; }
       .main-content { margin-left: 56px; }
-      .profile-card { padding: 18px 6px; margin-top: 16px; }
+      .profile-card { padding: 18px 12px; margin-top: 16px; max-width: 95%; }
       .profile-avatar { width: 80px; height: 80px; font-size: 1.5em; }
     }
   </style>
@@ -222,9 +248,7 @@
   <nav class="sidebar">
     <div class="avatar-container">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" fill="#EDEDE5"/>
-        <circle cx="12" cy="10" r="4" fill="#415978"/>
-        <path d="M12 14c-3 0-5.5 1.5-5.5 3.5V20h11v-2.5C17.5 15.5 15 14 12 14z" fill="#415978"/>
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
       </svg>
     </div>
     <div class="sidebar-nav">
@@ -274,27 +298,37 @@
     <div class="profile-card">
       <div class="profile-avatar">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
-          <circle cx="12" cy="12" r="10" fill="#EDEDE5"/>
-          <circle cx="12" cy="10" r="4" fill="#415978"/>
-          <path d="M12 14c-3 0-5.5 1.5-5.5 3.5V20h11v-2.5C17.5 15.5 15 14 12 14z" fill="#415978"/>
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#415978"/>
         </svg>
       </div>
-      <div class="profile-name">Maria Popova</div>
-      <div class="profile-role">Software Engineer</div>
-      <div class="profile-country">🇷🇺 Russia</div>
-      <form class="profile-fields">
-        <label for="website">Website</label>
-        <input type="url" id="website" placeholder="https://yourwebsite.com" value="https://mariapopova.dev" />
-        <label for="github">GitHub</label>
-        <input type="url" id="github" placeholder="https://github.com/username" value="https://github.com/mariapopova" />
-        <label for="linkedin">LinkedIn</label>
-        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username" value="https://linkedin.com/in/mariapopova" />
-      </form>
-      <div class="profile-bio">
-        <label for="bio">Bio</label>
-        <textarea id="bio">Passionate about helping immigrants break into tech. 5+ years in software engineering, mentor at ImmiGo.</textarea>
+      <div class="profile-name">Maria Garcia</div>
+      <div class="profile-role">Mentee | Seeking Role in Speech and Language Pathology</div>
+      <div class="profile-country">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" alt="Colombia Flag">
+        Colombia
       </div>
-      <button class="profile-save-btn">Save Changes</button>
+      <form class="profile-details">
+        <div class="profile-field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" value="maria@email.com" readonly />
+        </div>
+        <div class="profile-field">
+          <label for="age">Age</label>
+          <input type="number" id="age" value="32" readonly /> <!-- Assuming age 32 -->
+        </div>
+        <div class="profile-field">
+          <label for="languages">Speaking Languages</label>
+          <input type="text" id="languages" value="Spanish, English" readonly />
+        </div>
+        <div class="profile-field">
+          <label for="education">Highest Level of Education</label>
+          <input type="text" id="education" value="Master's Degree" readonly />
+        </div>
+        <div class="profile-field full-width">
+          <label for="university">College/University</label>
+          <input type="text" id="university" value="National University of Colombia" readonly />
+        </div>
+      </form>
     </div>
   </div>
 </body>

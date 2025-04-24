@@ -728,7 +728,12 @@ function displayMatches(matches) {
   } else {
     roleText = `${match.desired_field || 'Mentee'} • ${matchPercentage}% Match`;
   }
-  const countryFlag = '🌎';
+  let countryFlag = '🌎';
+  let flagImg = '';
+  if ((match.country || '').toLowerCase().includes('colombia')) {
+    flagImg = '<img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg" alt="Colombia Flag" style="width: 1.5em; height: 1em; vertical-align: middle; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); margin-right: 4px;">';
+    countryFlag = '';
+  }
   const matchCard = document.createElement('div');
   matchCard.className = 'match-card';
   matchCard.innerHTML = `
@@ -738,7 +743,7 @@ function displayMatches(matches) {
     <h3 class="match-name">${match.name}</h3>
     <p class="match-role">${roleText}</p>
     <p class="match-country">
-      <span>${countryFlag}</span>
+      ${flagImg || `<span>${countryFlag}</span>`}
       <span>${match.country || 'Not specified'}</span>
     </p>
     <button class="btn btn-primary match-action-button" data-match-id="${match.id}">
