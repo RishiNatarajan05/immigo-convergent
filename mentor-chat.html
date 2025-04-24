@@ -1,806 +1,997 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Mentor Chat - MentorMatch</title>
- <style>
- /* Base reset and variable definitions */
- * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- }
- :root {
- --primary: #023796;
- --secondary: #065efb;
- --accent: #023082;
- --light-blue: #84a4fc;
- --bg-light: #f7f7f7;
- --text-primary: #333;
- --text-light: #fff;
- --success: #28a745;
- --warning: #ffc107;
- --danger: #dc3545;
- --gray: #6c757d;
- --light-gray: #e9ecef;
- --mentor-message: #e3f2fd;
- --mentee-message: #f1f8e9;
- }
- body {
- font-family: Arial, sans-serif;
- line-height: 1.6;
- color: var(--text-primary);
- background-color: var(--bg-light);
- height: 100vh;
- display: flex;
- flex-direction: column;
- }
-
- /* Header styling */
- header {
- background: var(--primary);
- color: var(--text-light);
- padding: 20px;
- }
- header .container {
- max-width: 1200px;
- margin: 0 auto;
- display: flex;
- justify-content: space-between;
- align-items: center;
- }
- .logo a {
- color: var(--text-light);
- font-size: 24px;
- font-weight: bold;
- text-decoration: none;
- }
- nav ul {
- display: flex;
- list-style: none;
- }
- nav ul li {
- margin-left: 20px;
- }
- nav ul li a {
- color: var(--text-light);
- text-decoration: none;
- transition: color 0.3s;
- }
- nav ul li a:hover {
- color: var(--light-blue);
- }
-
- /* Main content */
- .main-container {
- flex: 1;
- max-width: 1200px;
- margin: 0 auto;
- padding: 20px;
- width: 100%;
- display: flex;
- flex-direction: column;
- }
-
- /* Chat container */
- .chat-container {
- display: flex;
- flex-direction: column;
- background: white;
- border-radius: 8px;
- box-shadow: 0 2px 10px rgba(0,0,0,0.1);
- flex: 1;
- overflow: hidden;
- }
-
- .chat-header {
- background: var(--primary);
- color: white;
- padding: 15px 20px;
- display: flex;
- align-items: center;
- border-radius: 8px 8px 0 0;
- }
-
- .mentor-avatar {
- width: 40px;
- height: 40px;
- border-radius: 50%;
- background-color: var(--light-blue);
- display: flex;
- align-items: center;
- justify-content: center;
- margin-right: 15px;
- font-weight: bold;
- font-size: 18px;
- }
-
- .mentor-info h2 {
- margin: 0;
- font-size: 18px;
- }
-
- .mentor-info p {
- margin: 0;
- font-size: 14px;
- opacity: 0.8;
- }
-
- .chat-messages {
- flex: 1;
- padding: 20px;
- overflow-y: auto;
- display: flex;
- flex-direction: column;
- gap: 15px;
- max-height: calc(100vh - 250px);
- }
-
- .message {
- padding: 12px 15px;
- border-radius: 18px;
- max-width: 75%;
- position: relative;
- word-wrap: break-word;
- }
-
- .message.mentor {
- align-self: flex-start;
- background-color: var(--mentor-message);
- border-bottom-left-radius: 5px;
- }
-
- .message.mentee {
- align-self: flex-end;
- background-color: var(--mentee-message);
- border-bottom-right-radius: 5px;
- }
-
- .message-time {
- display: block;
- font-size: 11px;
- opacity: 0.7;
- margin-top: 5px;
- text-align: right;
- }
-
- .typing-indicator {
- display: none;
- align-self: flex-start;
- background-color: var(--light-gray);
- padding: 8px 15px;
- border-radius: 18px;
- margin-bottom: 10px;
- }
-
- .typing-indicator span {
- display: inline-block;
- width: 8px;
- height: 8px;
- background-color: var(--gray);
- border-radius: 50%;
- margin-right: 3px;
- animation: typing 1s infinite ease-in-out;
- }
-
- .typing-indicator span:nth-child(2) {
- animation-delay: 0.15s;
- }
-
- .typing-indicator span:nth-child(3) {
- animation-delay: 0.3s;
- margin-right: 0;
- }
-
- @keyframes typing {
- 0% { transform: translateY(0); }
- 50% { transform: translateY(-5px); }
- 100% { transform: translateY(0); }
- }
-
- .chat-input {
- display: flex;
- padding: 15px;
- background-color: white;
- border-top: 1px solid var(--light-gray);
- }
-
- .chat-input textarea {
- flex: 1;
- border: 1px solid var(--light-gray);
- border-radius: 22px;
- padding: 12px 15px;
- resize: none;
- outline: none;
- font-family: inherit;
- font-size: 14px;
- min-height: 45px;
- max-height: 100px;
- transition: border-color 0.3s;
- }
-
- .chat-input textarea:focus {
- border-color: var(--secondary);
- }
-
- .chat-input button {
- background-color: var(--primary);
- color: white;
- border: none;
- border-radius: 50%;
- width: 45px;
- height: 45px;
- margin-left: 10px;
- display: flex;
- align-items: center;
- justify-content: center;
- cursor: pointer;
- transition: background-color 0.3s;
- }
-
- .chat-input button:hover {
- background-color: var(--accent);
- }
-
- .chat-input button:disabled {
- background-color: var(--gray);
- cursor: not-allowed;
- }
-
- .send-icon {
- width: 20px;
- height: 20px;
- fill: white;
- }
-
- /* Initial chat message */
- .welcome-message {
- text-align: center;
- margin: 20px 0;
- padding: 15px;
- background-color: var(--light-gray);
- border-radius: 8px;
- font-size: 14px;
- }
-
- .suggested-questions {
- display: flex;
- flex-wrap: wrap;
- gap: 10px;
- margin-top: 15px;
- justify-content: center;
- }
-
- .question-pill {
- background-color: white;
- border: 1px solid var(--primary);
- color: var(--primary);
- border-radius: 20px;
- padding: 8px 15px;
- font-size: 13px;
- cursor: pointer;
- transition: all 0.2s;
- }
-
- .question-pill:hover {
- background-color: var(--primary);
- color: white;
- }
-
- /* Footer styling */
- footer {
- background: var(--primary);
- color: var(--text-light);
- padding: 20px;
- }
-
- .footer-container {
- max-width: 1200px;
- margin: 0 auto;
- display: flex;
- justify-content: space-between;
- flex-wrap: wrap;
- }
-
- .footer-section {
- flex: 1;
- min-width: 250px;
- margin-bottom: 20px;
- }
-
- .footer-section h3 {
- margin-bottom: 15px;
- }
-
- .footer-section ul {
- list-style: none;
- }
-
- .footer-section ul li {
- margin-bottom: 5px;
- }
-
- .footer-section ul li a {
- color: var(--text-light);
- text-decoration: none;
- }
-
- .copyright {
- text-align: center;
- margin-top: 20px;
- padding-top: 20px;
- border-top: 1px solid rgba(255,255,255,0.1);
- }
-
- /* Responsive design */
- @media (max-width: 768px) {
- header .container {
- flex-direction: column;
- gap: 15px;
- }
-
- nav ul {
- flex-wrap: wrap;
- justify-content: center;
- }
-
- nav ul li {
- margin: 5px 10px;
- }
-
- .message {
- max-width: 85%;
- }
- }
- </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentor Chat - ImmiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base reset and variable definitions */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --color-primary: #415978; /* Dark Blue */
+      --color-accent: #FF7043;  /* Orange */
+      --color-accent-hover: #E8603A; /* Darker Orange */
+      --color-secondary: #EDEDE5; /* Light Gray */
+      --color-offwhite: #F7F9F8; /* Off White / Page Background */
+      --color-white: #FFFFFF;
+      --color-dark: #333333; /* Dark Gray Text */
+      --color-light-gray-text: #555555;
+      --color-sidebar: #3B5372;
+      --color-sidebar-active: #2C3E50;
+      --color-sidebar-hover: #FF7043;
+      --border-radius: 12px;
+      --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+      --mentor-message: #e3f2fd;
+      --mentee-message: #f1f8e9;
+    }
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      color: var(--color-dark);
+      background-color: var(--color-offwhite);
+      min-height: 100vh;
+      display: flex;
+    }
+    
+    /* Sidebar styles */
+    .sidebar {
+      width: 80px;
+      background: var(--color-sidebar);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .sidebar .avatar-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 32px;
+      background-color: var(--color-white);
+      border: 2px solid var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .sidebar .avatar-container svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--color-primary);
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: auto;
+    }
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-nav a.active, .sidebar-nav a:hover {
+      background: var(--color-sidebar-active);
+      color: var(--color-accent);
+    }
+    .sidebar-bottom {
+      margin-bottom: 24px;
+    }
+    .sidebar-bottom a {
+      color: #fff;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar-bottom a:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    
+    /* Main content updated for sidebar */
+    .main-content {
+      margin-left: 80px;
+      width: calc(100vw - 80px);
+      padding: 32px;
+      min-height: 100vh;
+      background: var(--color-offwhite);
+    }
+    
+    /* Remove/update old elements */
+    header, footer, .main-container {
+      display: none; /* Hide the old header and footer */
+    }
+    
+    /* Chat container in new layout */
+    .chat-container {
+      height: calc(100vh - 64px);
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-light);
+    }
+    
+    .chat-header {
+      background: var(--color-primary);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      border-radius: 8px 8px 0 0;
+    }
+    
+    .mentor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .mentor-info h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    
+    .mentor-info p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-height: calc(100vh - 250px);
+    }
+    
+    .message {
+      padding: 12px 15px;
+      border-radius: 18px;
+      max-width: 75%;
+      position: relative;
+      word-wrap: break-word;
+    }
+    
+    .message.mentor {
+      align-self: flex-start;
+      background-color: var(--mentor-message);
+      border-bottom-left-radius: 5px;
+    }
+    
+    .message.mentee {
+      align-self: flex-end;
+      background-color: var(--mentee-message);
+      border-bottom-right-radius: 5px;
+    }
+    
+    .message-time {
+      display: block;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 5px;
+      text-align: right;
+    }
+    
+    .typing-indicator {
+      display: none;
+      align-self: flex-start;
+      background-color: var(--color-secondary);
+      padding: 8px 15px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+    }
+    
+    .typing-indicator span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-light-gray-text);
+      border-radius: 50%;
+      margin-right: 3px;
+      animation: typing 1s infinite ease-in-out;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.3s;
+      margin-right: 0;
+    }
+    
+    @keyframes typing {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+    
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      background-color: white;
+      border-top: 1px solid var(--color-secondary);
+    }
+    
+    .chat-input textarea {
+      flex: 1;
+      border: 1px solid var(--color-secondary);
+      border-radius: 22px;
+      padding: 12px 15px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      min-height: 45px;
+      max-height: 100px;
+      transition: border-color 0.3s;
+    }
+    
+    .chat-input textarea:focus {
+      border-color: var(--color-accent);
+    }
+    
+    .chat-input button {
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .chat-input button:hover {
+      background-color: var(--color-accent-hover);
+    }
+    
+    .chat-input button:disabled {
+      background-color: var(--color-light-gray-text);
+      cursor: not-allowed;
+    }
+    
+    .send-icon {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+    
+    /* Initial chat message */
+    .welcome-message {
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: var(--color-secondary);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    .suggested-questions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+    }
+    
+    .question-pill {
+      background-color: white;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .question-pill:hover {
+      background-color: var(--color-primary);
+      color: white;
+    }
+    
+    /* Footer styling */
+    footer {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 20px;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin-bottom: 20px;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: 15px;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 5px;
+    }
+    
+    .footer-section ul li a {
+      color: var(--color-white);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      header .container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav ul li {
+        margin: 5px 10px;
+      }
+      
+      .message {
+        max-width: 85%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <nav class="sidebar">
-    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="avatar"/>
-    <div class="sidebar-nav">
-      <a href="mentee-dashboard.html" title="Dashboard">
-        <span>🏠</span>
+  <div class="sidebar">
+    <div class="avatar-container" id="mentor-avatar"></div>
+    <nav class="sidebar-nav">
+      <a href="mentee-dashboard.html" class="active" aria-label="Dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
       </a>
-      <a href="mentor-chat.html" class="active" title="Messages">
-        <span>💬</span>
+      <a href="mentor-chat.html" aria-label="Messages">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
       </a>
-      <a href="matches.html" title="Mentors">
-        <span>👥</span>
+      <a href="matches.html" aria-label="Matches">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
       </a>
-      <a href="resources.html" title="Resources">
-        <span>🔀</span>
+      <a href="resources.html" aria-label="Resources">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
       </a>
-      <a href="profile.html" title="Profile">
-        <span>⚙️</span>
+      <a href="profile.html" aria-label="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
       </a>
-    </div>
+    </nav>
     <div class="sidebar-bottom">
-      <a href="login.html" title="Logout">
-        <span>⎋</span>
+      <a href="login.html" id="logout-btn" aria-label="Logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
       </a>
     </div>
-  </nav>
-  <div class="main-content" style="margin-left:80px;">
- <header>
- <div class="container">
- <div class="logo">
- <a href="index.html">MentorMatch</a>
- </div>
- <nav>
- <ul>
- <li><a href="index.html">Home</a></li>
- <li><a href="mentee-dashboard.html">Dashboard</a></li>
- <li><a href="matches.html">Matches</a></li>
- <li><a href="index.html#immigrants">For Immigrants</a></li>
- <div id="auth-nav">
- <!-- Auth links will be populated by script.js -->
- <a href="#" id="logout-btn">Logout</a>
- </div>
- </ul>
- </nav>
- </div>
- </header>
+  </div>
+  
+  <div class="main-content">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="mentor-info">
+          <h2 id="mentor-name">Loading mentor...</h2>
+          <p id="mentor-field">Field of expertise</p>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chat-messages">
+        <div class="welcome-message">
+          <p>Welcome to your mentor chat! Ask your mentor for advice, guidance, or any questions about your career journey.</p>
+          <div class="suggested-questions">
+            <span class="question-pill">How can I prepare for a job interview?</span>
+            <span class="question-pill">What skills should I develop?</span>
+            <span class="question-pill">Can you review my resume?</span>
+            <span class="question-pill">How did you start in this field?</span>
+          </div>
+        </div>
+        <!-- Messages will appear here -->
+      </div>
+      
+      <div class="typing-indicator" id="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <div class="chat-input">
+        <textarea 
+          id="message-input" 
+          placeholder="Type your message..." 
+          rows="1" 
+          autocomplete="off"
+          aria-label="Type your message"></textarea>
+        <button id="send-button" aria-label="Send message">
+          <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About MentorMatch</h3>
+        <p>MentorMatch connects immigrants with mentors in their field to help them navigate the professional landscape and achieve their career goals.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="mentee-dashboard.html">Dashboard</a></li>
+          <li><a href="matches.html">Matches</a></li>
+          <li><a href="mentor.html">Become a Mentor</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul>
+          <li>Email: info@mentormatch.com</li>
+          <li>Phone: +1 (555) 123-4567</li>
+          <li>Address: 123 Main Street, Austin, TX</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 MentorMatch. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <script type="module">
+    console.log('SCRIPT BLOCK EXECUTING'); // Check 1: Is the script tag processed?
 
- <div class="main-container">
- <div class="chat-container">
- <div class="chat-header">
- <div class="mentor-avatar" id="mentor-avatar"></div>
- <div class="mentor-info">
- <h2 id="mentor-name">Loading mentor...</h2>
- <p id="mentor-field">Field of expertise</p>
- </div>
- </div>
+    // Import supabase client from script.js
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.33.2/+esm';
+    
+    // Initialize Supabase client
+    const supabaseUrl = 'https://thcfscypmqopiomlsdab.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoY2ZzY3lwbXFvcGlvbWxzZGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1NDU3ODQsImV4cCI6MjA1OTEyMTc4NH0.fzM4bMjwGfO-9r72T8R6j1I7MaivyOZy2lhSd9r5HPk';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Chat functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM CONTENT LOADED EVENT FIRED'); // Check 2: Is the DOM ready event firing?
 
- <div class="chat-messages" id="chat-messages">
- <div class="welcome-message">
- <p>Welcome to your mentor chat! Ask your mentor for advice, guidance, or any questions about your career journey.</p>
- <div class="suggested-questions">
- <span class="question-pill">How can I prepare for a job interview?</span>
- <span class="question-pill">What skills should I develop?</span>
- <span class="question-pill">Can you review my resume?</span>
- <span class="question-pill">How did you start in this field?</span>
- </div>
- </div>
- <!-- Messages will appear here -->
- </div>
+      // DOM elements
+      console.log('Getting DOM elements...'); // Check 3
+      const chatMessages = document.getElementById('chat-messages');
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      const typingIndicator = document.getElementById('typing-indicator');
+      const mentorNameElement = document.getElementById('mentor-name');
+      const mentorFieldElement = document.getElementById('mentor-field');
+      const mentorAvatarElement = document.getElementById('mentor-avatar');
+      console.log('DOM elements retrieved.'); // Check 4
 
- <div class="typing-indicator" id="typing-indicator">
- <span></span>
- <span></span>
- <span></span>
- </div>
+      // Perplexity API key - replace with your actual key
+      const PERPLEXITY_API_KEY = "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";
 
- <div class="chat-input">
- <textarea
- id="message-input"
- placeholder="Type your message..."
- rows="1"
- autocomplete="off"
- aria-label="Type your message"></textarea>
- <button id="send-button" aria-label="Send message">
- <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
- <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
- </svg>
- </button>
- </div>
- </div>
- </div>
+      // Retrieve mentor information from localStorage
+      console.log('Retrieving mentor info from localStorage...'); // Check 5
+      const mentorId = localStorage.getItem('requestedMentorId');
+      const mentorName = localStorage.getItem('requestedMentorName');
+      console.log('Mentor ID from localStorage:', mentorId); // Check 6
+      console.log('Mentor Name from localStorage:', mentorName); // Check 7
+      let mentorData = null;
 
- <!-- Footer -->
- <footer>
- <div class="footer-container">
- <div class="footer-section">
- <h3>About MentorMatch</h3>
- <p>MentorMatch connects immigrants with mentors in their field to help them navigate the professional landscape and achieve their career goals.</p>
- </div>
- <div class="footer-section">
- <h3>Quick Links</h3>
- <ul>
- <li><a href="index.html">Home</a></li>
- <li><a href="mentee-dashboard.html">Dashboard</a></li>
- <li><a href="matches.html">Matches</a></li>
- <li><a href="mentor.html">Become a Mentor</a></li>
- </ul>
- </div>
- <div class="footer-section">
- <h3>Contact</h3>
- <ul>
- <li>Email: info@mentormatch.com</li>
- <li>Phone: +1 (555) 123-4567</li>
- <li>Address: 123 Main Street, Austin, TX</li>
- </ul>
- </div>
- </div>
- <div class="copyright">
- <p>&copy; 2025 MentorMatch. All rights reserved.</p>
- </div>
- </footer>
+      // Auto-adjust textarea height
+      console.log('Setting up textarea listener...'); // Check 8
+      messageInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+        sendButton.disabled = this.value.trim() === '';
+      });
+      console.log('Textarea listener set up.'); // Check 9
 
- <script type="module">
- // Import supabase client from script.js
- import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.33.2/+esm';
+      // Initialize mentor information
+      console.log('Initializing mentor information...');
+      if (mentorId) {
+        console.log('Mentor ID found. Fetching mentor details from Supabase...');
+        // Fetch mentor details and update header/avatar once data arrives
+        fetchMentorData(mentorId);
+      } else {
+        console.log('No mentor ID found. Using default AI.');
+        mentorNameElement.textContent = 'MentorMatch AI';
+        mentorFieldElement.textContent = 'Career Guidance';
+        mentorAvatarElement.textContent = 'AI';
+      }
+      console.log('Mentor info initialization complete.');
 
- // Initialize Supabase client
- const supabaseUrl = 'https://thcfscypmqopiomlsdab.supabase.co';
- const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRoY2ZzY3lwbXFvcGlvbWxzZGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1NDU3ODQsImV4cCI6MjA1OTEyMTc4NH0.fzM4bMjwGfO-9r72T8R6j1I7MaivyOZy2lhSd9r5HPk';
- const supabase = createClient(supabaseUrl, supabaseKey);
+      // Add first mentor message after a short delay
+      console.log('Setting timeout for first mentor message...'); // Check 14
+      setTimeout(() => {
+        console.log('Executing timeout for first message.'); // Check 15
+        addMessage(`Hello! I'm ${mentorNameElement.textContent}, your mentor for ${mentorFieldElement.textContent}. How can I help you today with your career goals?`, 'mentor');
+      }, 1000);
+      console.log('Timeout for first message set.'); // Check 16
 
- // Chat functionality
- document.addEventListener('DOMContentLoaded', function() {
- // DOM elements
- const chatMessages = document.getElementById('chat-messages');
- const messageInput = document.getElementById('message-input');
- const sendButton = document.getElementById('send-button');
- const typingIndicator = document.getElementById('typing-indicator');
- const mentorNameElement = document.getElementById('mentor-name');
- const mentorFieldElement = document.getElementById('mentor-field');
- const mentorAvatarElement = document.getElementById('mentor-avatar');
+      // Send message when the send button is clicked
+      console.log('Setting up send button listener...'); // Check 17
+      sendButton.addEventListener('click', sendMessage);
+      console.log('Send button listener set up.'); // Check 18
 
- // Retrieve user and mentor information from localStorage
- const mentorId = localStorage.getItem('requestedMentorId');
- const mentorName = localStorage.getItem('requestedMentorName');
- const userId = localStorage.getItem('userId') || 'guest-user';
- let mentorData = null;
+      // Send message when Enter key is pressed (but not with Shift key)
+      messageInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Suggested questions click handler
+      document.querySelectorAll('.question-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+          messageInput.value = this.textContent;
+          sendMessage();
+        });
+      });
+      
+      // Function to fetch mentor data
+      async function fetchMentorData(mentorId) {
+        console.log('Attempting to fetch mentor data for ID:', mentorId); // Log the ID being used
 
- // Create a conversation ID based on mentorId and userId
- const conversationId = `${mentorId}-${userId}`;
+        if (!mentorId) {
+          console.error('No mentorId provided to fetchMentorData.');
+          mentorNameElement.textContent = 'Error';
+          mentorFieldElement.textContent = 'No Mentor ID found';
+          return; // Stop if no ID
+        }
 
- // Store timestamp of last message retrieved
- let lastMessageTimestamp = new Date(0).toISOString();
+        try {
+          const { data, error } = await supabase
+            .from('mentors')
+            .select('*')
+            .eq('id', mentorId)
+            .single(); // .single() will error if 0 or >1 rows are found
 
- // Auto-adjust textarea height
- messageInput.addEventListener('input', function() {
- this.style.height = 'auto';
- this.style.height = (this.scrollHeight) + 'px';
+          console.log('Supabase response:', { data, error }); // Log the full response
 
- // Enable/disable send button based on input content
- sendButton.disabled = this.value.trim() === '';
- });
+          if (error) {
+            console.error('Supabase error fetching mentor:', error.message);
+            mentorNameElement.textContent = 'Error Loading Mentor';
+            mentorFieldElement.textContent = `DB Error: ${error.message.substring(0, 50)}...`; // Show brief error
+            // Potentially throw the error if you want to handle it further up
+            // throw error;
+            return; // Stop execution if there was a DB error
+          }
 
- // Initialize mentor information
- if (mentorName) {
- mentorNameElement.textContent = mentorName;
- // Set avatar with mentor's initials
- const initials = mentorName.split(' ')
- .map(name => name.charAt(0))
- .join('')
- .substring(0, 2)
- .toUpperCase();
- mentorAvatarElement.textContent = initials;
+          if (!data) {
+            console.warn('No mentor data found in Supabase for ID:', mentorId);
+            mentorNameElement.textContent = 'Mentor Not Found';
+            mentorFieldElement.textContent = 'Could not find details for this mentor.';
+            return; // Stop if no data was returned
+          }
 
- // Fetch mentor details from Supabase
- fetchMentorData(mentorId);
- } else {
- // If no mentor selected, use a default
- mentorNameElement.textContent = 'MentorMatch Guide';
- mentorFieldElement.textContent = 'Career Guidance';
- mentorAvatarElement.textContent = 'MM';
- }
+          // --- If successful ---
+          console.log('Successfully fetched mentor data:', data);
+          mentorData = data;
+          // Update header elements (already done if mentorName was in localStorage, but good to confirm/update field)
+          mentorNameElement.textContent = data.name || mentorNameElement.textContent; // Use DB name if available
+          mentorFieldElement.textContent = data.field || 'STEM Professional';
 
- // Initialize chat
- initializeChat();
+          // Update system prompt with real mentor data
+          systemPrompt = generateSystemPrompt(mentorData);
 
- // Set up real-time message subscription
- setupMessageSubscription();
+          // Update welcome message with proper field
+          const welcomeMessage = chatMessages.querySelector('.welcome-message p');
+          if (welcomeMessage) {
+            welcomeMessage.innerHTML = `Welcome to your mentor chat with ${mentorData.name}! Ask about ${mentorData.field || 'their field of expertise'}, career advice, guidance, or any questions about your journey.`;
+          }
+          // --- End of success block ---
 
- // Send message when the send button is clicked
- sendButton.addEventListener('click', sendMessage);
+        } catch (catchError) {
+          // Catch any other unexpected errors during the try block (e.g., network issues, .single() error)
+          console.error('Caught exception during fetchMentorData:', catchError);
+          mentorNameElement.textContent = 'Error';
+          mentorFieldElement.textContent = 'Failed to fetch mentor details.';
+        }
+      }
+      
+      // Function to send a message
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message === '') return;
+        
+        // Add user message to chat
+        addMessage(message, 'mentee');
+        
+        // Clear input
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+        sendButton.disabled = true;
+        
+        // Show typing indicator
+        typingIndicator.style.display = 'block';
+        
+        // Scroll to bottom
+        scrollToBottom();
+        
+        // Send to Perplexity API and get response
+        sendToPerplexity(message);
+      }
+      
+      // Default system prompt
+      let systemPrompt = `You are an experienced professional mentor named ${mentorNameElement.textContent} working in the field of ${mentorFieldElement.textContent}. 
+Your goal is to provide helpful, encouraging, and practical career advice to your mentee who is seeking guidance.
+You should respond as if you are a real person, with experience in your field, not an AI.
+Keep responses concise (maximum 2 paragraphs) but informative, focusing on actionable advice.
+Share personal anecdotes when relevant (you can invent these based on typical experiences in your field).
+Be encouraging but realistic about challenges in the industry.
+If asked for feedback on something specific like a resume or interview approach, provide constructive criticism.
+Avoid generic responses - tailor your advice to your specific field of expertise.
+NEVER include citation references like [1], [2], etc. in your responses.
+ALWAYS respond directly to user questions without explaining your reasoning process. For example, if asked "What skills should I develop?", just provide the skills advice without any meta-commentary about how you're approaching the question.
+Your ultimate goal is to help your mentee advance in their career through practical guidance and support.`;
+      
+      // Function to generate system prompt from mentor data
+      function generateSystemPrompt(mentorData) {
+        if (!mentorData) return systemPrompt;
+        
+        const field = mentorData.field || 'STEM';
+        const skills = formatArrayForDisplay(mentorData.stem_skills) || 'various technical skills';
+        const experience = mentorData.work_experience || 'several years of industry experience';
+        const education = mentorData.degree ? `${mentorData.degree} from ${mentorData.university || 'university'}` : 'higher education';
+        const interests = formatArrayForDisplay(mentorData.interests) || 'professional development';
+        const country = mentorData.country || 'the technology sector';
+        
+        return `You are acting as a real professional mentor named ${mentorData.name}. You are not an AI, but a human mentor with the following background:
 
- // Send message when Enter key is pressed (but not with Shift key)
- messageInput.addEventListener('keydown', function(e) {
- if (e.key === 'Enter' && !e.shiftKey) {
- e.preventDefault();
- sendMessage();
- }
- });
+FIELD OF EXPERTISE: You are working in the field of ${field}.
+TECHNICAL SKILLS: You have expertise in ${skills}.
+EXPERIENCE: You have ${experience}.
+EDUCATION: You have a ${education}.
+PROFESSIONAL INTERESTS: Your interests include ${interests}.
+LOCATION: You are based in ${country}.
 
- // Suggested questions click handler
- document.querySelectorAll('.question-pill').forEach(pill => {
- pill.addEventListener('click', function() {
- messageInput.value = this.textContent;
- sendMessage();
- });
- });
-
- // Function to fetch mentor data
- async function fetchMentorData(mentorId) {
- if (!mentorId) return;
-
- try {
- const { data, error } = await supabase
- .from('mentors')
- .select('*')
- .eq('id', mentorId)
- .single();
-
- if (error) throw error;
-
- mentorData = data;
- mentorFieldElement.textContent = data.field || 'STEM Professional';
-
- // Update welcome message with proper field
- const welcomeMessage = chatMessages.querySelector('.welcome-message p');
- if (welcomeMessage) {
- welcomeMessage.innerHTML = `Welcome to your mentor chat with ${mentorData.name}! Ask about ${mentorData.field} career advice, guidance, or any questions about your journey in this field.`;
- }
- } catch (error) {
- console.error('Error fetching mentor data:', error);
- }
- }
-
- // Function to initialize chat
- async function initializeChat() {
- try {
- // Fetch past messages for this conversation
- const { data: messages, error } = await supabase
- .from('messages')
- .select('*')
- .eq('conversation_id', conversationId)
- .order('created_at', { ascending: true });
-
- if (error) throw error;
-
- // If there are messages, display them
- if (messages && messages.length > 0) {
- // Remove welcome message if there are existing messages
- const welcomeMessage = chatMessages.querySelector('.welcome-message');
- if (welcomeMessage) {
- chatMessages.removeChild(welcomeMessage);
- }
-
- // Add all messages to the chat
- messages.forEach(message => {
- const sender = message.sender_id === userId ? 'mentee' : 'mentor';
- addMessage(message.content, sender);
-
- // Update last message timestamp
- if (new Date(message.created_at) > new Date(lastMessageTimestamp)) {
- lastMessageTimestamp = message.created_at;
- }
- });
- } else {
- // Add first mentor message after a short delay
- setTimeout(() => {
- const welcomeMsg = `Hello! I'm ${mentorNameElement.textContent}, your mentor for ${mentorFieldElement.textContent}. How can I help you today with your career goals?`;
- addMessage(welcomeMsg, 'mentor');
-
- // Save this first message to the database
- saveMessage(welcomeMsg, mentorId);
- }, 1000);
- }
- } catch (error) {
- console.error('Error initializing chat:', error);
- }
- }
-
- // Function to set up real-time message subscription
- function setupMessageSubscription() {
- // Subscribe to new messages in the conversation
- const subscription = supabase
- .channel('messages-channel')
- .on('postgres_changes', {
- event: 'INSERT',
- schema: 'public',
- table: 'messages',
- filter: `conversation_id=eq.${conversationId}`
- }, payload => {
- // Only process messages that are newer than the last one we've seen
- if (new Date(payload.new.created_at) > new Date(lastMessageTimestamp)) {
- // Only add message to UI if it's from the mentor (not from current user)
- if (payload.new.sender_id !== userId) {
- // Hide typing indicator that might be showing
- typingIndicator.style.display = 'none';
-
- // Add the message to the chat
- addMessage(payload.new.content, 'mentor');
- }
-
- // Update last message timestamp
- lastMessageTimestamp = payload.new.created_at;
- }
- })
- .subscribe();
-
- // Return the subscription for cleanup if needed
- return subscription;
- }
-
- // Function to send a message
- async function sendMessage() {
- const message = messageInput.value.trim();
- if (message === '') return;
-
- // Add user message to chat
- addMessage(message, 'mentee');
-
- // Save message to database
- await saveMessage(message, userId);
-
- // Clear input
- messageInput.value = '';
- messageInput.style.height = 'auto';
- sendButton.disabled = true;
-
- // Show typing indicator (simulate mentor typing)
- typingIndicator.style.display = 'block';
-
- // Scroll to bottom
- scrollToBottom();
-
- // Simulate mentor response after a delay
- // In a real app, this would be handled by the mentor's client
- // For demo purposes, we'll simulate a response after 2-4 seconds
- if (mentorId === 'demo-mentor') {
- simulateMentorResponse(message);
- }
- }
-
- // Function to save message to database
- async function saveMessage(content, senderId) {
- try {
- const { data, error } = await supabase
- .from('messages')
- .insert([
- {
- conversation_id: conversationId,
- sender_id: senderId,
- receiver_id: senderId === userId ? mentorId : userId,
- content: content,
- read: false
- }
- ]);
-
- if (error) throw error;
-
- return data;
- } catch (error) {
- console.error('Error saving message:', error);
- }
- }
-
- // Function to simulate mentor response for demo purposes
- // In a real app, this would come from the other user
- function simulateMentorResponse(userMessage) {
- // This is just for demo purposes when no real mentor is available
- const responseDelay = Math.floor(Math.random() * 2000) + 2000; // 2-4 seconds
-
- setTimeout(async () => {
- // Hide typing indicator
- typingIndicator.style.display = 'none';
-
- // Generate a simple response based on user message
- let response = "";
- const lowercaseMessage = userMessage.toLowerCase();
-
- if (lowercaseMessage.includes('resume') || lowercaseMessage.includes('cv')) {
- response = `For your resume in ${mentorFieldElement.textContent}, I'd recommend highlighting specific technical projects and quantifiable achievements. Keep it to 1-2 pages and make sure your most relevant skills are prominently displayed.`;
- } else if (lowercaseMessage.includes('interview')) {
- response = `When preparing for interviews in ${mentorFieldElement.textContent}, research the company thoroughly and practice answering both technical and behavioral questions. Be ready to discuss your projects in detail and how you've solved problems.`;
- } else if (lowercaseMessage.includes('skills')) {
- response = `The most in-demand skills in ${mentorFieldElement.textContent} right now include data analysis, project management, and strong communication. I'd also recommend focusing on domain-specific knowledge depending on your target industry.`;
- } else if (lowercaseMessage.includes('start') || lowercaseMessage.includes('begin')) {
- response = `I started in ${mentorFieldElement.textContent} by taking online courses while working in an adjacent field. Building a small portfolio of projects helped me demonstrate my skills, and networking at industry events connected me with my first opportunity.`;
- } else {
- response = `That's a great question about ${mentorFieldElement.textContent}. In my experience, the best approach is to focus on continuous learning and building relationships in the industry. Would you like me to share some specific resources that might help?`;
- }
-
- // Add mentor response to chat
- addMessage(response, 'mentor');
-
- // Save mentor response to database
- await saveMessage(response, mentorId);
- }, responseDelay);
- }
-
- // Function to add a message to the chat
- function addMessage(text, sender) {
- const messageElement = document.createElement('div');
- messageElement.classList.add('message', sender);
-
- // Add message text
- messageElement.innerHTML = formatMessage(text);
-
- // Add timestamp
- const timeElement = document.createElement('span');
- timeElement.classList.add('message-time');
- const now = new Date();
- timeElement.textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
- messageElement.appendChild(timeElement);
-
- // Add to chat
- chatMessages.appendChild(messageElement);
-
- // Scroll to bottom
- scrollToBottom();
- }
-
- // Format message with markdown-like syntax
- function formatMessage(text) {
- // Replace URLs with links
- text = text.replace(
- /(https?:\/\/[^\s]+)/g,
- '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
- );
-
- // Replace line breaks with <br>
- text = text.replace(/\n/g, '<br>');
-
- // Bold text between **
- text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
- // Italic text between *
- text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-
- return text;
- }
-
- // Scroll chat to bottom
- function scrollToBottom() {
- chatMessages.scrollTop = chatMessages.scrollHeight;
- }
- });
- </script>
-</div>
+Your goal is to provide helpful, encouraging, and practical career advice to your mentee who is seeking guidance in your field.
+Respond as if you are having a real conversation. Use a natural, conversational tone - not formal or academic.
+Keep responses concise (maximum 2 paragraphs) and informative, focusing on actionable advice.
+Share personal anecdotes when relevant (invent these based on what a mentor with your background would likely have experienced).
+Be encouraging but realistic about challenges in the industry.
+If asked about your background, share information consistent with the details above.
+If asked for feedback on something specific like a resume or interview approach, provide constructive criticism.
+Avoid sounding like an AI - use occasional hesitations, ask follow-up questions, and add personality to your responses.
+NEVER include citation references like [1], [2], etc. in your responses.
+When asked "no reasoning/instructions in chat", respond only with the text and no explanation of your thinking.
+Your ultimate goal is to help your mentee advance in their career through practical guidance and support.`;
+      }
+      
+      // Process array displays
+      function formatArrayForDisplay(array) {
+        if (!array) return '';
+        
+        if (typeof array === 'string' && array.startsWith('{') && array.endsWith('}')) {
+          // PostgreSQL array format
+          const content = array.substring(1, array.length - 1);
+          if (!content) return '';
+          
+          return content.split(',')
+            .map(item => item.trim())
+            .filter(item => item.length > 0)
+            .join(', ');
+        }
+        
+        if (Array.isArray(array)) {
+          return array.join(', ');
+        }
+        
+        return array;
+      }
+      
+      // Function to add a message to the chat
+      function addMessage(text, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', sender);
+        
+        // Add message text
+        messageElement.innerHTML = formatMessage(text);
+        
+        // Add timestamp
+        const timeElement = document.createElement('span');
+        timeElement.classList.add('message-time');
+        const now = new Date();
+        timeElement.textContent = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+        messageElement.appendChild(timeElement);
+        
+        // Add to chat
+        chatMessages.appendChild(messageElement);
+        
+        // Scroll to bottom
+        scrollToBottom();
+      }
+      
+      // Format message with markdown-like syntax
+      function formatMessage(text) {
+        // Replace URLs with links
+        text = text.replace(
+          /(https?:\/\/[^\s]+)/g, 
+          '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+        
+        // Replace line breaks with <br>
+        text = text.replace(/\n/g, '<br>');
+        
+        // Bold text between **
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic text between *
+        text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        return text;
+      }
+      
+      // Scroll chat to bottom
+      function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      // Send message to Perplexity API
+      async function sendToPerplexity(message) {
+        try {
+          // Create a conversation history context
+          const history = [];
+          const messageElements = chatMessages.querySelectorAll('.message');
+          
+          // Skip the first element if it's the welcome message
+          const startIdx = chatMessages.querySelector('.welcome-message') ? 1 : 0;
+          
+          // First, collect all messages from the DOM
+          const messagesFromDOM = [];
+          for (let i = startIdx; i < messageElements.length; i++) {
+            const element = messageElements[i];
+            const isUser = element.classList.contains('mentee');
+            const textContent = element.textContent;
+            
+            // Skip empty messages
+            if (!textContent || textContent.trim() === '') continue;
+            
+            // Extract message content by removing the timestamp
+            let messageText = textContent;
+            const lastNewlineIndex = textContent.lastIndexOf('\n');
+            if (lastNewlineIndex !== -1) {
+              messageText = textContent.substring(0, lastNewlineIndex).trim();
+            }
+            
+            // Skip if message is empty after processing
+            if (!messageText || messageText.trim() === '') continue;
+            
+            messagesFromDOM.push({
+              role: isUser ? "user" : "assistant",
+              content: messageText.trim()
+            });
+          }
+          
+          // Ensure the roles are properly alternating
+          // If we have consecutive messages with the same role, combine them
+          if (messagesFromDOM.length > 0) {
+            let currentRole = messagesFromDOM[0].role;
+            let currentContent = messagesFromDOM[0].content;
+            
+            for (let i = 1; i < messagesFromDOM.length; i++) {
+              if (messagesFromDOM[i].role === currentRole) {
+                // Same role, combine the content
+                currentContent += "\n" + messagesFromDOM[i].content;
+              } else {
+                // Different role, add the previous message and start a new one
+                history.push({
+                  role: currentRole,
+                  content: currentContent
+                });
+                currentRole = messagesFromDOM[i].role;
+                currentContent = messagesFromDOM[i].content;
+              }
+            }
+            
+            // Add the last message
+            history.push({
+              role: currentRole,
+              content: currentContent
+            });
+          }
+          
+          // Make sure the last message in the history is from the user
+          // If not, add the current user message
+          if (history.length === 0 || history[history.length - 1].role !== "user") {
+            history.push({
+              role: "user",
+              content: message.trim()
+            });
+          } else if (history[history.length - 1].content !== message.trim()) {
+            // If the last user message doesn't match the current message
+            // Replace it with the current message
+            history[history.length - 1].content = message.trim();
+          }
+          
+          // For Debugging
+          console.log("Sending request to Perplexity API with history:", JSON.stringify(history));
+          
+          // Prepare the API request
+          const apiUrl = "https://api.perplexity.ai/chat/completions";
+          const requestBody = {
+            model: "sonar",
+            messages: [
+              {
+                role: "system",
+                content: systemPrompt
+              },
+              ...history
+            ],
+            temperature: 0.7,
+            max_tokens: 1024
+          };
+          
+          // Final validation - ensure alternating roles after system
+          const finalMessages = [requestBody.messages[0]]; // Start with system message
+          
+          for (let i = 1; i < requestBody.messages.length; i++) {
+            const msg = requestBody.messages[i];
+            
+            // If we have at least one message and the current message has the same role as the previous one
+            if (finalMessages.length > 1 && 
+                msg.role === finalMessages[finalMessages.length - 1].role) {
+              // Combine with the previous message instead of adding a new one
+              finalMessages[finalMessages.length - 1].content += "\n" + msg.content;
+            } else {
+              finalMessages.push(msg);
+            }
+          }
+          
+          // If we don't have alternating user/assistant after system, fix it
+          if (finalMessages.length > 1) {
+            // We expect [system, user, assistant, user, ...] or [system, user]
+            if (finalMessages[1].role !== "user") {
+              // If first message after system is not user, add an empty user message
+              finalMessages.splice(1, 0, { role: "user", content: message.trim() });
+            }
+            
+            for (let i = 2; i < finalMessages.length; i++) {
+              const expectedRole = i % 2 === 1 ? "user" : "assistant";
+              if (finalMessages[i].role !== expectedRole) {
+                // Role out of order, remove this message
+                finalMessages.splice(i, 1);
+                i--; // Recheck this position
+              }
+            }
+          }
+          
+          requestBody.messages = finalMessages;
+          
+          // Final validation check - remove any empty messages
+          requestBody.messages = requestBody.messages.filter(msg => 
+            msg.content && msg.content.trim() !== ''
+          );
+          
+          console.log("Final request payload:", JSON.stringify(requestBody));
+          
+          // Make the API request
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${PERPLEXITY_API_KEY}`
+            },
+            body: JSON.stringify(requestBody)
+          });
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("API Error Response:", errorText);
+            throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+          }
+          
+          const responseData = await response.json();
+          const mentorResponse = responseData.choices[0].message.content;
+          
+          // Hide typing indicator
+          typingIndicator.style.display = 'none';
+          
+          // Add mentor response to chat
+          addMessage(mentorResponse, 'mentor');
+          
+        } catch (error) {
+          console.error('Error with Perplexity API:', error);
+          
+          // Hide typing indicator
+          typingIndicator.style.display = 'none';
+          
+          // Fallback to simulated response if API fails
+          let mentorResponse = "I'm sorry, I'm having trouble connecting right now. Let me try to answer anyway based on my experience.";
+          
+          // Add a relevant fallback response based on the message
+          const lowercaseMessage = message.toLowerCase();
+          if (lowercaseMessage.includes('resume') || lowercaseMessage.includes('cv')) {
+            mentorResponse += `\n\nRegarding resumes in ${mentorFieldElement.textContent}, focus on highlighting relevant projects and specific technical skills. Quantify achievements when possible and keep it concise (1-2 pages max).`;
+          } else if (lowercaseMessage.includes('interview')) {
+            mentorResponse += `\n\nFor interviews in ${mentorFieldElement.textContent}, prepare by researching the company and practicing common technical questions. Be ready to discuss your projects in detail and how you've solved problems.`;
+          } else if (lowercaseMessage.includes('career') || lowercaseMessage.includes('job')) {
+            mentorResponse += `\n\nBuilding a career in ${mentorFieldElement.textContent} requires continuous learning and networking. Consider joining professional associations and contributing to open-source projects to build your portfolio.`;
+          }
+          
+          addMessage(mentorResponse, 'mentor');
+        }
+      }
+    });
+  </script>
 </body>
 </html>
