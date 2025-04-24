@@ -710,47 +710,30 @@ function countOverlap(array1, array2) {
 function displayMatches(matches) {
   const matchesContainer = document.getElementById('matches-container');
   if (!matchesContainer) return;
-  
   if (!matches || matches.length === 0) {
     matchesContainer.innerHTML = `
       <p class="no-matches">No matches found. Try updating your profile to find better matches.</p>
     `;
     return;
   }
-  
   // Get user data to determine role
   const userData = JSON.parse(localStorage.getItem("mentorMatchUser"));
   const userRole = userData?.role || 'mentee';
-  
-  // Clear container
   matchesContainer.innerHTML = '';
-  
-  // Get the top match (should only be one)
   const match = matches[0];
-  
-  // Format match percentage for display (convert to actual percentage)
   const matchPercentage = Math.min(100, Math.round(match.match_score));
-  
-  // Determine role text based on user & match roles
   let roleText = '';
   if (userRole === 'mentee') {
-    // For mentees viewing mentors
     roleText = `${match.field || 'Mentor'} • ${matchPercentage}% Match`;
   } else {
-    // For mentors viewing mentees
     roleText = `${match.desired_field || 'Mentee'} • ${matchPercentage}% Match`;
   }
-  
-  // Get appropriate flag emoji for country
-  // This is a simple placeholder - in a real app you'd map countries to flag emojis
-  const countryFlag = '🌎'; // Default globe
-  
-  // Create the new single match card with the updated design
+  const countryFlag = '🌎';
   const matchCard = document.createElement('div');
   matchCard.className = 'match-card';
   matchCard.innerHTML = `
     <div class="match-image-placeholder">
-      Profile
+      <img src="abcd.jpg" alt="Profile picture" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
     </div>
     <h3 class="match-name">${match.name}</h3>
     <p class="match-role">${roleText}</p>
@@ -762,11 +745,7 @@ function displayMatches(matches) {
       ${userRole === 'mentee' ? 'Learn More' : 'Contact Mentee'}
     </button>
   `;
-  
-  // Add card to container
   matchesContainer.appendChild(matchCard);
-  
-  // Add event listener for action button
   matchCard.querySelector('.match-action-button').addEventListener('click', handleMatchAction);
 }
 

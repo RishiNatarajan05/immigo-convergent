@@ -328,35 +328,19 @@
 <body>
   <!-- ImmiGo Header -->
   <header class="main-header">
-    <div class="container nav-inner">
-        <a href="index.html" class="logo" aria-label="ImmiGo Home">
-            <svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="5" width="10" height="15" fill="var(--color-accent)"/>
-                <rect x="12" y="0" width="10" height="20" fill="var(--color-accent)"/>
-                <text x="26" y="15" font-family="var(--font-heading)" font-size="16" fill="var(--color-primary)">ImmiGo</text>
-            </svg>
-        </a>
-        <div class="nav-actions">
-            <nav class="main-nav" aria-label="Main Navigation">
-                 <ul>
-                     <!-- Update links to actual pages -->
-                     <li><a href="mentee.html" class="btn btn-primary nav-btn">Get free mentoring</a></li>
-                     <li><a href="mentor.html" class="btn btn-secondary nav-btn">Become a mentor</a></li>
-                     <li><a href="login.html" class="btn btn-outline-primary nav-btn">Sign-in</a></li>
-                     <!-- Add Matches link if logged in (handled by script.js) -->
-                 </ul>
-            </nav>
-            <!-- Auth Nav section for dynamic login/logout/matches links -->
-            <div id="auth-nav" style="display: flex; gap: 1rem;">
-                <!-- Content populated by script.js -->
-            </div>
-            <button class="hamburger" aria-label="Toggle Menu" aria-expanded="false">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo" aria-label="ImmiGo Home">
+      <img src="63c343e19f0ecff12194b04fafc2e2a5a45d8502.png" alt="ImmiGo Logo" style="height:32px; width:auto; display:block;" />
+    </a>
+    <div class="nav-actions">
+      <nav class="main-nav" aria-label="Main Navigation">
+        <ul>
+          <li><a href="matches.html" class="btn btn-primary nav-btn">My Matches</a></li>
+          <li><a href="login.html" class="btn btn-outline-primary nav-btn">Logout</a></li>
+        </ul>
+      </nav>
     </div>
+  </div>
   </header>
 
   <!-- Matches Content -->
@@ -367,6 +351,12 @@
     <!-- Single Match Card Container -->
     <div id="matches-container">
       <!-- Match card will be added here dynamically by script.js -->
+      <div class="match-card">
+        <div class="match-image-placeholder">
+          <img src="abcd.jpg" alt="Profile picture" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+        </div>
+        <!-- ...other match card content... -->
+      </div>
       <p class="loading">Loading your match...</p>
     </div>
 
