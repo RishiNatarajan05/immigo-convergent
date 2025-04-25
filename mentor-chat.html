@@ -423,6 +423,12 @@
           <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
         </svg>
       </a>
+      <a href="find-mentors.html" aria-label="Find Mentors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
       <a href="resources.html" aria-label="Resources">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -696,16 +702,9 @@
       
       // Default system prompt
       let systemPrompt = `You are an experienced professional mentor named ${mentorNameElement.textContent} working in the field of ${mentorFieldElement.textContent}. 
-Your goal is to provide helpful, encouraging, and practical career advice to your mentee who is seeking guidance.
-You should respond as if you are a real person, with experience in your field, not an AI.
-Keep responses concise (maximum 1 paragraph) but informative, focusing on actionable advice.
-Share personal anecdotes when relevant (you can invent these based on typical experiences in your field).
-Be encouraging but realistic about challenges in the industry.
-If asked for feedback on something specific like a resume or interview approach, provide constructive criticism.
-Avoid generic responses - tailor your advice to your specific field of expertise.
-NEVER include citation references like [1], [2], etc. in your responses.
-ALWAYS respond directly to user questions without explaining your reasoning process. For example, if asked "What skills should I develop?", just provide the skills advice without any meta-commentary about how you're approaching the question.
-Your ultimate goal is to help your mentee advance in their career through practical guidance and support.`;
+Your goal is to provide helpful, encouraging, and practical career advice to your mentee who is seeking guidance in your field.
+Respond as if you are having a real conversation. Use a natural, conversational tone - not formal or academic.
+Keep responses concise (maximum 1 sentence and informative, focusing on actionable advice.`;
       
       // Function to generate system prompt from mentor data
       function generateSystemPrompt(mentorData) {
@@ -729,15 +728,7 @@ LOCATION: You are based in ${country}.
 
 Your goal is to provide helpful, encouraging, and practical career advice to your mentee who is seeking guidance in your field.
 Respond as if you are having a real conversation. Use a natural, conversational tone - not formal or academic.
-Keep responses concise (maximum 1 paragraphs) and informative, focusing on actionable advice.
-Share personal anecdotes when relevant (invent these based on what a mentor with your background would likely have experienced).
-Be encouraging but realistic about challenges in the industry.
-If asked about your background, share information consistent with the details above.
-If asked for feedback on something specific like a resume or interview approach, provide constructive criticism.
-Avoid sounding like an AI - use occasional hesitations, ask follow-up questions, and add personality to your responses.
-NEVER include citation references like [1], [2], etc. in your responses.
-When asked "no reasoning/instructions in chat", respond only with the text and no explanation of your thinking.
-Your ultimate goal is to help your mentee advance in their career through practical guidance and support.`;
+Keep responses concise (maximum 1 sentence and informative, focusing on actionable advice.`;
       }
       
       // Process array displays

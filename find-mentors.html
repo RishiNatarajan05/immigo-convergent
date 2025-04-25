@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Mentors - ImmiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #415978;
+      --color-accent: #FF7043;
+      --color-accent-hover: #E8603A;
+      --color-secondary: #EDEDE5;
+      --color-offwhite: #F7F9F8;
+      --color-white: #FFFFFF;
+      --color-dark: #333333;
+      --color-light-gray-text: #555555;
+      --color-sidebar: #3B5372;
+      --color-sidebar-active: #2C3E50;
+      --color-resource-bg: #b7cbe2;
+      --border-radius: 12px;
+      --shadow-light: 0 4px 15px rgba(0,0,0,0.08);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-offwhite);
+      color: var(--color-dark);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 80px;
+      background: var(--color-sidebar);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+
+    .sidebar .avatar-container {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 32px;
+      background-color: var(--color-white);
+      border: 2px solid var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .sidebar .avatar-container svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--color-primary);
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.6em;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar-nav a.active, .sidebar-nav a:hover {
+      background: var(--color-sidebar-active);
+      color: var(--color-accent);
+    }
+
+    .sidebar-bottom {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-bottom a {
+      color: #fff;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar-bottom a:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    /* Main content area */
+    .main-content {
+      margin-left: 80px;
+      width: calc(100vw - 80px);
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      color: var(--color-primary);
+      text-align: center;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px rgba(65,89,120,0.07);
+    }
+
+    /* Search section */
+    .search-section {
+      background: linear-gradient(135deg, #f7f9f8 60%, #ede9e5 100%);
+      border-radius: 18px;
+      padding: 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 6px 24px rgba(65,89,120,0.10);
+      border: 2px solid #e0e0e0;
+    }
+
+    .search-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .search-field {
+      flex: 1 1 300px;
+    }
+
+    .search-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--color-primary);
+    }
+
+    .search-field input,
+    .search-field select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1em;
+      font-family: var(--font-body);
+      color: var(--color-dark);
+      background-color: var(--color-white);
+    }
+
+    .search-field input:focus,
+    .search-field select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px rgba(65, 89, 120, 0.2);
+    }
+
+    .search-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .search-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      font-size: 1em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.18s, box-shadow 0.18s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: var(--color-white);
+      box-shadow: 0 2px 8px rgba(255,112,67,0.08);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      box-shadow: 0 4px 16px rgba(255,112,67,0.16);
+    }
+
+    .btn-secondary {
+      background: var(--color-secondary);
+      color: var(--color-dark);
+    }
+
+    .btn-secondary:hover {
+      background: #deded6;
+    }
+
+    /* Mentor results */
+    .mentor-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .mentor-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-light);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.18s, box-shadow 0.18s;
+      border: 1px solid #e0e0e0;
+    }
+
+    .mentor-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(65,89,120,0.15);
+      border-color: var(--color-accent);
+    }
+
+    .mentor-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      object-fit: cover;
+      border: 3px solid var(--color-primary);
+    }
+
+    .mentor-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 5px;
+    }
+
+    .mentor-field {
+      font-size: 1.1rem;
+      color: var(--color-accent);
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .mentor-bio {
+      font-size: 0.95rem;
+      color: var(--color-light-gray-text);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .mentor-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .mentor-tag {
+      background: #f0f4f9;
+      color: var(--color-primary);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .connect-btn {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: background 0.18s;
+      display: inline-block;
+    }
+
+    .connect-btn:hover {
+      background: #344860;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px 15px;
+      }
+      
+      .search-section {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .main-content {
+        margin-left: 60px;
+        width: calc(100vw - 60px);
+      }
+      
+      .page-title {
+        font-size: 1.8rem;
+      }
+      
+      .search-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .search-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Left sidebar -->
+  <nav class="sidebar">
+    <div class="avatar-container">
+      <!-- Replace SVG with actual image -->
+      <img src="maria.png" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="sidebar-nav">
+      <a href="mentee-dashboard.html" title="Dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </a>
+      <a href="mentor-chat.html" title="Messages">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </a>
+      <a href="matches.html" title="Mentors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </a>
+      <a href="find-mentors.html" class="active" title="Find Mentors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+      <a href="resources.html" title="Resources">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+      </a>
+      <a href="profile.html" title="Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </a>
+    </div>
+    <div class="sidebar-bottom">
+      <a href="login.html" title="Logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <h1 class="page-title">Find Mentors</h1>
+
+    <div class="search-section">
+      <form class="search-form">
+        <div class="search-row">
+          <div class="search-field">
+            <label for="keyword">Keyword Search</label>
+            <input type="text" id="keyword" placeholder="Search by name, profession, skills...">
+          </div>
+        </div>
+        
+        <div class="search-row">
+          <div class="search-field">
+            <label for="field">Field of Expertise</label>
+            <select id="field">
+              <option value="">All Fields</option>
+              <option value="technology">Technology</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance</option>
+              <option value="education">Education</option>
+              <option value="engineering">Engineering</option>
+              <option value="arts">Arts & Design</option>
+              <option value="business">Business</option>
+              <option value="science">Science</option>
+            </select>
+          </div>
+          
+          <div class="search-field">
+            <label for="language">Languages Spoken</label>
+            <select id="language">
+              <option value="">All Languages</option>
+              <option value="english">English</option>
+              <option value="spanish">Spanish</option>
+              <option value="mandarin">Mandarin</option>
+              <option value="arabic">Arabic</option>
+              <option value="hindi">Hindi</option>
+              <option value="french">French</option>
+              <option value="portuguese">Portuguese</option>
+              <option value="russian">Russian</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="search-buttons">
+          <button type="submit" class="search-btn btn-primary">Search Mentors</button>
+          <button type="reset" class="search-btn btn-secondary">Clear Filters</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="mentor-results">
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">James Wilson</h3>
+        <div class="mentor-field">Software Engineering</div>
+        <p class="mentor-bio">Senior software engineer with 12+ years of experience in tech startups and major companies. Specialized in web development and cloud computing.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">JavaScript</span>
+          <span class="mentor-tag">AWS</span>
+          <span class="mentor-tag">React</span>
+        </div>
+        <a href="mentor-profile.html?id=1" class="connect-btn">View Profile</a>
+      </div>
+      
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">Elena Rodriguez</h3>
+        <div class="mentor-field">Healthcare</div>
+        <p class="mentor-bio">Registered nurse with experience in hospital administration. Can provide guidance on healthcare certifications and job opportunities in the US medical system.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">Nursing</span>
+          <span class="mentor-tag">Spanish</span>
+          <span class="mentor-tag">Certification</span>
+        </div>
+        <a href="mentor-profile.html?id=2" class="connect-btn">View Profile</a>
+      </div>
+      
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">Michael Chen</h3>
+        <div class="mentor-field">Finance</div>
+        <p class="mentor-bio">Financial analyst with expertise in personal financial planning. Can help with understanding the US banking system and building credit history.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">Banking</span>
+          <span class="mentor-tag">Investment</span>
+          <span class="mentor-tag">Mandarin</span>
+        </div>
+        <a href="mentor-profile.html?id=3" class="connect-btn">View Profile</a>
+      </div>
+      
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">Priya Patel</h3>
+        <div class="mentor-field">Education</div>
+        <p class="mentor-bio">School administrator with over 15 years in the education sector. Specializes in helping navigate the US education system and academic credential validation.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">K-12</span>
+          <span class="mentor-tag">Higher Education</span>
+          <span class="mentor-tag">Hindi</span>
+        </div>
+        <a href="mentor-profile.html?id=4" class="connect-btn">View Profile</a>
+      </div>
+      
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">Ahmed Hassan</h3>
+        <div class="mentor-field">Engineering</div>
+        <p class="mentor-bio">Civil engineer working on infrastructure projects. Can provide guidance on engineering licensing and certification in the United States.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">Civil Engineering</span>
+          <span class="mentor-tag">Arabic</span>
+          <span class="mentor-tag">Licensing</span>
+        </div>
+        <a href="mentor-profile.html?id=5" class="connect-btn">View Profile</a>
+      </div>
+      
+      <div class="mentor-card">
+        <img src="default-avatar.png" alt="Mentor" class="mentor-avatar">
+        <h3 class="mentor-name">Sophia Kim</h3>
+        <div class="mentor-field">Marketing</div>
+        <p class="mentor-bio">Digital marketing specialist with experience in global brands. Helps professionals adapt their marketing skills to the US market and build their network.</p>
+        <div class="mentor-tags">
+          <span class="mentor-tag">Digital Marketing</span>
+          <span class="mentor-tag">SEO</span>
+          <span class="mentor-tag">Korean</span>
+        </div>
+        <a href="mentor-profile.html?id=6" class="connect-btn">View Profile</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Check for authentication status
+      const userData = JSON.parse(localStorage.getItem("mentorMatchUser") || "{}");
+      if (!userData.isLoggedIn) {
+        // Redirect to login if not authenticated
+        // window.location.href = "login.html";
+      }
+      
+      // Form submission handler
+      document.querySelector('.search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // In a real application, this would make an API call to fetch mentors
+        // based on the search criteria
+        
+        const keyword = document.getElementById('keyword').value;
+        const field = document.getElementById('field').value;
+        const language = document.getElementById('language').value;
+        
+        console.log('Searching for mentors with:', { keyword, field, language });
+        // This would typically trigger a fetch to an API endpoint
+        // and then update the results section with the response
+      });
+    });
+  </script>
+</body>
+</html>
