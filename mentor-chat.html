@@ -957,32 +957,38 @@ Keep responses concise (maximum 1 sentence and informative, focusing on actionab
           const responseData = await response.json();
           const mentorResponse = responseData.choices[0].message.content;
           
-          // Hide typing indicator
-          typingIndicator.style.display = 'none';
-          
-          // Add mentor response to chat
-          addMessage(mentorResponse, 'mentor');
+          // Add a delay before showing the response to simulate typing
+          setTimeout(() => {
+            // Hide typing indicator after delay
+            typingIndicator.style.display = 'none';
+            
+            // Add mentor response to chat
+            addMessage(mentorResponse, 'mentor');
+          }, 2000); // 2 seconds delay
           
         } catch (error) {
           console.error('Error with Perplexity API:', error);
           
-          // Hide typing indicator
-          typingIndicator.style.display = 'none';
-          
-          // Fallback to simulated response if API fails
-          let mentorResponse = "I'm sorry, I'm having trouble connecting right now. Let me try to answer anyway based on my experience.";
-          
-          // Add a relevant fallback response based on the message
-          const lowercaseMessage = message.toLowerCase();
-          if (lowercaseMessage.includes('resume') || lowercaseMessage.includes('cv')) {
-            mentorResponse += `\n\nRegarding resumes in ${mentorFieldElement.textContent}, focus on highlighting relevant projects and specific technical skills. Quantify achievements when possible and keep it concise (1-2 pages max).`;
-          } else if (lowercaseMessage.includes('interview')) {
-            mentorResponse += `\n\nFor interviews in ${mentorFieldElement.textContent}, prepare by researching the company and practicing common technical questions. Be ready to discuss your projects in detail and how you've solved problems.`;
-          } else if (lowercaseMessage.includes('career') || lowercaseMessage.includes('job')) {
-            mentorResponse += `\n\nBuilding a career in ${mentorFieldElement.textContent} requires continuous learning and networking. Consider joining professional associations and contributing to open-source projects to build your portfolio.`;
-          }
-          
-          addMessage(mentorResponse, 'mentor');
+          // Add a delay before showing the fallback response
+          setTimeout(() => {
+            // Hide typing indicator
+            typingIndicator.style.display = 'none';
+            
+            // Fallback to simulated response if API fails
+            let mentorResponse = "I'm sorry, I'm having trouble connecting right now. Let me try to answer anyway based on my experience.";
+            
+            // Add a relevant fallback response based on the message
+            const lowercaseMessage = message.toLowerCase();
+            if (lowercaseMessage.includes('resume') || lowercaseMessage.includes('cv')) {
+              mentorResponse += `\n\nRegarding resumes in ${mentorFieldElement.textContent}, focus on highlighting relevant projects and specific technical skills. Quantify achievements when possible and keep it concise (1-2 pages max).`;
+            } else if (lowercaseMessage.includes('interview')) {
+              mentorResponse += `\n\nFor interviews in ${mentorFieldElement.textContent}, prepare by researching the company and practicing common technical questions. Be ready to discuss your projects in detail and how you've solved problems.`;
+            } else if (lowercaseMessage.includes('career') || lowercaseMessage.includes('job')) {
+              mentorResponse += `\n\nBuilding a career in ${mentorFieldElement.textContent} requires continuous learning and networking. Consider joining professional associations and contributing to open-source projects to build your portfolio.`;
+            }
+            
+            addMessage(mentorResponse, 'mentor');
+          }, 2000); // 2 seconds delay
         }
       }
     });
